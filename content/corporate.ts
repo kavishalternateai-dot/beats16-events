@@ -13,7 +13,7 @@ const inquiry = inquiryHref({ source: "corporate-cultural-page" });
 export const corporateSeo = {
   title: "Corporate & Cultural Event Bands | Beats16, Mumbai",
   description:
-    "Live bands for Hindu festival celebrations, community gatherings, cultural programmes and corporate events, from Beats16's 40 years and 5,000+ events.",
+    "Live bands for traditional festivals, community gatherings, cultural programmes and corporate events, from Beats16's 40 years and 5,000+ events.",
 } as const;
 
 export const corporateFaqs: FaqItem[] = [
@@ -21,7 +21,7 @@ export const corporateFaqs: FaqItem[] = [
     id: "corp-kinds",
     question: "What kinds of non-wedding events does Beats16 perform at?",
     answer:
-      "Cultural programmes, religious celebrations, community gatherings and corporate events, alongside Hindu festivals such as Navratri.",
+      "Cultural programmes, religious celebrations, community gatherings and corporate events, alongside traditional festivals such as Navratri.",
   },
   {
     id: "corp-company-navratri",
@@ -64,7 +64,7 @@ export const corporateStory: PageStory = {
     eyebrow: "Corporate & Cultural Events · Beats16",
     h1: "Live music for festivals, communities and corporate celebrations",
     subhead:
-      "From religious celebrations and community gatherings to cultural programmes and company festival events, Beats16 brings 40 years of live music to occasions rooted in Hindu tradition.",
+      "From religious celebrations and community gatherings to cultural programmes and company festival events, Beats16 brings 40 years of live music to traditional celebrations.",
     cta: "Send an event inquiry",
     ctaHref: inquiry,
     note: `Based in ${site.city}. Performing across India and abroad.`,
@@ -86,7 +86,7 @@ export const corporateStory: PageStory = {
       points: [
         {
           title: "Religious celebrations",
-          text: "Hindu festivals and religious celebrations, with music that respects the occasion and brings people together.",
+          text: "Traditional festivals and religious celebrations, with music that respects the occasion and brings people together.",
         },
         {
           title: "Community gatherings",
@@ -127,7 +127,7 @@ export const corporateStory: PageStory = {
         {
           href: "/gauri",
           title: "Gauri",
-          text: "Traditional Hindu ceremonial music for rituals and religious occasions.",
+          text: "Traditional ceremonial music for rituals and religious occasions.",
           link: "Meet Gauri",
         },
       ],
@@ -150,8 +150,8 @@ export const corporateStory: PageStory = {
     },
     {
       kind: "prose",
-      heading: "Rooted in Hindu festivals and culture",
-      body: "Beats16 performs at Hindu weddings and Hindu festivals, and at cultural, community and corporate events in that spirit. Keeping that focus is how we bring 40 years of experience to every occasion. If your event falls outside it, we'll let you know politely and honestly.",
+      heading: "Rooted in traditional festivals and culture",
+      body: "Beats16 performs at Indian weddings and traditional festivals, and at cultural, community and corporate events in that spirit. Keeping that focus is how we bring 40 years of experience to every occasion. If your event falls outside it, we'll let you know politely and honestly.",
     },
     { kind: "pricing", heading: "About pricing" },
   ],

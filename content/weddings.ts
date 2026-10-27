@@ -49,9 +49,9 @@ export const weddingFaqs: FaqItem[] = [
   },
   {
     id: "weddings-scope",
-    question: "Do you perform at non-Hindu weddings?",
+    question: "Do you perform at weddings other than Indian weddings?",
     answer:
-      "We focus only on Hindu weddings and Hindu festivals, so we're not the right fit for other ceremonies.",
+      "We focus only on Indian weddings and traditional festivals, so we're not the right fit for other ceremonies.",
   },
   {
     id: "weddings-how-early",
@@ -62,17 +62,17 @@ export const weddingFaqs: FaqItem[] = [
 ];
 
 export const weddingsSeo = {
-  title: "Hindu Wedding Music & Live Bands, Mumbai | Beats16",
+  title: "Indian Wedding Music & Live Bands, Mumbai | Beats16",
   description:
-    "Live bands for every Hindu wedding function: mehendi, sangeet, pheras and reception. 40 years and 5,000+ events. Send your wedding inquiry to Beats16.",
+    "Live bands for every Indian wedding function: mehendi, sangeet, pheras and reception. 40 years and 5,000+ events. Send your wedding inquiry to Beats16.",
 } as const;
 
 export const weddingsStory: PageStory = {
   hero: {
     eyebrow: `Weddings · ${site.name}`,
-    h1: "Music for every function of your Hindu wedding",
+    h1: "Music for every function of your Indian wedding",
     subhead:
-      "A Hindu wedding is many celebrations in one. We plan a musical concept for each function, from the mehendi to the reception, so the music feels connected from the first song to the last dance.",
+      "An Indian wedding is many celebrations in one. We plan a musical concept for each function, from the mehendi to the reception, so the music feels connected from the first song to the last dance.",
     cta: "Send a wedding inquiry",
     ctaHref: inquiry,
     note: `Based in ${site.city}. Performing at weddings across India and abroad.`,
@@ -116,7 +116,7 @@ export const weddingsStory: PageStory = {
         {
           href: "/gauri",
           title: "Gauri",
-          text: "For wedding rituals and traditional Hindu ceremonies, including the pheras.",
+          text: "For wedding rituals and traditional ceremonies, including the pheras.",
           link: "Meet Gauri",
         },
         {
@@ -151,8 +151,8 @@ export const weddingsStory: PageStory = {
     },
     {
       kind: "prose",
-      heading: "Hindu weddings are what we do",
-      body: "Beats16 performs at Hindu weddings and Hindu festivals. Keeping that focus is how we bring 40 years of experience to the rituals, customs and music families expect.",
+      heading: "Indian weddings are what we do",
+      body: "Beats16 performs at Indian weddings and traditional festivals. Keeping that focus is how we bring 40 years of experience to the rituals, customs and music families expect.",
     },
     { kind: "pricing", heading: "About pricing" },
   ],

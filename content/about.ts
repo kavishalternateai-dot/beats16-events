@@ -10,15 +10,15 @@ import { site } from "@/content/site";
 const inquiry = inquiryHref({ source: "about-page" });
 
 export const aboutSeo = {
-  title: "About Beats16 | 40 Years of Hindu Wedding Music, Mumbai",
+  title: "About Beats16 | 40 Years of Indian Wedding Music, Mumbai",
   description:
-    "For 40 years Beats16 has brought live music to Hindu weddings and festivals: 5,000+ events and 80+ Navratris, from Mumbai to the world. Read our story.",
+    "For 40 years Beats16 has brought live music to Indian weddings and festivals: 5,000+ events and 80+ Navratris, from Mumbai to the world. Read our story.",
 } as const;
 
 export const aboutStory: PageStory = {
   hero: {
     eyebrow: `About ${site.name} · ${site.city}`,
-    h1: "40 years of music at Hindu weddings and festivals",
+    h1: "40 years of music at Indian weddings and festivals",
     subhead:
       "Beats16 began in Mumbai around 40 years ago with Tushar Sonigra. Four decades and more than 5,000 events later, we still bring the same care to every celebration we play.",
     cta: "Send an inquiry",
@@ -45,7 +45,7 @@ export const aboutStory: PageStory = {
       kind: "points",
       heading: "Music shaped around each function",
       intro:
-        "A Hindu wedding is many celebrations in one, and each function has its own mood. That's why we plan a tailored musical concept for every function, and why we have more than one band.",
+        "An Indian wedding is many celebrations in one, and each function has its own mood. That's why we plan a tailored musical concept for every function, and why we have more than one band.",
       points: [
         {
           title: "Rituals deserve calm",
@@ -68,7 +68,7 @@ export const aboutStory: PageStory = {
         {
           href: "/gauri",
           title: "Gauri",
-          text: "For wedding rituals and traditional Hindu ceremonies.",
+          text: "For wedding rituals and traditional ceremonies.",
           link: "Meet Gauri",
         },
         {
@@ -94,14 +94,15 @@ export const aboutStory: PageStory = {
     },
     {
       kind: "prose",
-      heading: "Where you'll find us",
+      heading: "Where to find us",
       body: "Weddings are our speciality. We also perform at cultural programmes, religious celebrations, community gatherings and corporate events.",
       link: { href: "/corporate-cultural", label: "Corporate & cultural events" },
+      instagram: true,
     },
     {
       kind: "prose",
-      heading: "Hindu weddings and Hindu festivals",
-      body: "Beats16 performs at Hindu weddings and Hindu festivals only. Keeping that focus is how we bring 40 years of experience to the rituals, customs and music families expect. If your celebration is a different kind of ceremony, we'll let you know politely and honestly.",
+      heading: "Indian weddings and traditional festivals",
+      body: "Beats16 performs at Indian weddings and traditional festivals only. Keeping that focus is how we bring 40 years of experience to the rituals, customs and music families expect. If your celebration is a different kind of ceremony, we'll let you know politely and honestly.",
     },
     {
       kind: "prose",

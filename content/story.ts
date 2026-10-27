@@ -30,6 +30,8 @@ export type StorySection =
       body?: string;
       paragraphs?: string[];
       link?: { href: string; label: string };
+      /** Renders the founder Instagram slot. Hidden link until INSTAGRAM_HANDLE is set. */
+      instagram?: boolean;
     }
   | { kind: "reel"; heading: string; body: string }
   | { kind: "showreel"; heading: string; body: string; note: string }

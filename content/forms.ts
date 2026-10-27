@@ -3,7 +3,7 @@
 export const eventTypes = [
   "Wedding",
   "Navratri",
-  "Other Hindu festival / religious celebration",
+  "Other traditional festival / religious celebration",
   "Cultural programme / ghazal evening",
   "Community gathering",
   "Corporate event",
@@ -11,9 +11,8 @@ export const eventTypes = [
 
 /** Older page links used the AQ-002–006 labels. Map them onto the current list. */
 export const legacyEventTypes: Record<string, (typeof eventTypes)[number]> = {
-  "Hindu wedding": "Wedding",
   "Navratri, garba, or dandiya": "Navratri",
-  "Religious celebration": "Other Hindu festival / religious celebration",
+  "Religious celebration": "Other traditional festival / religious celebration",
   "Ghazal, cultural programme, or community gathering": "Cultural programme / ghazal evening",
   "Sangeet or private celebration": "Wedding",
   "Corporate event": "Corporate event",
@@ -29,7 +28,6 @@ export const bandInterests = [
 ] as const;
 
 export const legacyBandInterests: Record<string, (typeof bandInterests)[number]> = {
-  "Gauri (Hindu wedding ceremony)": "Gauri",
   "RDX (sangeet or private)": "RDX",
   "Daastan-e-Ghazal": "Daastan-e-Ghazal",
   "Navratri band": "Navratri band by Beats16",

@@ -3,6 +3,7 @@ import type { ShowreelBandId } from "@/content/forms";
 import type { PageStory } from "@/content/story";
 import { site } from "@/content/site";
 import { InquiryClose, PageContainer, PageHero, ProofStrip } from "@/components/blocks";
+import { InstagramProfile } from "@/components/instagram-profile";
 import { FaqList } from "@/components/faq-list";
 import { ReelSection } from "@/components/instagram-embed";
 import { JsonLd } from "@/components/json-ld";
@@ -213,6 +214,11 @@ export function StorySections({
                   >
                     {section.link.label}
                   </Link>
+                </p>
+              ) : null}
+              {section.instagram ? (
+                <p className="mt-6 text-lg leading-relaxed">
+                  <InstagramProfile />
                 </p>
               ) : null}
             </section>

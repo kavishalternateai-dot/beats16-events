@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { footerNav, site } from "@/content/site";
 import { EmailLink, PhoneLink } from "@/components/contact-links";
+import { InstagramProfile } from "@/components/instagram-profile";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -13,10 +14,10 @@ export function SiteFooter() {
           <p className="font-heading text-4xl tracking-tight">{site.shortName}</p>
           <p className="mt-2 text-xs font-semibold tracking-[0.16em] text-[#e4c88a] uppercase">{site.name}</p>
           <p className="mt-5 max-w-md leading-relaxed text-[#f7f1e6]/88">
-            {site.city}. Hindu weddings and Hindu festivals, in India and abroad. Founded by {site.founder}.
+            {site.city}. Indian weddings and traditional festivals, in India and abroad. Founded by {site.founder}.
           </p>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-[#f7f1e6]/72">
-            We play Hindu weddings and Hindu festivals only. For other ceremonies, we decline.
+            We play Indian weddings and traditional festivals only. For other ceremonies, we decline.
           </p>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-[#f7f1e6]/88">{site.pricing}</p>
         </div>
@@ -29,6 +30,9 @@ export function SiteFooter() {
               </li>
               <li>
                 <EmailLink location="footer" className="underline decoration-[#e4c88a]/70 underline-offset-4" />
+              </li>
+              <li>
+                <InstagramProfile tone="dark" />
               </li>
             </ul>
             <Link

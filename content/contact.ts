@@ -9,7 +9,7 @@ import { site } from "@/content/site";
 export const contactSeo = {
   title: "Contact Beats16 | Wedding & Navratri Band Inquiry, Mumbai",
   description:
-    "Planning a Hindu wedding or Navratri? Share your date, city and functions with Beats16 and Tushar ji will get back to you personally. Send your inquiry.",
+    "Planning an Indian wedding or Navratri? Share your date, city and functions with Beats16 and Tushar ji will get back to you personally. Send your inquiry.",
 } as const;
 
 export const contactHero = {
@@ -45,7 +45,7 @@ export const contactReach = {
   call: "calls are answered by our founder, Tushar Sonigra (Tushar ji)",
   based: `Based in ${site.city}. Performing across India and abroad.`,
   focus:
-    "Beats16 performs at Hindu weddings and Hindu festivals only. If your celebration is a different kind of ceremony, we'll let you know politely.",
+    "Beats16 performs at Indian weddings and traditional festivals only. If your celebration is a different kind of ceremony, we'll let you know politely.",
 } as const;
 
 export const thankYouSeo = {

@@ -4,6 +4,7 @@ import { contactAfter, contactHero, contactReach, contactSeo } from "@/content/c
 import { site } from "@/content/site";
 import { PageContainer, PageHero } from "@/components/blocks";
 import { EmailLink, PhoneLink } from "@/components/contact-links";
+import { InstagramProfile } from "@/components/instagram-profile";
 import { InquiryForm } from "@/components/inquiry-form";
 import { JsonLd } from "@/components/json-ld";
 import { breadcrumbJsonLd, contactPageJsonLd, organizationJsonLd } from "@/lib/schema";
@@ -63,6 +64,9 @@ export default function ContactPage() {
           </p>
           <p>
             Email: <EmailLink location="contact_page" className="underline underline-offset-2" />
+          </p>
+          <p>
+            <InstagramProfile />
           </p>
           <p>{contactReach.based}</p>
         </div>

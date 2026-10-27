@@ -31,7 +31,7 @@ export const gauriFaqs: FaqItem[] = [
   {
     id: "gauri-what",
     question: "What is Gauri?",
-    answer: "Gauri is the Beats16 band for wedding rituals and traditional Hindu ceremonies, including the pheras.",
+    answer: "Gauri is the Beats16 band for wedding rituals and traditional ceremonies, including the pheras.",
   },
   {
     id: "gauri-pheras",
@@ -62,8 +62,8 @@ export const gauriFaqs: FaqItem[] = [
   },
   {
     id: "gauri-scope",
-    question: "Does Gauri perform at non-Hindu ceremonies?",
-    answer: "No. Beats16 focuses only on Hindu weddings and Hindu festivals.",
+    question: "Does Gauri perform at ceremonies other than Indian weddings?",
+    answer: "No. Beats16 focuses only on Indian weddings and traditional festivals.",
   },
 ];
 
@@ -125,7 +125,7 @@ export const ghazalFaqs: FaqItem[] = [
     id: "ghazal-wedding",
     question: "Can Daastan-e-Ghazal be part of a wedding?",
     answer:
-      "Yes. For a Hindu wedding, a ghazal evening can be a quieter, soulful function alongside the sangeet and reception. We'll help you plan where it fits.",
+      "Yes. For an Indian wedding, a ghazal evening can be a quieter, soulful function alongside the sangeet and reception. We'll help you plan where it fits.",
   },
   {
     id: "ghazal-outside",
@@ -200,14 +200,14 @@ export const bandPages: BandPage[] = [
     id: "gauri",
     name: "Gauri",
     href: "/gauri",
-    metaTitle: "Gauri by Beats16 | Hindu Wedding Ritual & Pheras Band",
+    metaTitle: "Gauri by Beats16 | Indian Wedding Ritual & Pheras Band",
     metaDescription:
-      "Gauri is Beats16's band for Hindu wedding rituals and traditional ceremonies, from the pheras onwards. 40 years and 5,000+ events. Send your inquiry.",
+      "Gauri is Beats16's band for Indian wedding rituals and traditional ceremonies, from the pheras onwards. 40 years and 5,000+ events. Send your inquiry.",
     faqGroup: "gauri",
     story: {
       hero: {
         eyebrow: "Gauri · a Beats16 band",
-        h1: "Gauri: traditional music for Hindu wedding rituals",
+        h1: "Gauri: traditional music for Indian wedding rituals",
         subhead:
           "Some moments in a wedding ask for quiet respect, not a party. Gauri plays for the rituals and traditional ceremonies, with music that sits gently alongside the pheras and lets the ceremony lead.",
         cta: "Send an inquiry for Gauri",
@@ -224,14 +224,14 @@ export const bandPages: BandPage[] = [
           kind: "points",
           heading: "Made for the moments that matter most",
           intro:
-            "The pheras and the rituals around them are the heart of a Hindu wedding. Gauri is the Beats16 band built for these moments: traditional in feel, unhurried in pace and always in step with the ceremony. The music supports the rituals; it never competes with them.",
+            "The pheras and the rituals around them are the heart of an Indian wedding. Gauri is the Beats16 band built for these moments: traditional in feel, unhurried in pace and always in step with the ceremony. The music supports the rituals; it never competes with them.",
           points: [
             {
               title: "Pheras and wedding rituals",
               text: "Music that follows the flow of the ceremony, so the family and guests can stay present.",
             },
             {
-              title: "Traditional Hindu ceremonies",
+              title: "Traditional wedding ceremonies",
               text: "For the ceremonial parts of the wedding where a traditional sound feels right.",
             },
             {
@@ -244,7 +244,7 @@ export const bandPages: BandPage[] = [
           kind: "proof",
           heading: "40 years of playing at family celebrations",
           items: standardProof,
-          body: "Weddings are our speciality. We focus on Hindu weddings and Hindu festivals, and we bring that experience to every ceremony Gauri plays.",
+          body: "Weddings are our speciality. We focus on Indian weddings and traditional festivals, and we bring that experience to every ceremony Gauri plays.",
         },
         {
           kind: "steps",
@@ -542,7 +542,7 @@ export const independentBand = {
   lede: "Separate from Gauri, RDX, Daastan-e-Ghazal, and the Navratri band. For a private show that does not sit inside those four, we look at an independent band and tell you honestly if it fits.",
   paragraphs: [
     "We do not list the independent bands by name on this site. The right group depends on the show, the date, and the city. Write with those three and we will say whether we can put a band there.",
-    "A private show can be a family evening, a host’s gathering, or a small programme that is not a full wedding ceremony and not Navratri. If it is a Hindu wedding ritual, ask for Gauri. If it is a sangeet, ask for RDX.",
+    "A private show can be a family evening, a host’s gathering, or a small programme that is not a full wedding ceremony and not Navratri. If it is an Indian wedding ritual, ask for Gauri. If it is a sangeet, ask for RDX.",
     "The reels and the showreel on this section are placeholders until the real links are added. The form still works: you receive the file we have today, and we keep your name, email, and phone with the other leads.",
   ],
   mediaLabel: "A private show",

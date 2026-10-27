@@ -8,14 +8,14 @@ import type { FaqItem } from "@/content/faqs";
 import { site } from "@/content/site";
 
 export const homeSeo = {
-  title: "Beats16 | Hindu Wedding & Navratri Bands, Mumbai",
+  title: "Beats16 | Indian Wedding & Navratri Bands, Mumbai",
   description:
-    "40 years, 5,000+ events and 80+ Navratris. Beats16 brings live bands to Hindu weddings and festivals across India and abroad. Send us your inquiry.",
+    "40 years, 5,000+ events and 80+ Navratris. Beats16 brings live bands to Indian weddings and festivals across India and abroad. Send us your inquiry.",
 } as const;
 
 export const homeHero = {
   eyebrow: `${site.name} · ${site.city}`,
-  h1: "Live music for Hindu weddings and Navratri, for 40 years",
+  h1: "Live music for Indian weddings and Navratri, for 40 years",
   subhead:
     "From the first song at the mehendi to the last dance at the reception, we shape the music around each function of your celebration, so every moment sounds the way it feels.",
   cta: "Fill the inquiry form",
@@ -40,7 +40,7 @@ export const homeBands = {
     {
       href: "/gauri",
       name: "Gauri",
-      text: "For wedding rituals and traditional Hindu ceremonies. Music that sits gently with the pheras and the moments that matter most.",
+      text: "For wedding rituals and traditional ceremonies. Music that sits gently with the pheras and the moments that matter most.",
       link: "Meet Gauri",
     },
     {
@@ -67,7 +67,7 @@ export const homeBands = {
 
 export const homeWeddings = {
   heading: "Weddings are our speciality",
-  body: "A Hindu wedding is many celebrations in one. We plan a musical concept for each function — the colour of the mehendi, the energy of the sangeet, the calm of the pheras and the warmth of the reception — so the music feels connected from start to finish.",
+  body: "An Indian wedding is many celebrations in one. We plan a musical concept for each function — the colour of the mehendi, the energy of the sangeet, the calm of the pheras and the warmth of the reception — so the music feels connected from start to finish.",
   functions: "Mehendi · Sangeet · Pheras · Reception",
   link: "Plan your wedding music",
   href: "/weddings",
@@ -75,7 +75,7 @@ export const homeWeddings = {
 
 export const homeAbout = {
   heading: "A family name in celebrations",
-  body: `Beats16 began in ${site.city} around 40 years ago with ${site.founder}. Since then we have played more than 5,000 events — weddings, religious celebrations, cultural programmes, community gatherings and corporate events — and organised over 80 Navratris. We focus on Hindu weddings and Hindu festivals, and we bring the same care to every one.`,
+  body: `Beats16 began in ${site.city} around 40 years ago with ${site.founder}. Since then we have played more than 5,000 events — weddings, religious celebrations, cultural programmes, community gatherings and corporate events — and organised over 80 Navratris. We focus on Indian weddings and traditional festivals, and we bring the same care to every one.`,
   link: "Read our story",
   href: "/about",
 } as const;
@@ -85,7 +85,7 @@ export const homeFaqs: FaqItem[] = [
     id: "home-kinds",
     question: "What kinds of events does Beats16 play?",
     answer:
-      "Hindu weddings and Hindu festivals such as Navratri. We also perform at cultural programmes, religious celebrations, community gatherings and corporate events.",
+      "Indian weddings and traditional festivals such as Navratri. We also perform at cultural programmes, religious celebrations, community gatherings and corporate events.",
   },
   {
     id: "home-functions",

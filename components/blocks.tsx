@@ -92,7 +92,7 @@ export function ProofStrip({
 export function ScopeNote() {
   return (
     <p className="max-w-2xl text-lg leading-relaxed">
-      We play Hindu weddings and Hindu festivals only. If you are planning a different
+      We play Indian weddings and traditional festivals only. If you are planning a different
       ceremony, we will tell you directly, and politely, that it is not something we take.
     </p>
   );

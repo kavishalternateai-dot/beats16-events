@@ -45,7 +45,7 @@ export const faqPageGroups: FaqGroup[] = [
         id: "faq-who",
         question: "Who is Beats16?",
         answer:
-          "Beats16 Events & Entertainment is a Mumbai-based live music company started by Tushar Sonigra around 40 years ago. We have played 5,000+ events and organised 80+ Navratris, and we specialise in Hindu weddings and Hindu festivals.",
+          "Beats16 Events & Entertainment is a Mumbai-based live music company started by Tushar Sonigra around 40 years ago. We have played 5,000+ events and organised 80+ Navratris, and we specialise in Indian weddings and traditional festivals.",
         related: { href: "/about", label: "About Beats16" },
       }),
       item({
@@ -53,20 +53,20 @@ export const faqPageGroups: FaqGroup[] = [
         question: "Is Beats16 a good wedding band in Mumbai?",
         answer:
           "Beats16 is a Mumbai wedding band with 40 years of experience and 5,000+ events. Weddings are our speciality: we plan a tailored musical concept for each function — mehendi, sangeet, pheras and reception — and suggest the band that suits each one.",
-        related: { href: "/weddings", label: "Hindu wedding music" },
+        related: { href: "/weddings", label: "Indian wedding music" },
       }),
       item({
         id: "faq-event-kinds",
         question: "What kinds of events does Beats16 perform at?",
         answer:
-          "Hindu weddings and Hindu festivals such as Navratri. We also perform at cultural programmes, religious celebrations, community gatherings and corporate events.",
+          "Indian weddings and traditional festivals such as Navratri. We also perform at cultural programmes, religious celebrations, community gatherings and corporate events.",
         related: { href: "/corporate-cultural", label: "Corporate & cultural events" },
       }),
       item({
-        id: "faq-non-hindu",
-        question: "Do you perform at non-Hindu weddings or ceremonies?",
+        id: "faq-other-ceremonies",
+        question: "Do you perform at weddings or ceremonies outside Indian weddings?",
         answer:
-          "No. Beats16 performs at Hindu weddings and Hindu festivals only. Keeping that focus is how we bring 40 years of experience to the rituals and customs families expect.",
+          "No. Beats16 performs at Indian weddings and traditional festivals only. Keeping that focus is how we bring 40 years of experience to the rituals and customs families expect.",
       }),
     ],
   },
@@ -78,14 +78,14 @@ export const faqPageGroups: FaqGroup[] = [
         id: "faq-pheras",
         question: "Which band plays during the pheras?",
         answer:
-          "Gauri, our band for wedding rituals and traditional Hindu ceremonies, is made for the pheras and the moments that matter most, with music that sits gently with the ritual.",
+          "Gauri, our band for wedding rituals and traditional ceremonies, is made for the pheras and the moments that matter most, with music that sits gently with the ritual.",
         related: { href: "/gauri", label: "Meet Gauri" },
       }),
       item({
         id: "faq-traditional",
         question: "Do you offer shehnai or traditional music for the wedding ceremony?",
         answer:
-          "For traditional ceremonial music, Gauri is our band for wedding rituals and Hindu ceremonies. Tell us which instruments or music you'd like at your pheras, and Tushar ji will talk you through what Gauri can bring.",
+          "For traditional ceremonial music, Gauri is our band for wedding rituals and traditional ceremonies. Tell us which instruments or music you'd like at your pheras, and Tushar ji will talk you through what Gauri can bring.",
         related: { href: "/gauri", label: "Meet Gauri" },
       }),
       item({
@@ -100,13 +100,13 @@ export const faqPageGroups: FaqGroup[] = [
         question: "Can Beats16 cover every wedding function?",
         answer:
           "Yes. We plan a tailored musical concept for each function — mehendi, sangeet, pheras and reception — so the music feels connected from start to finish.",
-        related: { href: "/weddings", label: "Hindu wedding music" },
+        related: { href: "/weddings", label: "Indian wedding music" },
       }),
       item({
         id: "faq-destination",
         question: "Do you perform at destination weddings?",
         answer: `Yes. Beats16 is based in ${site.city} and performs across India and abroad.`,
-        related: { href: "/weddings", label: "Hindu wedding music" },
+        related: { href: "/weddings", label: "Indian wedding music" },
       }),
     ],
   },

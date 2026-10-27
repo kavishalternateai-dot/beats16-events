@@ -1,6 +1,7 @@
-import { site } from "@/content/site";
+import { instagramProfileUrl, site } from "@/content/site";
 
 export function organizationJsonLd() {
+  const founderInstagram = instagramProfileUrl();
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -15,6 +16,7 @@ export function organizationJsonLd() {
         founder: {
           "@type": "Person",
           name: site.founder,
+          ...(founderInstagram ? { sameAs: [founderInstagram] } : {}),
         },
         address: {
           "@type": "PostalAddress",
@@ -27,8 +29,8 @@ export function organizationJsonLd() {
           { "@type": "Place", name: "Performances abroad" },
         ],
         description:
-          "Mumbai band for Hindu weddings and Hindu festivals, performing in India and abroad.",
-        genre: ["Hindu wedding music", "Garba", "Dandiya", "Ghazal"],
+          "Mumbai band for Indian weddings and traditional festivals, performing in India and abroad.",
+        genre: ["Indian wedding music", "Garba", "Dandiya", "Ghazal"],
       },
     ],
   };

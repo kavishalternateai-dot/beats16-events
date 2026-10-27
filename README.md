@@ -1,6 +1,6 @@
 # Beats16 Events & Entertainment
 
-Marketing site for Beats16, a Mumbai band for Hindu weddings and Hindu festivals. The copy sticks to the facts we were given: forty years, 5,000+ events, 80+ Navratris, founder Tushar Sonigra. It does not invent clients, reviews, or prices.
+Marketing site for Beats16, a Mumbai band for Indian weddings and traditional festivals. The copy sticks to the facts we were given: forty years, 5,000+ events, 80+ Navratris, founder Tushar Sonigra. It does not invent clients, reviews, or prices.
 
 Canonical domain in metadata: `https://beats16.events`. That domain is not attached yet.
 
@@ -29,7 +29,7 @@ npm start
 | Path | Page |
 | --- | --- |
 | `/` | Home, including independent bands |
-| `/weddings` | Hindu weddings |
+| `/weddings` | Indian weddings |
 | `/gauri` | Gauri |
 | `/rdx` | RDX |
 | `/daastan-e-ghazal` | Daastan-e-Ghazal |
@@ -76,7 +76,7 @@ Swap a link without changing component code:
 1. Paste the permalink into `content/media.ts` under that band, or
 2. Set the matching `REEL_*` variable and redeploy. Env overrides the file.
 
-The header, footer, and CTAs do not link to Instagram, Facebook, LinkedIn, or WhatsApp. There is no follow button. The official embed, once a real URL is set, is Instagram’s own player.
+The header and the call / inquire bars do not link to Facebook, LinkedIn, or WhatsApp. There is no follow button beside the reel player. Tushar Sonigra’s Instagram is prepared in Where to find us, on the contact page, and in the footer, but `INSTAGRAM_HANDLE` in `content/site.ts` stays `null` until Kavish confirms the handle. Until then those places say the account will appear once the handle is confirmed, and no profile URL is rendered. Set that constant to the handle (no `@`, no URL) to publish `https://www.instagram.com/<handle>/`. The official reel embed, once a real reel URL is set, is Instagram’s own player.
 
 ### Showreels
 
@@ -109,7 +109,7 @@ This is a Next.js App Router project. Import the repository in Vercel, leave the
 2. Deploy. `npm run build` is the build command.
 3. Attach `beats16.events` later, under Project → Settings → Domains. Metadata, sitemap, robots, and JSON-LD already use `https://beats16.events`. No code change is required when the domain goes live, unless you also verify that domain for Resend.
 
-Do not add prices, client names, or social profile links when you connect the domain.
+Do not add prices or client names when you connect the domain. Do not add Facebook, LinkedIn, or WhatsApp. Tushar Sonigra’s Instagram is the only social profile, and only after `INSTAGRAM_HANDLE` is set.
 
 ## Copy swaps
 
@@ -117,7 +117,7 @@ Edit copy in these files. Pages mostly compose them.
 
 | File | What it holds |
 | --- | --- |
-| `content/site.ts` | Name, phone, email, founder, proof lines, pricing sentence, navigation |
+| `content/site.ts` | Name, phone, email, founder, proof lines, pricing sentence, navigation, `INSTAGRAM_HANDLE` |
 | `content/bands.ts` | Gauri, RDX, Daastan-e-Ghazal, Navratri, and the independent-band section |
 | `content/faqs.ts` | Wedding and band-page FAQs |
 | `content/faq-page.ts` | The public FAQ page (AQ-008) and its FAQPage schema |
