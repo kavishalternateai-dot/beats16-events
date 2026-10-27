@@ -29,7 +29,7 @@ function NavLinks({
                 aria-current={current ? "page" : undefined}
                 onClick={onNavigate}
                 className={cn(
-                  "inline-flex min-h-11 items-center border-b-2 border-transparent text-sm tracking-wide hover:text-primary lg:min-h-0",
+                  "inline-flex min-h-11 items-center border-b-2 border-transparent text-sm tracking-wide motion-safe:transition-colors motion-safe:duration-200 hover:text-primary lg:min-h-0",
                   current ? "border-gold font-semibold text-primary" : "text-foreground",
                 )}
               >
@@ -91,7 +91,10 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[color-mix(in_srgb,var(--gold)_40%,var(--border))] bg-[#f7f1e6]/90 backdrop-blur-md">
+    <header
+      className="sticky top-0 z-40 border-b border-[color-mix(in_srgb,var(--gold)_40%,var(--border))] bg-[#f7f1e6]/90 backdrop-blur-md"
+      style={{ viewTransitionName: "site-header" }}
+    >
       <div className="h-px bg-gold" />
       <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3.5 md:px-6">
         <Link href="/" className="min-w-0" aria-label={`${site.name}, home`}>

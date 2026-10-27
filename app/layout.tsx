@@ -3,6 +3,7 @@ import { Fraunces, Source_Sans_3 } from "next/font/google";
 import { Suspense } from "react";
 import { AnalyticsScript } from "@/components/analytics-script";
 import { MobileCtaBar } from "@/components/mobile-cta-bar";
+import { MotionRoot } from "@/components/motion";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader, SiteHeaderFallback } from "@/components/site-header";
 import { homeSeo } from "@/content/home";
@@ -55,18 +56,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${sourceSans.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background pb-20 text-foreground md:pb-0">
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
-        <Suspense fallback={<SiteHeaderFallback />}>
-          <SiteHeader />
-        </Suspense>
-        <main id="main" tabIndex={-1} className="flex-1 outline-none">
-          {children}
-        </main>
-        <SiteFooter />
-        <MobileCtaBar />
-        <AnalyticsScript />
+        <MotionRoot>
+          <a href="#main" className="skip-link">
+            Skip to content
+          </a>
+          <Suspense fallback={<SiteHeaderFallback />}>
+            <SiteHeader />
+          </Suspense>
+          <main id="main" tabIndex={-1} className="flex-1 outline-none">
+            {children}
+          </main>
+          <SiteFooter />
+          <MobileCtaBar />
+          <AnalyticsScript />
+        </MotionRoot>
       </body>
     </html>
   );

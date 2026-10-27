@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { contactAfter, contactHero, contactReach, contactSeo } from "@/content/contact";
 import { site } from "@/content/site";
-import { PageContainer, PageHero } from "@/components/blocks";
+import { PageContainer, PageHero, sectionTitleClass } from "@/components/blocks";
+import { Reveal } from "@/components/motion";
 import { EmailLink, PhoneLink } from "@/components/contact-links";
 import { InstagramProfile } from "@/components/instagram-profile";
 import { InquiryForm } from "@/components/inquiry-form";
@@ -29,21 +30,21 @@ export default function ContactPage() {
       />
       <PageHero eyebrow={contactHero.eyebrow} title={contactHero.h1} lede={contactHero.subhead} />
 
-      <div className="mt-12 max-w-2xl">
+      <Reveal className="section-rhythm max-w-2xl">
         <Suspense fallback={<p>Loading the inquiry form…</p>}>
           <InquiryForm />
         </Suspense>
-      </div>
+      </Reveal>
 
-      <section className="mt-16 max-w-3xl" aria-labelledby="about-pricing">
-        <h2 id="about-pricing" className="font-heading text-3xl md:text-4xl">
+      <Reveal as="section" className="section-rhythm max-w-3xl" labelledBy="about-pricing">
+        <h2 id="about-pricing" className={sectionTitleClass}>
           About pricing
         </h2>
-        <p className="mt-4 text-lg leading-relaxed">{site.pricing}</p>
-      </section>
+        <p className="mt-3 text-lg leading-relaxed">{site.pricing}</p>
+      </Reveal>
 
-      <section className="mt-16 max-w-3xl" aria-labelledby="after-inquiry">
-        <h2 id="after-inquiry" className="font-heading text-3xl md:text-4xl">
+      <Reveal as="section" className="section-rhythm max-w-3xl" labelledBy="after-inquiry">
+        <h2 id="after-inquiry" className={sectionTitleClass}>
           {contactAfter.heading}
         </h2>
         <ol className="mt-6 grid list-decimal gap-4 pl-5 leading-relaxed">
@@ -52,10 +53,10 @@ export default function ContactPage() {
           ))}
         </ol>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{contactAfter.note}</p>
-      </section>
+      </Reveal>
 
-      <section className="mt-16 max-w-3xl" aria-labelledby="other-ways">
-        <h2 id="other-ways" className="font-heading text-3xl md:text-4xl">
+      <Reveal as="section" className="section-rhythm max-w-3xl" labelledBy="other-ways">
+        <h2 id="other-ways" className={sectionTitleClass}>
           {contactReach.heading}
         </h2>
         <div className="mt-4 grid gap-3 text-lg leading-relaxed">
@@ -71,7 +72,7 @@ export default function ContactPage() {
           <p>{contactReach.based}</p>
         </div>
         <p className="mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground">{contactReach.focus}</p>
-      </section>
+      </Reveal>
     </PageContainer>
   );
 }

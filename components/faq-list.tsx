@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { FaqItem } from "@/content/faqs";
+import { sectionTitleClass } from "@/components/blocks";
+import { Reveal } from "@/components/motion";
 
 export function FaqList({
   items,
@@ -13,8 +15,8 @@ export function FaqList({
   intro?: string;
 }) {
   return (
-    <section className="mt-16" aria-labelledby={headingId}>
-      <h2 id={headingId} className="font-heading text-3xl tracking-tight md:text-4xl">
+    <Reveal as="section" className="section-rhythm" labelledBy={headingId}>
+      <h2 id={headingId} className={sectionTitleClass}>
         {heading}
       </h2>
       {intro ? <p className="mt-4 max-w-2xl text-lg leading-relaxed">{intro}</p> : null}
@@ -46,6 +48,6 @@ export function FaqList({
           </details>
         ))}
       </div>
-    </section>
+    </Reveal>
   );
 }

@@ -1,4 +1,6 @@
 import type { ResolvedReel } from "@/lib/resolve-media";
+import { sectionTitleClass } from "@/components/blocks";
+import { Reveal } from "@/components/motion";
 
 export function InstagramEmbed({ reel }: { reel: ResolvedReel }) {
   if (reel.placeholder || !reel.embedUrl) {
@@ -57,8 +59,8 @@ export function ReelSection({
   intro?: string;
 }) {
   return (
-    <section aria-labelledby={headingId} className="mt-16">
-      <h2 id={headingId} className="font-heading text-3xl tracking-tight md:text-4xl">
+    <Reveal as="section" labelledBy={headingId} className="section-rhythm">
+      <h2 id={headingId} className={sectionTitleClass}>
         {heading}
       </h2>
       <p className="mt-4 max-w-2xl text-lg leading-relaxed">{intro}</p>
@@ -69,6 +71,6 @@ export function ReelSection({
           </li>
         ))}
       </ul>
-    </section>
+    </Reveal>
   );
 }

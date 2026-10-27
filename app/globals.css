@@ -132,7 +132,7 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "kern" 1;
-    line-height: 1.65;
+    line-height: 1.6;
     background-image:
       radial-gradient(ellipse 80% 40% at 50% -10%, rgb(166 132 70 / 0.14), transparent 55%),
       linear-gradient(180deg, #f8f3ea 0%, var(--background) 28rem);
@@ -143,10 +143,11 @@
     color-scheme: light;
   }
   main h1 {
-    letter-spacing: -0.03em;
+    letter-spacing: -0.034em;
   }
   main :is(h2, h3).font-heading {
-    letter-spacing: -0.025em;
+    letter-spacing: -0.028em;
+    line-height: 1.15;
   }
   button,
   summary {
@@ -167,11 +168,24 @@
     scroll-behavior: auto;
   }
   .rise,
-  .rise-delay {
+  .rise-delay,
+  .portrait-enter {
     animation: none;
   }
-  .jewel-card {
+  .jewel-card,
+  .link-draw {
     transition: none;
+  }
+  .motion-hold {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
 
@@ -194,6 +208,85 @@
   animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
 }
 
+@keyframes settle {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.portrait-enter {
+  animation: settle 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+.section-rhythm {
+  margin-top: 2.75rem;
+}
+
+.closing-rhythm {
+  margin-top: 3.25rem;
+}
+
+@media (width >= 48rem) {
+  .section-rhythm {
+    margin-top: 3.25rem;
+  }
+  .closing-rhythm {
+    margin-top: 4rem;
+  }
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(site-header),
+::view-transition-group(site-footer),
+::view-transition-group(mobile-cta) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(site-header),
+::view-transition-new(site-header),
+::view-transition-old(site-footer),
+::view-transition-new(site-footer),
+::view-transition-old(mobile-cta),
+::view-transition-new(mobile-cta) {
+  animation: none;
+}
+
+::view-transition-old(site-header),
+::view-transition-old(site-footer),
+::view-transition-old(mobile-cta) {
+  display: none;
+}
+
+::view-transition-old(.page-exit) {
+  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out;
+}
+
+::view-transition-new(.page-enter) {
+  animation: 340ms cubic-bezier(0.22, 1, 0.36, 1) 40ms both vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .gold-rule {
   height: 1px;
   width: 3.5rem;
@@ -206,17 +299,52 @@
 
 .jewel-card {
   border: 1px solid color-mix(in srgb, var(--gold) 42%, var(--border));
-  background: var(--card);
-  box-shadow: 0 22px 40px -32px rgb(60 21 32 / 0.55);
+  background:
+    linear-gradient(180deg, rgb(255 250 244 / 0.72), transparent 2.75rem),
+    var(--card);
+  box-shadow: 0 18px 36px -30px rgb(60 21 32 / 0.55);
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
 }
 
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+.link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0 1px;
+  transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.link-draw:focus-visible {
+  background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
   .jewel-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 26px 46px -28px rgb(60 21 32 / 0.5);
+    transform: translateY(-8px);
+    border-color: color-mix(in srgb, var(--gold) 82%, var(--primary));
+    box-shadow: 0 30px 48px -22px rgb(60 21 32 / 0.58);
+  }
+  .link-draw:hover {
+    background-size: 100% 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jewel-card:hover {
+    border-color: color-mix(in srgb, var(--gold) 78%, var(--border));
+  }
+  .link-draw:hover {
+    background-size: 100% 1px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .jewel-card:hover {
+    transform: none;
+    box-shadow: 0 18px 36px -30px rgb(60 21 32 / 0.55);
   }
 }
 

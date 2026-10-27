@@ -27,7 +27,7 @@ export default function AboutPage() {
           { name: "About", path: "/about" },
         ])}
       />
-      <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(16rem,20rem)] lg:gap-x-16">
+      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(16rem,20rem)] lg:gap-x-14">
         <PageHero
           eyebrow={aboutStory.hero.eyebrow}
           title={aboutStory.hero.h1}
@@ -44,7 +44,11 @@ export default function AboutPage() {
             </div>
           }
         />
-        <FounderPortrait priority className="lg:sticky lg:top-28 lg:col-start-2 lg:row-start-1 lg:row-span-2" />
+        <FounderPortrait
+          priority
+          settle={false}
+          className="lg:sticky lg:top-28 lg:col-start-2 lg:row-start-1 lg:row-span-2"
+        />
         <div className="lg:col-start-1">
           <StorySections story={aboutStory} />
         </div>

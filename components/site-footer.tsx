@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-burgundy text-[#f7f1e6]">
+    <footer className="bg-burgundy text-[#f7f1e6]" style={{ viewTransitionName: "site-footer" }}>
       <div className="h-px bg-gold" />
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-4 py-14 md:grid-cols-[1.3fr_1fr] md:px-6">
         <div>
@@ -47,7 +47,7 @@ export function SiteFooter() {
             <ul className="mt-4 grid gap-2 text-sm">
               {footerNav.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="underline-offset-4 hover:text-[#e4c88a] hover:underline">
+                  <Link href={item.href} className="underline-offset-4 motion-safe:transition-colors motion-safe:duration-200 hover:text-[#e4c88a] hover:underline">
                     {item.label}
                   </Link>
                 </li>
