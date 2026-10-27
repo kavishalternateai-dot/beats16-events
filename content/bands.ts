@@ -3,6 +3,8 @@ import type { FaqItem } from "@/content/faqs";
 import { inquiryHref, standardProof, type PageStory } from "@/content/story";
 import { site } from "@/content/site";
 
+export type { MediaPattern } from "@/content/media";
+
 /**
  * Approved band-page copy, AQ-003 through AQ-006.
  * Do not add line-ups, songs, instruments, clients, or prices.

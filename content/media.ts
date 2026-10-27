@@ -131,6 +131,9 @@ export const bandMedia: Record<ShowreelBandId, BandMedia> = {
   },
 };
 
+/** Frame treatment used by placeholder cards. Live slots use VisualSlot. */
+export type MediaPattern = "ceremony" | "floor" | "listening" | "garba" | "private";
+
 export type VisualKind = "image" | "video";
 
 export type VisualSlot = {
