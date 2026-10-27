@@ -15,12 +15,12 @@ export function FaqList({
   intro?: string;
 }) {
   return (
-    <Reveal as="section" className="section-rhythm" labelledBy={headingId}>
+    <Reveal as="section" className="section-block" labelledBy={headingId}>
       <h2 id={headingId} className={sectionTitleClass}>
         {heading}
       </h2>
-      {intro ? <p className="mt-4 max-w-2xl text-lg leading-relaxed">{intro}</p> : null}
-      <div className="mt-6 divide-y divide-[color-mix(in_srgb,var(--gold)_35%,var(--border))] border-y border-[color-mix(in_srgb,var(--gold)_45%,var(--border))]">
+      {intro ? <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">{intro}</p> : null}
+      <div className="mt-8 divide-y divide-border border-y border-border">
         {items.map((item) => (
           <details key={item.id} className="group py-1">
             <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-3 text-base font-medium [&::-webkit-details-marker]:hidden">

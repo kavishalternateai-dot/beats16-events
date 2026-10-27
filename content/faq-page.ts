@@ -45,14 +45,14 @@ export const faqPageGroups: FaqGroup[] = [
         id: "faq-who",
         question: "Who is Beats16?",
         answer:
-          "Beats16 Events & Entertainment is a Mumbai-based live music company started by Tushar Sonigra around 40 years ago. We have played 5,000+ events and organised 80+ Navratris, and we specialise in Indian weddings and traditional festivals.",
+          "Beats16 Events & Entertainment is a Mumbai live music company started by Tushar Sonigra. We have played 5,000+ events and organised 80+ Navratris. We specialise in Indian weddings and traditional festivals.",
         related: { href: "/about", label: "About Beats16" },
       }),
       item({
         id: "faq-wedding-band",
         question: "Is Beats16 a good wedding band in Mumbai?",
         answer:
-          "Beats16 is a Mumbai wedding band with 40 years of experience and 5,000+ events. Weddings are our speciality: we plan a tailored musical concept for each function — mehendi, sangeet, pheras and reception — and suggest the band that suits each one.",
+          "Beats16 is a Mumbai wedding band with 5,000+ events behind it. Weddings are our speciality. We plan the music for each function: mehendi, sangeet, pheras and reception. Then we suggest the band that fits.",
         related: { href: "/weddings", label: "Indian wedding music" },
       }),
       item({
@@ -66,7 +66,7 @@ export const faqPageGroups: FaqGroup[] = [
         id: "faq-other-ceremonies",
         question: "Do you perform at weddings or ceremonies outside Indian weddings?",
         answer:
-          "No. Beats16 performs at Indian weddings and traditional festivals only. Keeping that focus is how we bring 40 years of experience to the rituals and customs families expect.",
+          "No. Beats16 plays Indian weddings and traditional festivals only. That focus keeps the rituals and customs close to what families expect.",
       }),
     ],
   },

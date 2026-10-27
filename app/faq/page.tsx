@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { faqPageClose, faqPageGroups, faqPageHero, faqPageItems, faqPageSeo } from "@/content/faq-page";
-import { InquiryClose, PageContainer, PageHero } from "@/components/blocks";
+import { heroSlotId } from "@/content/media";
+import { InquiryClose, PageContainer, PageHero, SplitHero } from "@/components/blocks";
+import { MediaSlot } from "@/components/media-slot";
+import { resolveVisual } from "@/lib/resolve-media";
 import { FaqList } from "@/components/faq-list";
 import { JsonLd } from "@/components/json-ld";
 import { buttonVariants } from "@/components/ui/button";
@@ -25,17 +28,22 @@ export default function FaqPage() {
           { name: "FAQ", path: "/faq" },
         ])}
       />
-      <PageHero
-        eyebrow={faqPageHero.eyebrow}
-        title={faqPageHero.h1}
-        lede={faqPageHero.subhead}
-        actions={
-          <Link
-            href={faqPageHero.ctaHref}
-            className={cn(buttonVariants({ size: "cta" }), "h-auto whitespace-normal px-5 py-2.5 text-center")}
-          >
-            {faqPageHero.cta}
-          </Link>
+      <SplitHero
+        media={<MediaSlot slot={resolveVisual(heroSlotId("/faq") ?? "faq-hero")} priority />}
+        copy={
+          <PageHero
+            eyebrow={faqPageHero.eyebrow}
+            title={faqPageHero.h1}
+            lede={faqPageHero.subhead}
+            actions={
+              <Link
+                href={faqPageHero.ctaHref}
+                className={cn(buttonVariants({ size: "cta" }), "h-auto whitespace-normal px-5 py-2.5 text-center")}
+              >
+                {faqPageHero.cta}
+              </Link>
+            }
+          />
         }
       />
       {faqPageGroups.map((group) => (

@@ -10,17 +10,17 @@ import { site } from "@/content/site";
 const inquiry = inquiryHref({ source: "about-page" });
 
 export const aboutSeo = {
-  title: "About Beats16 | 40 Years of Indian Wedding Music, Mumbai",
+  title: "About Beats16 | Indian Wedding Music from Mumbai",
   description:
-    "For 40 years Beats16 has brought live music to Indian weddings and festivals: 5,000+ events and 80+ Navratris, from Mumbai to the world. Read our story.",
+    "Beats16 brings live music to Indian weddings and festivals: 5,000+ events and 80+ Navratris, from Mumbai to the world. Read our story.",
 } as const;
 
 export const aboutStory: PageStory = {
   hero: {
     eyebrow: `About ${site.name} · ${site.city}`,
-    h1: "40 years of music at Indian weddings and festivals",
+    h1: "Music for Indian weddings and festivals",
     subhead:
-      "Beats16 began in Mumbai around 40 years ago with Tushar Sonigra. Four decades and more than 5,000 events later, we still bring the same care to every celebration we play.",
+      "Tushar Sonigra started Beats16 in Mumbai. We have played more than 5,000 events. We still bring the same care to every celebration.",
     cta: "Send an inquiry",
     ctaHref: inquiry,
     note: `Based in ${site.city}. Performing across India and abroad.`,
@@ -30,15 +30,21 @@ export const aboutStory: PageStory = {
       kind: "prose",
       heading: "How Beats16 began",
       paragraphs: [
-        "Beats16 was started by Tushar Sonigra in Mumbai around 40 years ago. What began as music for family celebrations has grown, one wedding and one festival at a time, into more than 5,000 events across India and abroad.",
-        "Over those years, families have trusted us with some of the most important days of their lives: the mehendi, the sangeet, the pheras and the reception. Communities have trusted us with their festivals, including more than 80 Navratris organised for audiences around the world.",
+        "Tushar Sonigra started Beats16 in Mumbai. It began as music for family celebrations. Wedding by wedding, and festival by festival, that work has grown to more than 5,000 events in India and abroad.",
+        "Families trust us with important days: the mehendi, the sangeet, the pheras and the reception. Communities trust us with their festivals. We have organised more than 80 Navratris for audiences around the world.",
         "Today, Tushar Sonigra — Tushar ji to the families we work with — still personally speaks with the families and organisers who get in touch, so every celebration starts with a real conversation.",
       ],
     },
     {
+      kind: "gallery",
+      heading: "Photographs",
+      intro: "More photographs from the work will be added here.",
+      slotIds: ["about-celebration", "about-band"],
+    },
+    {
       kind: "proof",
       compact: true,
-      heading: "Four decades in numbers",
+      heading: "The work in numbers",
       items: standardProof,
     },
     {
@@ -102,7 +108,7 @@ export const aboutStory: PageStory = {
     {
       kind: "prose",
       heading: "Indian weddings and traditional festivals",
-      body: "Beats16 performs at Indian weddings and traditional festivals only. Keeping that focus is how we bring 40 years of experience to the rituals, customs and music families expect. If your celebration is a different kind of ceremony, we'll let you know politely and honestly.",
+      body: "Beats16 plays Indian weddings and traditional festivals only. That focus keeps the rituals, customs and music close to what families expect. If your celebration is a different kind of ceremony, we will say so, plainly and kindly.",
     },
     {
       kind: "prose",

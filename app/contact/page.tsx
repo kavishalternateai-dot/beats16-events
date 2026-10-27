@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { contactAfter, contactHero, contactReach, contactSeo } from "@/content/contact";
 import { site } from "@/content/site";
-import { PageContainer, PageHero, sectionTitleClass } from "@/components/blocks";
+import { heroSlotId } from "@/content/media";
+import { PageContainer, PageHero, SplitHero, sectionTitleClass } from "@/components/blocks";
 import { Reveal } from "@/components/motion";
+import { MediaSlot } from "@/components/media-slot";
+import { resolveVisual } from "@/lib/resolve-media";
 import { EmailLink, PhoneLink } from "@/components/contact-links";
 import { InstagramProfile } from "@/components/instagram-profile";
 import { InquiryForm } from "@/components/inquiry-form";
@@ -28,26 +31,29 @@ export default function ContactPage() {
           { name: "Contact", path: "/contact" },
         ])}
       />
-      <PageHero eyebrow={contactHero.eyebrow} title={contactHero.h1} lede={contactHero.subhead} />
+      <SplitHero
+        media={<MediaSlot slot={resolveVisual(heroSlotId("/contact") ?? "contact-hero")} priority />}
+        copy={<PageHero eyebrow={contactHero.eyebrow} title={contactHero.h1} lede={contactHero.subhead} />}
+      />
 
-      <Reveal className="section-rhythm max-w-2xl">
+      <Reveal className="section-block max-w-2xl">
         <Suspense fallback={<p>Loading the inquiry form…</p>}>
           <InquiryForm />
         </Suspense>
       </Reveal>
 
-      <Reveal as="section" className="section-rhythm max-w-3xl" labelledBy="about-pricing">
+      <Reveal as="section" className="section-block" labelledBy="about-pricing">
         <h2 id="about-pricing" className={sectionTitleClass}>
           About pricing
         </h2>
-        <p className="mt-3 text-lg leading-relaxed">{site.pricing}</p>
+        <p className="mt-4 max-w-2xl text-lg leading-relaxed">{site.pricing}</p>
       </Reveal>
 
-      <Reveal as="section" className="section-rhythm max-w-3xl" labelledBy="after-inquiry">
+      <Reveal as="section" className="section-block" labelledBy="after-inquiry">
         <h2 id="after-inquiry" className={sectionTitleClass}>
           {contactAfter.heading}
         </h2>
-        <ol className="mt-6 grid list-decimal gap-4 pl-5 leading-relaxed">
+        <ol className="mt-6 grid max-w-2xl list-decimal gap-4 pl-5 text-lg leading-relaxed">
           {contactAfter.steps.map((step) => (
             <li key={step}>{step}</li>
           ))}
@@ -55,7 +61,7 @@ export default function ContactPage() {
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{contactAfter.note}</p>
       </Reveal>
 
-      <Reveal as="section" className="section-rhythm max-w-3xl" labelledBy="other-ways">
+      <Reveal as="section" className="section-block" labelledBy="other-ways">
         <h2 id="other-ways" className={sectionTitleClass}>
           {contactReach.heading}
         </h2>

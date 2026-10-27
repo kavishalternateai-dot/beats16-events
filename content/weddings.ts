@@ -64,7 +64,7 @@ export const weddingFaqs: FaqItem[] = [
 export const weddingsSeo = {
   title: "Indian Wedding Music & Live Bands, Mumbai | Beats16",
   description:
-    "Live bands for every Indian wedding function: mehendi, sangeet, pheras and reception. 40 years and 5,000+ events. Send your wedding inquiry to Beats16.",
+    "Live bands for every Indian wedding function: mehendi, sangeet, pheras and reception. 5,000+ events, from Mumbai. Send your wedding inquiry to Beats16.",
 } as const;
 
 export const weddingsStory: PageStory = {
@@ -152,7 +152,7 @@ export const weddingsStory: PageStory = {
     {
       kind: "prose",
       heading: "Indian weddings are what we do",
-      body: "Beats16 performs at Indian weddings and traditional festivals. Keeping that focus is how we bring 40 years of experience to the rituals, customs and music families expect.",
+      body: "Beats16 plays Indian weddings and traditional festivals. That focus keeps the rituals, customs and music close to what families expect.",
     },
     { kind: "pricing", heading: "About pricing" },
   ],

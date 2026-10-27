@@ -1,6 +1,6 @@
 # Beats16 Events & Entertainment
 
-Marketing site for Beats16, a Mumbai band for Indian weddings and traditional festivals. The copy sticks to the facts we were given: forty years, 5,000+ events, 80+ Navratris, founder Tushar Sonigra. It does not invent clients, reviews, or prices.
+Marketing site for Beats16, a Mumbai band for Indian weddings and traditional festivals. The copy sticks to the facts we were given: 5,000+ events, 80+ Navratris, founder Tushar Sonigra, and a Mumbai base. The long history is named once, on the home hero. The site does not invent clients, reviews, or prices.
 
 Canonical domain in metadata: `https://beats16.events`. That domain is not attached yet.
 
@@ -125,11 +125,25 @@ Edit copy in these files. Pages mostly compose them.
 | `content/corporate.ts` | Corporate and cultural events (AQ-010) |
 | `content/contact.ts` | Contact and thank-you (AQ-009) |
 | `content/forms.ts` | Inquiry and showreel option labels |
-| `content/media.ts` | Reel permalinks and showreel URLs |
+| `content/media.ts` | Reel permalinks, showreel URLs, and photo/film slots |
 
 Page files under `app/` own the route, the `<h1>`, and metadata. Shared chrome is `components/site-header.tsx`, `components/site-footer.tsx`, and `components/mobile-cta-bar.tsx`. The inquiry form is `components/inquiry-form.tsx`. The showreel form is `components/showreel-form.tsx`.
 
-Photography on the site is a labeled pattern: “Placeholder — add real photo.” Replace `components/placeholder-media.tsx` usage with real images when they exist. Do not drop in photos that imply a client we have not been asked to name.
+### Photographs and films
+
+Empty frames are intentional. They stay calm until a real file is added. Do not drop in stock photos, or photos that imply a client we have not been asked to name.
+
+Slots live in `visualSlots` inside `content/media.ts`. Each slot has an `id`, a public label, and alt text. The home gallery, the about gallery, and the right side of inner-page heroes read those slots.
+
+To publish a file Kavish shares, use any one of these. Then redeploy.
+
+1. Drop the file in `public/media/` named exactly `{id}.jpg`, `{id}.jpeg`, `{id}.png`, or `{id}.webp`. Films use `{id}.mp4` or `{id}.webm`. An optional still is `{id}-poster.jpg` (or png, webp).
+2. Or set `src` on that slot in `content/media.ts` to a path like `/media/gauri-ceremony.jpg`.
+3. Or set the matching `MEDIA_*` variable to that same `/media/...` path. Env overrides the file and `src`.
+
+If the path is set but the file is missing, the calm frame stays. It does not show a broken image. Add another frame later by adding a slot to `visualSlots` and its id to a gallery `slotIds` list. The layout does not need a rewrite.
+
+The founder portrait is the real photograph of Tushar Sonigra. It stays on the home hero and the about hero. Instagram reels are separate: paste a permalink or set `REEL_*`, as above. `INSTAGRAM_HANDLE` stays null until the handle is confirmed.
 
 ## Structured data
 

@@ -5,7 +5,7 @@
  */
 
 import type { FaqItem } from "@/content/faqs";
-import { inquiryHref, type PageStory } from "@/content/story";
+import { inquiryHref, standardProof, type PageStory } from "@/content/story";
 import { site } from "@/content/site";
 
 const inquiry = inquiryHref({ source: "corporate-cultural-page" });
@@ -13,7 +13,7 @@ const inquiry = inquiryHref({ source: "corporate-cultural-page" });
 export const corporateSeo = {
   title: "Corporate & Cultural Event Bands | Beats16, Mumbai",
   description:
-    "Live bands for traditional festivals, community gatherings, cultural programmes and corporate events, from Beats16's 40 years and 5,000+ events.",
+    "Live bands for traditional festivals, community gatherings, cultural programmes and corporate events. 5,000+ events and 80+ Navratris, from Mumbai.",
 } as const;
 
 export const corporateFaqs: FaqItem[] = [
@@ -64,7 +64,7 @@ export const corporateStory: PageStory = {
     eyebrow: "Corporate & Cultural Events · Beats16",
     h1: "Live music for festivals, communities and corporate celebrations",
     subhead:
-      "From religious celebrations and community gatherings to cultural programmes and company festival events, Beats16 brings 40 years of live music to traditional celebrations.",
+      "From religious celebrations and community gatherings to cultural programmes and company festivals. Beats16 brings live music to traditional celebrations.",
     cta: "Send an event inquiry",
     ctaHref: inquiry,
     note: `Based in ${site.city}. Performing across India and abroad.`,
@@ -74,11 +74,7 @@ export const corporateStory: PageStory = {
       kind: "proof",
       compact: true,
       heading: "Experience you can plan around",
-      items: [
-        { value: "40 years", detail: "of music at celebrations" },
-        { value: "5,000+ events", detail: "weddings, festivals and gatherings" },
-        { value: "80+ Navratris", detail: "organised, for audiences around the world" },
-      ],
+      items: standardProof,
     },
     {
       kind: "points",
@@ -151,7 +147,7 @@ export const corporateStory: PageStory = {
     {
       kind: "prose",
       heading: "Rooted in traditional festivals and culture",
-      body: "Beats16 performs at Indian weddings and traditional festivals, and at cultural, community and corporate events in that spirit. Keeping that focus is how we bring 40 years of experience to every occasion. If your event falls outside it, we'll let you know politely and honestly.",
+      body: "Beats16 plays Indian weddings and traditional festivals, and cultural, community and corporate events in that spirit. That focus keeps the music close to the occasion. If your event falls outside it, we will say so, plainly and kindly.",
     },
     { kind: "pricing", heading: "About pricing" },
   ],

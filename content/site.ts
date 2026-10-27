@@ -3,6 +3,13 @@
  * Founder spelling is confirmed: Tushar Sonigra.
  */
 
+/** Shared proof. The long history is named once, on the home hero. */
+export const proofLines = [
+  { value: "5,000+", detail: "events, weddings and festivals" },
+  { value: "80+", detail: "Navratris organised" },
+  { value: "Mumbai", detail: "home base, in India and abroad" },
+] as const;
+
 export const site = {
   name: "Beats16 Events & Entertainment",
   shortName: "Beats16",
@@ -17,11 +24,7 @@ export const site = {
   country: "IN",
   pricing:
     "Every celebration is different, so we discuss pricing personally once we know your date, city and functions.",
-  proof: [
-    { value: "40 years", detail: "of this work" },
-    { value: "5,000+", detail: "events" },
-    { value: "80+", detail: "Navratris" },
-  ],
+  proof: proofLines,
 } as const;
 
 /**

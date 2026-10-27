@@ -1,4 +1,5 @@
 import type { FaqItem } from "@/content/faqs";
+import { proofLines } from "@/content/site";
 
 /** Shared shape for approved page packages (AQ-002 through AQ-006). */
 
@@ -35,7 +36,8 @@ export type StorySection =
     }
   | { kind: "reel"; heading: string; body: string }
   | { kind: "showreel"; heading: string; body: string; note: string }
-  | { kind: "pricing"; heading: string };
+  | { kind: "pricing"; heading: string }
+  | { kind: "gallery"; heading: string; intro: string; slotIds: readonly string[] };
 
 export type PageStory = {
   hero: {
@@ -61,8 +63,7 @@ export function inquiryHref(query: Record<string, string>) {
   return `/contact?${new URLSearchParams(query).toString()}#inquiry-form`;
 }
 
-export const standardProof: ProofLine[] = [
-  { value: "40 years", detail: "of music at family celebrations" },
-  { value: "5,000+ events", detail: "weddings, festivals and gatherings" },
-  { value: "80+ Navratris", detail: "organised, for audiences around the world" },
-];
+export const standardProof: ProofLine[] = proofLines.map((line) => ({
+  value: line.value,
+  detail: line.detail,
+}));

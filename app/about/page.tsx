@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { aboutSeo, aboutStory } from "@/content/about";
-import { InquiryClose, PageContainer, PageHero } from "@/components/blocks";
+import { InquiryClose, PageContainer, PageHero, SplitHero } from "@/components/blocks";
 import { FounderPortrait } from "@/components/founder-portrait";
 import { JsonLd } from "@/components/json-ld";
 import { StorySections } from "@/components/story-view";
@@ -27,32 +27,28 @@ export default function AboutPage() {
           { name: "About", path: "/about" },
         ])}
       />
-      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(16rem,20rem)] lg:gap-x-14">
-        <PageHero
-          eyebrow={aboutStory.hero.eyebrow}
-          title={aboutStory.hero.h1}
-          lede={aboutStory.hero.subhead}
-          actions={
-            <div className="flex flex-col items-start gap-3">
-              <Link
-                href={aboutStory.hero.ctaHref}
-                className={cn(buttonVariants({ size: "cta" }), "h-auto whitespace-normal px-5 py-2.5 text-center")}
-              >
-                {aboutStory.hero.cta}
-              </Link>
-              <p className="text-sm text-muted-foreground">{aboutStory.hero.note}</p>
-            </div>
-          }
-        />
-        <FounderPortrait
-          priority
-          settle={false}
-          className="lg:sticky lg:top-28 lg:col-start-2 lg:row-start-1 lg:row-span-2"
-        />
-        <div className="lg:col-start-1">
-          <StorySections story={aboutStory} />
-        </div>
-      </div>
+      <SplitHero
+        media={<FounderPortrait priority />}
+        copy={
+          <PageHero
+            eyebrow={aboutStory.hero.eyebrow}
+            title={aboutStory.hero.h1}
+            lede={aboutStory.hero.subhead}
+            actions={
+              <div className="flex flex-col items-start gap-3">
+                <Link
+                  href={aboutStory.hero.ctaHref}
+                  className={cn(buttonVariants({ size: "cta" }), "h-auto whitespace-normal px-5 py-2.5 text-center")}
+                >
+                  {aboutStory.hero.cta}
+                </Link>
+                <p className="text-sm text-muted-foreground">{aboutStory.hero.note}</p>
+              </div>
+            }
+          />
+        }
+      />
+      <StorySections story={aboutStory} />
       <InquiryClose
         title={aboutStory.close.heading}
         text={aboutStory.close.body}

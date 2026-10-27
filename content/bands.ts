@@ -1,6 +1,6 @@
 import type { ShowreelBandId } from "@/content/forms";
 import type { FaqItem } from "@/content/faqs";
-import { inquiryHref, standardProof, type PageStory, type ProofLine } from "@/content/story";
+import { inquiryHref, standardProof, type PageStory } from "@/content/story";
 import { site } from "@/content/site";
 
 /**
@@ -9,8 +9,6 @@ import { site } from "@/content/site";
  * Founder is named Tushar Sonigra.
  * Reel permalinks and showreel files live in content/media.ts.
  */
-
-export type MediaPattern = "ceremony" | "floor" | "listening" | "garba" | "private";
 
 const showreelNote = "We'll only use your email to send the showreel and reply to your inquiry.";
 
@@ -154,7 +152,7 @@ export const navratriFaqs: FaqItem[] = [
   {
     id: "navratri-experience",
     question: "How much Navratri experience does Beats16 have?",
-    answer: "Beats16 has organised 80+ Navratris, as part of 40 years and 5,000+ events.",
+    answer: "Beats16 has organised 80+ Navratris, alongside 5,000+ events.",
   },
   {
     id: "navratri-abroad",
@@ -202,7 +200,7 @@ export const bandPages: BandPage[] = [
     href: "/gauri",
     metaTitle: "Gauri by Beats16 | Indian Wedding Ritual & Pheras Band",
     metaDescription:
-      "Gauri is Beats16's band for Indian wedding rituals and traditional ceremonies, from the pheras onwards. 40 years and 5,000+ events. Send your inquiry.",
+      "Gauri is Beats16's band for Indian wedding rituals and traditional ceremonies, from the pheras onwards. 5,000+ events, based in Mumbai. Send your inquiry.",
     faqGroup: "gauri",
     story: {
       hero: {
@@ -242,7 +240,7 @@ export const bandPages: BandPage[] = [
         },
         {
           kind: "proof",
-          heading: "40 years of playing at family celebrations",
+          heading: "Playing for family celebrations",
           items: standardProof,
           body: "Weddings are our speciality. We focus on Indian weddings and traditional festivals, and we bring that experience to every ceremony Gauri plays.",
         },
@@ -320,9 +318,9 @@ export const bandPages: BandPage[] = [
         },
         {
           kind: "proof",
-          heading: "40 years of getting people dancing",
+          heading: "Music that gets people dancing",
           items: standardProof,
-          body: "Weddings are our speciality, and the sangeet is where the celebration really lets go. We bring four decades of experience to every night RDX plays.",
+          body: "Weddings are our speciality, and the sangeet is where the celebration lets go. We bring that same care to every night RDX plays.",
         },
         {
           kind: "steps",
@@ -398,13 +396,9 @@ export const bandPages: BandPage[] = [
         },
         {
           kind: "proof",
-          heading: "40 years of music at celebrations",
-          items: [
-            { value: "40 years", detail: "of music at family and community celebrations" },
-            { value: "5,000+ events", detail: "weddings, festivals and gatherings" },
-            { value: "80+ Navratris", detail: "organised, for audiences around the world" },
-          ] satisfies ProofLine[],
-          body: "Beats16 has played cultural programmes, religious celebrations and community gatherings for four decades. Daastan-e-Ghazal brings that experience to a quieter, more intimate kind of evening.",
+          heading: "Music for family and community celebrations",
+          items: standardProof,
+          body: "Beats16 has played cultural programmes, religious celebrations and community gatherings. Daastan-e-Ghazal brings that care to a quieter, more intimate evening.",
         },
         {
           kind: "steps",
@@ -461,11 +455,7 @@ export const bandPages: BandPage[] = [
         {
           kind: "proof",
           heading: "80+ Navratris organised",
-          items: [
-            { value: "80+ Navratris", detail: "organised, for audiences around the world" },
-            { value: "40 years", detail: "of music at celebrations" },
-            { value: "5,000+ events", detail: "weddings, festivals and gatherings" },
-          ],
+          items: standardProof,
           body: "Navratri is one of the celebrations Beats16 knows best. We understand how a garba night builds, when the dandiya should take over and how to keep a crowd dancing until the last round.",
         },
         {
@@ -545,6 +535,4 @@ export const independentBand = {
     "A private show can be a family evening, a host’s gathering, or a small programme that is not a full wedding ceremony and not Navratri. If it is an Indian wedding ritual, ask for Gauri. If it is a sangeet, ask for RDX.",
     "The reels and the showreel on this section are placeholders until the real links are added. The form still works: you receive the file we have today, and we keep your name, email, and phone with the other leads.",
   ],
-  mediaLabel: "A private show",
-  mediaPattern: "private" as MediaPattern,
 };

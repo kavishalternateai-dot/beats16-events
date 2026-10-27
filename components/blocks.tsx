@@ -5,17 +5,39 @@ import { site } from "@/content/site";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export const sectionTitleClass =
-  "font-heading text-3xl leading-[1.15] tracking-[-0.028em] md:text-4xl";
+export const sectionTitleClass = "font-heading text-3xl leading-tight md:text-4xl";
 
 export function PageContainer({
   children,
   className,
+  compactTop = false,
 }: {
   children: React.ReactNode;
   className?: string;
+  compactTop?: boolean;
 }) {
-  return <div className={cn("mx-auto w-full max-w-6xl px-4 py-12 md:px-6 md:py-16", className)}>{children}</div>;
+  return (
+    <div className={cn("site-wrap pb-16 md:pb-24", compactTop ? "pt-0" : "pt-16 md:pt-20", className)}>
+      {children}
+    </div>
+  );
+}
+
+export function SplitHero({
+  copy,
+  media,
+}: {
+  copy: React.ReactNode;
+  media?: React.ReactNode;
+}) {
+  if (!media) return <>{copy}</>;
+
+  return (
+    <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(16rem,22.5rem)] lg:gap-x-16">
+      <div className="min-w-0">{copy}</div>
+      <div className="w-full max-w-[22.5rem] justify-self-center lg:max-w-none lg:justify-self-end">{media}</div>
+    </div>
+  );
 }
 
 export function PageHero({
@@ -23,53 +45,28 @@ export function PageHero({
   title,
   lede,
   actions,
-  tone = "light",
 }: {
   eyebrow: string;
   title: string;
   lede: string;
   actions?: React.ReactNode;
-  tone?: "light" | "dark";
 }) {
-  const onDark = tone === "dark";
-
   return (
-    <header className="max-w-3xl">
+    <header className="max-w-2xl">
       <HeroItem>
-        <p
-          className={cn(
-            "text-xs font-semibold tracking-[0.2em] uppercase",
-            onDark ? "text-[#e4c88a]" : "text-primary",
-          )}
-        >
-          {eyebrow}
-        </p>
+        <p className="text-xs font-semibold tracking-[0.16em] text-primary uppercase">{eyebrow}</p>
       </HeroItem>
       <HeroItem draw delay={0.08} className="mt-4">
-        <div className={cn("gold-rule", onDark && "gold-rule-light")} />
+        <div className="gold-rule" />
       </HeroItem>
       <HeroItem prominent delay={0.12}>
-        <h1
-          className={cn(
-            "mt-4 font-heading text-4xl leading-[1.02] text-balance md:text-6xl",
-            onDark && "text-[#f7f1e6]",
-          )}
-        >
-          {title}
-        </h1>
+        <h1 className="mt-5 font-heading text-4xl leading-[1.12] text-balance md:text-5xl">{title}</h1>
       </HeroItem>
       <HeroItem prominent delay={0.2}>
-        <p
-          className={cn(
-            "mt-5 max-w-2xl text-lg leading-relaxed text-pretty md:text-xl",
-            onDark ? "text-[#f7f1e6]/88" : "text-foreground/90",
-          )}
-        >
-          {lede}
-        </p>
+        <p className="mt-5 max-w-xl text-lg leading-relaxed text-pretty text-foreground/80">{lede}</p>
       </HeroItem>
       {actions ? (
-        <HeroItem prominent delay={0.28} className="mt-7">
+        <HeroItem prominent delay={0.28} className="mt-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">{actions}</div>
         </HeroItem>
       ) : null}
@@ -89,15 +86,23 @@ export function ProofStrip({
   return (
     <div>
       {label ? (
-        <h2 id={labelId} className="text-sm font-semibold text-muted-foreground">
+        <h2 id={labelId} className="font-heading text-3xl leading-tight md:text-4xl">
           {label}
         </h2>
       ) : null}
-      <dl className="grid gap-6 border-y border-[color-mix(in_srgb,var(--gold)_45%,var(--border))] py-6 sm:grid-cols-3 md:gap-8 md:py-7">
+      <dl className={cn("grid border-y border-border sm:grid-cols-3", label && "mt-8")}>
         {items.map((item, index) => (
-          <Reveal as="div" key={item.value} delay={index * 0.06}>
-            <dt className="font-heading text-4xl leading-none tracking-[-0.03em] text-primary">{item.value}</dt>
-            <dd className="mt-2 max-w-[16rem] text-sm leading-relaxed text-muted-foreground">{item.detail}</dd>
+          <Reveal
+            as="div"
+            key={item.value}
+            delay={index * 0.06}
+            className={cn(
+              "py-7",
+              index === 0 ? "sm:pr-6" : "border-t border-border sm:border-t-0 sm:border-l sm:px-6",
+            )}
+          >
+            <dt className="font-heading text-4xl leading-none tracking-tight text-foreground">{item.value}</dt>
+            <dd className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.detail}</dd>
           </Reveal>
         ))}
       </dl>
@@ -142,26 +147,25 @@ export function InquiryClose({
   text,
   cta = "Fill the inquiry form",
   href = "/contact#inquiry-form",
+  contactLocation = "page_cta",
 }: {
   title: string;
   text: string;
   cta?: string;
   href?: string;
+  contactLocation?: "page_cta" | "home_cta";
 }) {
   return (
-    <Reveal as="aside" className="closing-panel closing-rhythm px-6 py-9 md:px-12 md:py-12">
-      <h2 className={cn(sectionTitleClass, "leading-tight text-[#f7f1e6]")}>{title}</h2>
-      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#f7f1e6]/88">{text}</p>
-      <Link
-        href={href}
-        className={cn(buttonVariants({ size: "cta" }), "mt-6 h-auto bg-[#f7f1e6] whitespace-normal px-5 py-2.5 text-center text-[#3c1520] hover:bg-white")}
-      >
+    <Reveal as="aside" className="closing-panel section-block px-6 py-12 md:px-14 md:py-16">
+      <h2 className={sectionTitleClass}>{title}</h2>
+      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">{text}</p>
+      <Link href={href} className={cn(buttonVariants({ size: "cta" }), "mt-8 h-auto whitespace-normal px-5 py-2.5 text-center")}>
         {cta}
       </Link>
-      <p className="mt-4 text-sm leading-relaxed text-[#f7f1e6]/88">
-        Call <PhoneLink location="page_cta" className="underline underline-offset-2" />
+      <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+        Call <PhoneLink location={contactLocation} className="underline underline-offset-2" />
         {" · "}
-        Email <EmailLink location="page_cta" className="underline underline-offset-2" />
+        Email <EmailLink location={contactLocation} className="underline underline-offset-2" />
       </p>
     </Reveal>
   );
@@ -175,20 +179,14 @@ export function CtaPanel({
   text?: string;
 }) {
   return (
-    <Reveal as="aside" className="closing-panel closing-rhythm px-6 py-9 md:px-12 md:py-12">
-      <h2 className={cn(sectionTitleClass, "leading-tight text-[#f7f1e6]")}>{title}</h2>
-      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#f7f1e6]/88">{text}</p>
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <Link
-          href="/contact"
-          className={cn(buttonVariants({ size: "cta" }), "bg-[#f7f1e6] text-[#3c1520] hover:bg-white")}
-        >
+    <Reveal as="aside" className="closing-panel section-block px-6 py-12 md:px-14 md:py-16">
+      <h2 className={sectionTitleClass}>{title}</h2>
+      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">{text}</p>
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <Link href="/contact" className={cn(buttonVariants({ size: "cta" }))}>
           Inquire
         </Link>
-        <PhoneLink
-          location="cta_panel"
-          className={cn(buttonVariants({ size: "cta", variant: "outline" }), "border-[#e4c88a]/70 bg-transparent text-[#f7f1e6] hover:bg-[#f7f1e6]/10")}
-        >
+        <PhoneLink location="cta_panel" className={cn(buttonVariants({ size: "cta", variant: "outline" }))}>
           Call {site.phoneDisplay}
         </PhoneLink>
       </div>

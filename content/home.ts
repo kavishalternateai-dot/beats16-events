@@ -10,27 +10,30 @@ import { site } from "@/content/site";
 export const homeSeo = {
   title: "Beats16 | Indian Wedding & Navratri Bands, Mumbai",
   description:
-    "40 years, 5,000+ events and 80+ Navratris. Beats16 brings live bands to Indian weddings and festivals across India and abroad. Send us your inquiry.",
+    "5,000+ events and 80+ Navratris. Beats16 brings live bands to Indian weddings and festivals across India and abroad. Send us your inquiry.",
 } as const;
 
 export const homeHero = {
   eyebrow: `${site.name} · ${site.city}`,
+  /** The only public longevity line. Do not repeat it on other pages. */
   h1: "Live music for Indian weddings and Navratri, for 40 years",
   subhead:
-    "From the first song at the mehendi to the last dance at the reception, we shape the music around each function of your celebration, so every moment sounds the way it feels.",
+    "From the first song at the mehendi to the last dance at the reception. We shape the music for each part of your celebration.",
   cta: "Fill the inquiry form",
   ctaHref: "/contact?source=home-page#inquiry-form",
   note: `Based in ${site.city}. Performing across India and abroad.`,
 } as const;
 
 export const homeProof = {
-  label: "Four decades of celebrations",
-  items: [
-    { value: "40 years", detail: "of music at family celebrations" },
-    { value: "5,000+ events", detail: "weddings, festivals and gatherings" },
-    { value: "80+ Navratris", detail: "organised, for audiences around the world" },
-  ],
-  support: `Started by ${site.founder} about 40 years ago, Beats16 has grown with the families and communities it plays for.`,
+  label: "A record of celebrations",
+  items: site.proof,
+  support: `Started in ${site.city} by ${site.founder}. Beats16 has grown with the families and communities it plays for.`,
+} as const;
+
+export const homeGallery = {
+  heading: "Photographs and films",
+  intro: "Pictures and films from weddings, festivals and Navratri will be added here.",
+  slotIds: ["home-wedding", "home-navratri", "home-film"],
 } as const;
 
 export const homeBands = {
@@ -67,7 +70,7 @@ export const homeBands = {
 
 export const homeWeddings = {
   heading: "Weddings are our speciality",
-  body: "An Indian wedding is many celebrations in one. We plan a musical concept for each function — the colour of the mehendi, the energy of the sangeet, the calm of the pheras and the warmth of the reception — so the music feels connected from start to finish.",
+  body: "An Indian wedding is many celebrations in one. We plan the music for each function: the colour of the mehendi, the energy of the sangeet, the calm of the pheras and the warmth of the reception. It stays connected from the first song to the last.",
   functions: "Mehendi · Sangeet · Pheras · Reception",
   link: "Plan your wedding music",
   href: "/weddings",
@@ -75,7 +78,7 @@ export const homeWeddings = {
 
 export const homeAbout = {
   heading: "A family name in celebrations",
-  body: `Beats16 began in ${site.city} around 40 years ago with ${site.founder}. Since then we have played more than 5,000 events — weddings, religious celebrations, cultural programmes, community gatherings and corporate events — and organised over 80 Navratris. We focus on Indian weddings and traditional festivals, and we bring the same care to every one.`,
+  body: `Beats16 began in ${site.city} with ${site.founder}. We have played more than 5,000 events. That includes weddings, festivals, cultural programmes, community gatherings and corporate events. We have organised over 80 Navratris. We focus on Indian weddings and traditional festivals. We bring the same care to every one.`,
   link: "Read our story",
   href: "/about",
 } as const;

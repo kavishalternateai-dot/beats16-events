@@ -132,10 +132,8 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "kern" 1;
-    line-height: 1.6;
-    background-image:
-      radial-gradient(ellipse 80% 40% at 50% -10%, rgb(166 132 70 / 0.14), transparent 55%),
-      linear-gradient(180deg, #f8f3ea 0%, var(--background) 28rem);
+    line-height: 1.65;
+    background-image: radial-gradient(ellipse 78% 46% at 50% -14%, rgb(166 132 70 / 0.13), transparent 62%);
   }
   html {
     @apply font-sans;
@@ -298,11 +296,12 @@
 }
 
 .jewel-card {
-  border: 1px solid color-mix(in srgb, var(--gold) 42%, var(--border));
-  background:
-    linear-gradient(180deg, rgb(255 250 244 / 0.72), transparent 2.75rem),
-    var(--card);
-  box-shadow: 0 18px 36px -30px rgb(60 21 32 / 0.55);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--card);
+  box-shadow:
+    0 24px 24px -24px rgb(28 20 18 / 0.14),
+    0 1px 2px rgb(28 20 18 / 0.04);
   transition:
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.45s ease,
@@ -321,11 +320,13 @@
   background-size: 100% 1px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .jewel-card:hover {
-    transform: translateY(-8px);
-    border-color: color-mix(in srgb, var(--gold) 82%, var(--primary));
-    box-shadow: 0 30px 48px -22px rgb(60 21 32 / 0.58);
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--gold) 35%, var(--border));
+    box-shadow:
+      0 22px 36px -24px rgb(28 20 18 / 0.16),
+      0 1px 2px rgb(28 20 18 / 0.05);
   }
   .link-draw:hover {
     background-size: 100% 1px;
@@ -333,34 +334,50 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .jewel-card:hover {
-    border-color: color-mix(in srgb, var(--gold) 78%, var(--border));
-  }
   .link-draw:hover {
     background-size: 100% 1px;
   }
 }
 
-@media (hover: none) and (pointer: coarse) {
-  .jewel-card:hover {
-    transform: none;
-    box-shadow: 0 18px 36px -30px rgb(60 21 32 / 0.55);
-  }
-}
-
 .closing-panel {
   position: relative;
-  background: var(--burgundy);
-  color: var(--ivory);
-  box-shadow: 0 28px 50px -36px rgb(28 20 18 / 0.7);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--card);
+  box-shadow: 0 30px 50px -34px rgb(28 20 18 / 0.18);
 }
 
 .closing-panel::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  background: var(--gold);
+  inset: auto -10% -55% -10%;
+  height: 70%;
+  pointer-events: none;
+  background: radial-gradient(50% 70% at 50% 100%, rgb(166 132 70 / 0.16), transparent 70%);
+}
+
+.site-wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 75rem;
+  padding-inline: 1.5rem;
+}
+
+.section-block {
+  margin-top: 4.5rem;
+}
+
+.hero-wash {
+  background:
+    radial-gradient(ellipse 52% 70% at 12% 40%, rgb(166 132 70 / 0.16), transparent 64%),
+    radial-gradient(ellipse 40% 60% at 92% 8%, rgb(106 30 46 / 0.05), transparent 70%);
+}
+
+@media (min-width: 768px) {
+  .section-block {
+    margin-top: 6.5rem;
+  }
 }
 
 .pattern-dots {

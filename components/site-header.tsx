@@ -19,7 +19,7 @@ function NavLinks({
 }) {
   return (
     <nav id={id} aria-label="Primary">
-      <ul className="flex flex-col gap-1 lg:flex-row lg:flex-wrap lg:gap-x-5 lg:gap-y-2">
+      <ul className="flex flex-col gap-1 lg:flex-row lg:flex-wrap lg:justify-center lg:gap-x-7 lg:gap-y-2">
         {primaryNav.map((item) => {
           const current = pathname === item.href;
           return (
@@ -29,7 +29,7 @@ function NavLinks({
                 aria-current={current ? "page" : undefined}
                 onClick={onNavigate}
                 className={cn(
-                  "inline-flex min-h-11 items-center border-b-2 border-transparent text-sm tracking-wide motion-safe:transition-colors motion-safe:duration-200 hover:text-primary lg:min-h-0",
+                  "inline-flex min-h-11 items-center border-b-2 border-transparent px-0.5 text-sm motion-safe:transition-colors motion-safe:duration-200 hover:text-primary lg:min-h-10",
                   current ? "border-gold font-semibold text-primary" : "text-foreground",
                 )}
               >
@@ -67,8 +67,8 @@ function MobileMenu({ pathname }: { pathname: string }) {
       >
         {open ? "Close" : "Menu"}
       </Button>
-      <div id="mobile-nav" hidden={!open} className="absolute inset-x-0 top-full border-t border-gold/40 bg-[#fbf7f0] shadow-lg lg:hidden">
-        <div className="mx-auto grid w-full max-w-6xl gap-2 px-4 py-3">
+      <div id="mobile-nav" hidden={!open} className="absolute inset-x-0 top-full border-t border-border bg-[#fbf7f0] shadow-[0_16px_30px_-20px_rgb(28_20_18/0.25)] lg:hidden">
+        <div className="site-wrap grid gap-2 py-4">
           <NavLinks pathname={pathname} onNavigate={() => setOpen(false)} />
           <PhoneLink
             location="mobile_menu"
@@ -92,25 +92,26 @@ export function SiteHeader() {
 
   return (
     <header
-      className="sticky top-0 z-40 border-b border-[color-mix(in_srgb,var(--gold)_40%,var(--border))] bg-[#f7f1e6]/90 backdrop-blur-md"
+      className="sticky top-0 z-40 border-b border-border bg-[#fbf7f0]/95 backdrop-blur-md"
       style={{ viewTransitionName: "site-header" }}
     >
-      <div className="h-px bg-gold" />
-      <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3.5 md:px-6">
-        <Link href="/" className="min-w-0" aria-label={`${site.name}, home`}>
-          <span className="block font-heading text-[1.7rem] leading-none tracking-tight text-primary">{site.shortName}</span>
-          <span className="mt-1 block text-[0.7rem] tracking-[0.16em] text-muted-foreground uppercase">Events & Entertainment</span>
+      <div className="site-wrap relative flex items-center gap-4 py-3 lg:grid lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center lg:gap-8 lg:py-3.5">
+        <Link href="/" className="min-w-0 justify-self-start" aria-label={`${site.name}, home`}>
+          <span className="block font-heading text-[1.65rem] leading-none tracking-tight text-primary">{site.shortName}</span>
+          <span className="mt-1 block text-[0.68rem] tracking-[0.16em] text-muted-foreground uppercase">Events & Entertainment</span>
         </Link>
-        <div className="hidden items-center gap-4 lg:flex">
-          <PhoneLink location="header" className="text-sm underline underline-offset-2" />
-          <Link href="/contact" className={cn(buttonVariants({ size: "cta" }))}>
-            Inquire
-          </Link>
+        <div className="hidden min-w-0 lg:block">
+          <NavLinks pathname={pathname} />
         </div>
-        <MobileMenu key={pathname} pathname={pathname} />
-      </div>
-      <div className="mx-auto hidden w-full max-w-6xl px-4 pb-3 md:px-6 lg:block">
-        <NavLinks pathname={pathname} />
+        <div className="ml-auto flex items-center gap-4 lg:ml-0 lg:justify-self-end">
+          <div className="hidden items-center gap-5 lg:flex">
+            <PhoneLink location="header" className="text-sm underline underline-offset-2" />
+            <Link href="/contact" className={cn(buttonVariants({ size: "cta" }))}>
+              Inquire
+            </Link>
+          </div>
+          <MobileMenu key={pathname} pathname={pathname} />
+        </div>
       </div>
     </header>
   );
@@ -119,7 +120,7 @@ export function SiteHeader() {
 export function SiteHeaderFallback() {
   return (
     <div className="border-b border-border bg-background">
-      <div className="mx-auto flex h-[4.25rem] w-full max-w-6xl items-center px-4 md:px-6">
+      <div className="site-wrap flex h-[4.25rem] items-center">
         <span className="font-heading text-2xl">{site.shortName}</span>
       </div>
     </div>
