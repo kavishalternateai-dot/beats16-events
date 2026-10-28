@@ -32,7 +32,7 @@ export const site = {
  * Kavish confirmed this handle. This one constant publishes the
  * profile link in Where to find us, on Contact, and in the footer.
  */
-export const INSTAGRAM_HANDLE: string | null = "tusharrmaganbhaisonigra";
+export const INSTAGRAM_HANDLE: string | null = "beats16bytushar";
 
 const INSTAGRAM_HANDLE_PATTERN = /^[A-Za-z0-9._]{1,30}$/;
 
