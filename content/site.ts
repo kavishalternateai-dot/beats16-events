@@ -29,10 +29,10 @@ export const site = {
 
 /**
  * Tushar Sonigra's Instagram handle, without @ and without a URL.
- * Leave null until Kavish confirms it. This one constant publishes the
+ * Kavish confirmed this handle. This one constant publishes the
  * profile link in Where to find us, on Contact, and in the footer.
  */
-export const INSTAGRAM_HANDLE: string | null = null;
+export const INSTAGRAM_HANDLE: string | null = "tusharrmaganbhaisonigra";
 
 const INSTAGRAM_HANDLE_PATTERN = /^[A-Za-z0-9._]{1,30}$/;
 
