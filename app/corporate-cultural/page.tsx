@@ -43,8 +43,9 @@ export default function CorporatePage() {
           <LineReveal
             as="h1"
             text={corporateStory.hero.h1}
-            lineWords={[4, 2, 2]}
-            className="display-title mt-4 max-w-4xl"
+            lineWords={[2, 2, 2, 2]}
+            mobileLineWords={[2, 1, 2, 1, 2]}
+            className="display-title mt-4"
           />
           <p className="mt-5 max-w-xl text-lg leading-relaxed">{corporateStory.hero.subhead}</p>
           <PlanActions source="corporate-cultural-page" onDark className="mt-8" />

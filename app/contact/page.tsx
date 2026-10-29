@@ -57,7 +57,7 @@ export default function ContactPage({
       <section className="site-wrap pb-8">
         <p className="eyebrow text-mor">{contactHero.eyebrow}</p>
         <GoldThread />
-        <LineReveal as="h1" text={contactHero.h1} lineWords={[3, 2]} className="display-title mt-4 max-w-4xl" />
+        <LineReveal as="h1" text={contactHero.h1} lineWords={[3, 2]} mobileLineWords={[2, 1, 2]} className="display-title mt-4" />
         <p className="mt-5 max-w-2xl text-lg leading-relaxed">{contactHero.subhead}</p>
       </section>
       <div className="site-wrap grid items-start gap-10 pb-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(16rem,0.9fr)]">

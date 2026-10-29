@@ -1,6 +1,7 @@
 /**
- * Every H1 must compute to at least 36px, and must not leave a single
- * word on its last line at 360, 390, 1280 or 1440.
+ * Every H1 must compute to at least 36px, use one font size through
+ * every visible span, and must not leave a single word on its last
+ * line at 360, 390, 1280 or 1440.
  * Usage: BASE_URL=http://127.0.0.1:3000 node scripts/check-h1.mjs
  */
 import puppeteer from "puppeteer-core";
@@ -57,16 +58,32 @@ for (const width of widths) {
       if (bucket.trim()) lines.push(bucket.replace(/\s+/g, " ").trim());
       const last = lines[lines.length - 1] ?? "";
       const words = last.split(/\s+/).filter(Boolean);
+      const sizes = [];
+      for (const el of [h1, ...h1.querySelectorAll("span")]) {
+        const style = getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden") continue;
+        if (el.getClientRects().length === 0) continue;
+        if (!(el.textContent || "").trim()) continue;
+        sizes.push(parseFloat(style.fontSize));
+      }
+      const mismatched = sizes.filter((value) => Math.abs(value - size) > 0.6);
+      const loneAnd = lines.filter((line) => /^(and|or)$/i.test(line.replace(/[.,]/g, "")));
       return {
         size,
         family,
         lines,
         lastWords: words.length,
+        mismatched,
+        loneAnd,
         scroll: document.documentElement.scrollWidth <= window.innerWidth + 1,
       };
     });
     if (result.missing) failures.push(`${width} ${path}: no h1`);
     else if (result.size < 36) failures.push(`${width} ${path}: h1 is ${result.size}px (${result.family})`);
+    else if (result.mismatched?.length) {
+      failures.push(`${width} ${path}: mixed H1 sizes ${result.size}px and ${result.mismatched.join(", ")}px`);
+    }
+    else if (result.loneAnd?.length) failures.push(`${width} ${path}: lone "${result.loneAnd.join(", ")}"`);
     else if (result.lastWords < 2) {
       failures.push(`${width} ${path}: last line "${result.lines.at(-1)}" (${result.lastWords} words) from [${result.lines.join(" | ")}]`);
     }

@@ -47,6 +47,7 @@ export function LineReveal({
   as: Tag = "h2",
   text,
   lineWords,
+  mobileLineWords,
   className,
   id,
   delay = 0,
@@ -59,6 +60,8 @@ export function LineReveal({
   text: string;
   /** Desktop line breaks, as word counts taken from `text`. */
   lineWords?: readonly number[];
+  /** Mobile line breaks. Same font size as the rest of the heading. */
+  mobileLineWords?: readonly number[];
   className?: string;
   id?: string;
   delay?: number;
@@ -68,8 +71,9 @@ export function LineReveal({
   scriptClassName?: string;
 }) {
   const desktop = lineWords?.length ? linesFromCounts(text, lineWords) : splitLines(text);
+  const mobileLines = mobileLineWords?.length ? linesFromCounts(text, mobileLineWords) : null;
   const words = text.split(/\s+/).filter(Boolean);
-  const glueTail = Tag === "h1" && words.length >= 2;
+  const glueTail = Tag === "h1" && !mobileLines && words.length >= 2;
   const mobileTokens: { label: string; index: number }[] = [];
   for (let index = 0; index < words.length; index += 1) {
     const next = words[index + 1];
@@ -97,26 +101,27 @@ export function LineReveal({
           </span>
         ))}
       </span>
-      <span aria-hidden="true" className="mobile-lines block md:hidden">
-        {mobileTokens.map((token, position) => {
-          const animIndex = Math.min(token.index, 7);
-          const pair = token.label.includes("\u00a0");
-          const fit = pair && token.label.length > 14;
-          return (
-            <span key={`${token.label}-${token.index}`} className="line-mask inline-block max-w-full align-bottom">
-              <span
-                className={cn("line-inner inline-block", pair && "whitespace-nowrap [overflow-wrap:normal]", fit && "h1-pair")}
-                style={{
-                  ...lineStyle(delay + animIndex * mobileStep, duration),
-                  ...(fit ? ({ "--pair": String(token.label.length) } as CSSProperties) : null),
-                }}
-              >
-                {token.label}
-                {position < mobileTokens.length - 1 ? "\u00a0" : ""}
+      <span aria-hidden="true" className="block md:hidden">
+        {mobileLines
+          ? mobileLines.map((line, index) => (
+              <span key={`${line}-${index}`} className="line-mask block">
+                <span className="line-inner block" style={lineStyle(delay + index * step, duration)}>
+                  {line}
+                </span>
               </span>
-            </span>
-          );
-        })}
+            ))
+          : mobileTokens.map((token, position) => {
+              const animIndex = Math.min(token.index, 7);
+              const pair = token.label.includes("\u00a0");
+              return (
+                <span key={`${token.label}-${token.index}`} className="line-mask inline-block max-w-full align-bottom">
+                  <span className={cn("line-inner inline-block", pair && "whitespace-nowrap [overflow-wrap:normal]")} style={lineStyle(delay + animIndex * mobileStep, duration)}>
+                    {token.label}
+                    {position < mobileTokens.length - 1 ? "\u00a0" : ""}
+                  </span>
+                </span>
+              );
+            })}
       </span>
       {script ? (
         <span

@@ -175,20 +175,6 @@ h1 {
   text-wrap: balance;
 }
 
-@property --pair {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 12;
-}
-
-.mobile-lines {
-  container-type: inline-size;
-}
-
-.h1-pair {
-  font-size: min(1em, calc(100cqi / (var(--pair) * 0.52)));
-}
-
 h1,
 h2,
 .eyebrow,
