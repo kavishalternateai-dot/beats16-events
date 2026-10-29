@@ -6,7 +6,7 @@ import { PlanActions } from "@/components/plan-actions";
 
 export function CtaBand() {
   const pathname = usePathname();
-  if (pathname === "/thank-you") return null;
+  if (pathname === "/thank-you" || pathname === "/about") return null;
 
   return (
     <div>

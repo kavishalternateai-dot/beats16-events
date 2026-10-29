@@ -96,10 +96,16 @@ export function ArchThread({ className }: { className?: string }) {
   const id = useId().replace(/:/g, "");
 
   return (
-    <svg ref={ref} viewBox="0 0 100 128" aria-hidden="true" className={cn("pointer-events-none absolute inset-0 h-full w-full", className)}>
+    <svg
+      ref={ref}
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      className={cn("pointer-events-none absolute inset-0 h-full w-full", className)}
+    >
       <m.path
         id={id}
-        d="M8 126 L8 52 C8 18 24 6 50 6 C76 6 92 18 92 52 L92 126"
+        d="M6,100 L6,42 C6,14 22,4 50,4 C78,4 94,14 94,42 L94,100"
         stroke="#C9A227"
         strokeWidth="1.5"
         fill="none"

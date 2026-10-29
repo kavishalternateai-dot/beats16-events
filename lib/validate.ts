@@ -8,7 +8,9 @@ import {
 } from "@/content/forms";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const ISO_DAY = /^(\d{4})-(\d{2})-(\d{2})$/;
+const ISO_MONTH = /^(\d{4})-(\d{2})$/;
+const DMY = /^(\d{2})\/(\d{2})\/(\d{4})$/;
 const SHOWREEL_IDS = new Set<string>(showreelBands.map((band) => band.id));
 
 export type FieldErrors = Record<string, string>;
@@ -75,6 +77,32 @@ function checkEmail(value: string, errors: FieldErrors) {
   }
 }
 
+function realDay(year: number, month: number, day: number) {
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+}
+
+/** Accepts a blank date, YYYY-MM, YYYY-MM-DD, or dd/mm/yyyy. Stores ISO. */
+export function normaliseEventDate(value: string): string | null {
+  if (!value) return "";
+  const dmy = DMY.exec(value);
+  const iso = dmy ? `${dmy[3]}-${dmy[2]}-${dmy[1]}` : value;
+  const month = ISO_MONTH.exec(iso);
+  if (month && !ISO_DAY.test(iso)) {
+    const year = Number(month[1]);
+    const mon = Number(month[2]);
+    if (year < 2000 || year > 2100 || mon < 1 || mon > 12) return null;
+    return `${month[1]}-${month[2]}`;
+  }
+  const day = ISO_DAY.exec(iso);
+  if (!day) return null;
+  const year = Number(day[1]);
+  const mon = Number(day[2]);
+  const date = Number(day[3]);
+  if (!realDay(year, mon, date)) return null;
+  return `${day[1]}-${day[2]}-${day[3]}`;
+}
+
 function oneOf(value: string, allowed: readonly string[], field: string, errors: FieldErrors, label: string) {
   if (!allowed.includes(value)) errors[field] = label;
 }
@@ -119,8 +147,11 @@ export function validateInquiry(
   checkPhone(data.phone, errors);
   checkEmail(data.email, errors);
   oneOf(data.eventType, eventTypes, "eventType", errors, "Choose an event type.");
-  if (data.eventDate && (!DATE_PATTERN.test(data.eventDate) || Number.isNaN(Date.parse(`${data.eventDate}T00:00:00Z`)))) {
-    errors.eventDate = "Enter a date, or leave this blank.";
+  const eventDate = normaliseEventDate(data.eventDate);
+  if (eventDate == null) {
+    errors.eventDate = "Enter a date as dd/mm/yyyy, or leave this blank.";
+  } else {
+    data.eventDate = eventDate;
   }
   if (data.city.length < 2 || data.city.length > 160) {
     errors.city = "Tell us the city or venue.";

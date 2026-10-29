@@ -9,11 +9,10 @@ const CountUp = dynamic(() => import("@/components/count-up").then((mod) => mod.
 import { FaqList } from "@/components/faq-list";
 import { FunctionTimeline } from "@/components/function-timeline";
 import { HomeHero } from "@/components/home-hero";
-import { MediaFrame } from "@/components/media-frame";
+import { FounderPortrait } from "@/components/founder-portrait";
 import { JsonLd } from "@/components/json-ld";
 import { LineReveal } from "@/components/motion/line-reveal";
-import { ArchReveal } from "@/components/motion/pieces";
-import { ArchThread, GoldThread } from "@/components/ornament/gold-thread";
+import { GoldThread } from "@/components/ornament/gold-thread";
 import { Ticker } from "@/components/ornament/ticker";
 import { faqJsonLd, organizationJsonLd } from "@/lib/schema";
 import { resolveGallery, resolveMedia } from "@/lib/resolve-media";
@@ -114,12 +113,9 @@ export default function HomePage() {
       </section>
 
       <section className="bg-chandan py-14 md:py-20" aria-labelledby="founder-heading">
-        <div className="site-wrap grid items-center gap-10 md:grid-cols-[minmax(16rem,22rem)_1fr]">
-          <div className="relative mx-auto max-w-sm">
-            <ArchReveal curtainClass="bg-haldi">
-              <MediaFrame item={founder} sizes="(min-width: 768px) 22rem, 80vw" className="min-h-[26rem]" />
-            </ArchReveal>
-            <ArchThread />
+        <div className="site-wrap grid items-center gap-10 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
+          <div className="min-w-0 max-w-full">
+            <FounderPortrait item={founder} sizes="(min-width: 768px) 22rem, 90vw" />
           </div>
           <div>
             <GoldThread />

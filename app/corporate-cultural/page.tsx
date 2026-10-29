@@ -73,10 +73,21 @@ export default function CorporatePage() {
             <ul className="mt-8 grid gap-4 md:grid-cols-2">
               {cards.cards.map((card) => (
                 <li key={card.href}>
-                  <Link href={card.href} className="lift-card block rounded-3xl bg-cream p-6">
+                  <Link
+                    href={card.href}
+                    className={`lift-card block rounded-3xl p-6 ${
+                      card.href === "/gauri"
+                        ? "bg-haldi text-kajal"
+                        : card.href === "/rdx"
+                          ? "bg-rani-deep text-cream"
+                          : card.href === "/daastan-e-ghazal"
+                            ? "bg-neel text-cream"
+                            : "bg-sindoor text-cream"
+                    }`}
+                  >
                     <h3 className="font-display text-3xl leading-none">{card.title}</h3>
                     <p className="mt-3 leading-relaxed">{card.text}</p>
-                    <span className="mt-4 inline-flex min-h-11 items-center font-medium text-mor">{card.link} →</span>
+                    <span className="mt-4 inline-flex min-h-11 items-center font-medium">{card.link} →</span>
                   </Link>
                 </li>
               ))}

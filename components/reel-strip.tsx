@@ -51,12 +51,18 @@ export function ReelStrip({
         href={profile}
         target="_blank"
         rel="noopener noreferrer"
-        className={`lift-card relative flex min-h-48 items-end overflow-hidden rounded-2xl p-6 ${toneClassName}`}
+        className={`lift-card relative block w-full max-w-xs overflow-hidden rounded-2xl ${toneClassName}`}
       >
-        <BandhaniPattern />
-        <span className="relative font-display text-3xl leading-none">
-          Watch us on Instagram → @beats16bytushar
-          <span className="sr-only"> (opens in a new tab)</span>
+        <span className="relative flex aspect-[9/16] flex-col items-center justify-end gap-4 overflow-hidden p-5">
+          <BandhaniPattern />
+          <span aria-hidden="true" className="reel-play relative grid size-14 place-items-center rounded-full bg-cream text-2xl text-kajal">
+            ▶
+          </span>
+          <span className="relative text-center font-display text-3xl leading-none">
+            Watch us on Instagram
+            <span className="sr-only"> (opens in a new tab)</span>
+          </span>
+          <span className="relative text-sm">@beats16bytushar</span>
         </span>
       </a>
     );

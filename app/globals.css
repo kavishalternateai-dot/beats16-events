@@ -143,11 +143,41 @@
   }
 }
 
-.display-title {
+.display-title,
+.home-display,
+.wedding-display {
   font-family: var(--font-rozha), Georgia, serif;
-  font-size: clamp(2.6rem, 7vw, 6rem);
-  line-height: 0.95;
+  line-height: 0.98;
   letter-spacing: -0.01em;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.display-title {
+  font-size: clamp(2.6rem, 7vw, 6rem);
+}
+
+.home-display {
+  font-size: clamp(2rem, 5.15vw, 4.15rem);
+}
+
+.wedding-display {
+  font-size: clamp(2.15rem, 4vw, 3.7rem);
+}
+
+h1,
+h2,
+.eyebrow,
+.line-reveal {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.line-mask {
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
 }
 
 .eyebrow {
@@ -186,12 +216,22 @@
 }
 
 .hero-drift {
-  background-image: linear-gradient(90deg, #4a0d18, #8e1528, var(--sindoor), #7a1248, var(--sindoor), #4a0d18);
+  background-image: linear-gradient(90deg, #4a0d18, #8e1528, var(--sindoor), #7a1248, var(--haldi), var(--sindoor), #4a0d18);
 }
 
 .bandhani-hero {
   background-color: var(--sindoor);
-  background-image: linear-gradient(155deg, var(--sindoor) 0 58%, var(--mor) 100%);
+  background-image:
+    radial-gradient(circle at 12% 24%, color-mix(in srgb, var(--haldi) 78%, transparent) 0 16%, transparent 17%),
+    radial-gradient(circle at 86% 18%, color-mix(in srgb, var(--mor) 88%, black) 0 24%, transparent 25%),
+    radial-gradient(circle at 74% 84%, color-mix(in srgb, var(--haldi) 70%, var(--sindoor)) 0 18%, transparent 19%),
+    linear-gradient(148deg, var(--sindoor) 0 36%, #9d1830 52%, var(--mor) 100%);
+}
+
+.is-off .hero-drift,
+.is-off .eq-bar,
+.eq-bars.is-off .eq-bar {
+  animation-play-state: paused;
 }
 
 .eq-bar {
@@ -265,8 +305,8 @@
     opacity: 1;
   }
   100% {
-    transform: translateY(105vh) rotate(180deg);
-    opacity: 0.2;
+    transform: translateY(9rem) rotate(160deg);
+    opacity: 0;
   }
 }
 
@@ -349,6 +389,61 @@
   }
 }
 
+@keyframes line-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes script-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.12;
+  }
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spine-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes eq-bounce {
+  from {
+    transform: scaleY(0.28);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
 @keyframes sheen {
   from {
     transform: translateX(-120%);
@@ -368,8 +463,48 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  html[data-motion-ready] .line-inner {
+    animation-name: line-rise;
+    animation-duration: var(--line-dur, 0.48s);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: both;
+    animation-delay: var(--line-delay, 0s);
+  }
+  html[data-motion-ready] .fade-rise {
+    animation-name: fade-rise;
+    animation-duration: var(--fade-dur, 0.4s);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: both;
+    animation-delay: var(--fade-delay, 0s);
+  }
+  html[data-motion-ready] .script-accent {
+    animation: script-in 0.55s ease both;
+    animation-delay: var(--script-delay, 0.45s);
+  }
+  html[data-motion-ready] .hero-media {
+    animation: hero-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  html[data-motion-ready] .spine-path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  html[data-motion-ready] .spine-path.is-drawn {
+    animation: spine-draw 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+  html[data-motion-ready] .mosaic-tile {
+    animation: fade-rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--tile-delay, 0s);
+  }
   .hero-drift {
     animation: hero-drift 18s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  .eq-bar {
+    animation-name: eq-bounce;
+    animation-duration: var(--eq-dur, 1.8s);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-delay: var(--eq-delay, 0s);
   }
   .ticker-track {
     animation: ticker 40s linear infinite;

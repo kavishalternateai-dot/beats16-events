@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode, type Ref } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode, type Ref } from "react";
 import { m, useAnimation, useInView, useReducedMotion } from "motion/react";
 import { dur, ease, inViewMobile, rise } from "@/lib/motion";
 import { useMotionReady } from "@/components/motion";
@@ -12,16 +12,31 @@ export function FadeUp({
   delay = 0,
   distance = rise,
   pace = 1,
+  hero = false,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
   distance?: number;
   pace?: number;
+  /** Hero copy: hidden in the server CSS until the entrance runs. */
+  hero?: boolean;
 }) {
   const ready = useMotionReady();
   const reduce = useReducedMotion();
   const play = ready && reduce === false;
+
+  if (hero) {
+    const duration = Math.min(0.42, 0.34 * pace);
+    return (
+      <div
+        className={cn("fade-rise", className)}
+        style={{ "--fade-delay": `${delay}s`, "--fade-dur": `${duration}s` } as CSSProperties}
+      >
+        {children}
+      </div>
+    );
+  }
 
   if (!play) return <div className={className}>{children}</div>;
 

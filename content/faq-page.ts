@@ -21,7 +21,7 @@ export const faqPageHero = {
   h1: "Questions families and organisers ask Beats16",
   subhead:
     "Quick answers about our bands, the events we play and how booking works. If your question isn't here, send us an inquiry and Tushar ji will get back to you personally.",
-  cta: "Send an inquiry",
+  cta: "Plan your music",
   ctaHref: inquiry,
 } as const;
 
@@ -136,9 +136,9 @@ export const faqPageGroups: FaqGroup[] = [
       }),
       item({
         id: "faq-navratri-abroad",
-        question: "Can Beats16 perform Navratri in London or elsewhere abroad?",
+        question: "Can Beats16 perform Navratri outside India?",
         answer:
-          "We have organised Navratri events for audiences around the world. If you're planning Navratri in London or any other city outside India, share your dates, city and venue and Tushar ji will discuss it with you personally.",
+          "We have organised Navratri events for audiences around the world. If you're planning Navratri outside India, share your dates, city and venue and Tushar ji will discuss it with you personally.",
         related: { href: "/navratri", label: "See our Navratri band" },
       }),
     ],

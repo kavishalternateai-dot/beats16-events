@@ -1,12 +1,24 @@
-"use client";
-
-import { m, useReducedMotion } from "motion/react";
-import { dur, ease, stagger } from "@/lib/motion";
-import { useMotionReady } from "@/components/motion";
+import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
-function splitLines(text: string, max = 32) {
-  const words = text.split(/\s+/);
+function linesFromCounts(text: string, counts: readonly number[]) {
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let index = 0;
+  for (const count of counts) {
+    const line = words.slice(index, index + count).join(" ");
+    if (line) lines.push(line);
+    index += count;
+  }
+  if (index < words.length) {
+    const rest = words.slice(index).join(" ");
+    if (rest) lines.push(rest);
+  }
+  return lines.length ? lines : [text];
+}
+
+function splitLines(text: string, max = 22) {
+  const words = text.split(/\s+/).filter(Boolean);
   const lines: string[] = [];
   let current = "";
   for (const word of words) {
@@ -22,9 +34,19 @@ function splitLines(text: string, max = 32) {
   return lines;
 }
 
+function lineStyle(delay: number, duration: number): CSSProperties {
+  return { "--line-delay": `${delay}s`, "--line-dur": `${duration}s` } as CSSProperties;
+}
+
+/**
+ * Headings are split in the server HTML. A blocking script marks
+ * `data-motion-ready` before paint, and CSS starts each line hidden.
+ * Reduced motion and no-JS skip that attribute, so the final text shows at once.
+ */
 export function LineReveal({
   as: Tag = "h2",
   text,
+  lineWords,
   className,
   id,
   delay = 0,
@@ -35,6 +57,8 @@ export function LineReveal({
 }: {
   as?: "h1" | "h2";
   text: string;
+  /** Desktop line breaks, as word counts taken from `text`. */
+  lineWords?: readonly number[];
   className?: string;
   id?: string;
   delay?: number;
@@ -43,66 +67,58 @@ export function LineReveal({
   script?: string;
   scriptClassName?: string;
 }) {
-  const ready = useMotionReady();
-  const reduce = useReducedMotion();
-  const play = ready && reduce === false;
-  const lines = splitLines(text);
-  const words = text.split(/\s+/);
-  const lead = words.slice(0, 8);
-  const rest = words.slice(8).join(" ");
-  const step = (wordStagger ?? stagger.word) * (pace > 1 ? 1 : 1);
-  const mobileStep = wordStagger ?? 0.05;
-  const duration = Math.min(1.6, dur.medium * pace);
+  const desktop = lineWords?.length ? linesFromCounts(text, lineWords) : splitLines(text);
+  const words = text.split(/\s+/).filter(Boolean);
+  const mobileTokens: { label: string; index: number }[] = [];
+  for (let index = 0; index < words.length; index += 1) {
+    const next = words[index + 1];
+    if (words[index] === "40" && next?.toLowerCase() === "years") {
+      mobileTokens.push({ label: `${words[index]}\u00a0${next}`, index });
+      index += 1;
+    } else {
+      mobileTokens.push({ label: words[index], index });
+    }
+  }
+  const duration = Math.min(0.5, 0.4 * pace);
+  const step = wordStagger ?? 0.06;
+  const mobileStep = Math.min(step, 0.045);
 
   return (
-    <Tag id={id} aria-label={play ? text : undefined} className={cn("relative", className)}>
-      {play ? (
-        <>
-          <span aria-hidden="true" className="hidden md:block">
-            {lines.map((line, index) => (
-              <span key={`${line}-${index}`} className="block overflow-hidden">
-                <m.span
-                  className="block"
-                  initial={{ y: "105%" }}
-                  animate={{ y: "0%" }}
-                  transition={{ duration, ease: ease.silk, delay: delay + index * step }}
-                >
-                  {line}
-                </m.span>
-              </span>
-            ))}
+    <Tag id={id} aria-label={text} className={cn("line-reveal relative max-w-full", className)}>
+      <span aria-hidden="true" className="hidden md:block">
+        {desktop.map((line, index) => (
+          <span key={`${line}-${index}`} className="line-mask block">
+            <span className="line-inner block" style={lineStyle(delay + index * step, duration)}>
+              {line}
+            </span>
           </span>
-          <span aria-hidden="true" className="block md:hidden">
-            {lead.map((word, index) => (
-              <span key={`${word}-${index}`} className="inline-block overflow-hidden align-bottom">
-                <m.span
-                  className="inline-block"
-                  initial={{ y: "105%" }}
-                  animate={{ y: "0%" }}
-                  transition={{ duration, ease: ease.silk, delay: delay + index * mobileStep }}
-                >
-                  {word}
-                  {index < lead.length - 1 ? "\u00a0" : ""}
-                </m.span>
+        ))}
+      </span>
+      <span aria-hidden="true" className="block md:hidden">
+        {mobileTokens.map((token, position) => {
+          const animIndex = Math.min(token.index, 7);
+          return (
+            <span key={`${token.label}-${token.index}`} className="line-mask inline-block max-w-full align-bottom">
+              <span className="line-inner inline-block" style={lineStyle(delay + animIndex * mobileStep, duration)}>
+                {token.label}
+                {position < mobileTokens.length - 1 ? "\u00a0" : ""}
               </span>
-            ))}
-            {rest ? <span> {rest}</span> : null}
-          </span>
-          {script ? (
-            <m.span
-              aria-hidden="true"
-              className={cn("pointer-events-none absolute -top-6 right-0 text-5xl leading-none", scriptClassName)}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.12 }}
-              transition={{ duration: Math.min(1.6, dur.long * pace), ease: ease.silk, delay: delay + duration }}
-            >
-              {script}
-            </m.span>
-          ) : null}
-        </>
-      ) : (
-        text
-      )}
+            </span>
+          );
+        })}
+      </span>
+      {script ? (
+        <span
+          aria-hidden="true"
+          className={cn(
+            "script-accent pointer-events-none absolute inset-x-0 -top-2 overflow-hidden text-right text-[clamp(1.6rem,8vw,3rem)] leading-none",
+            scriptClassName,
+          )}
+          style={{ "--script-delay": `${delay + duration}s` } as CSSProperties}
+        >
+          {script}
+        </span>
+      ) : null}
     </Tag>
   );
 }

@@ -30,6 +30,9 @@ const blank = {
   email: "",
   eventType: "",
   eventDate: "",
+  eventDay: "",
+  eventMonth: "",
+  eventYear: "",
   city: "",
   functions: [] as string[],
   interest: "",
@@ -43,6 +46,30 @@ const blank = {
   utmCampaign: "",
   companyWebsite: "",
 };
+
+const EVENT_YEARS = ["2026", "2027", "2028", "2029", "2030"] as const;
+
+const MONTHS = [
+  ["01", "January"],
+  ["02", "February"],
+  ["03", "March"],
+  ["04", "April"],
+  ["05", "May"],
+  ["06", "June"],
+  ["07", "July"],
+  ["08", "August"],
+  ["09", "September"],
+  ["10", "October"],
+  ["11", "November"],
+  ["12", "December"],
+] as const;
+
+function composeDate(day: string, month: string, year: string) {
+  if (!day && !month && !year) return "";
+  if (year && month && day) return `${year}-${month}-${day}`;
+  if (year && month) return `${year}-${month}`;
+  return "";
+}
 
 function clip(value: string | null, max = 160) {
   return (value ?? "").replace(/[\u0000-\u001f]+/g, " ").trim().slice(0, max);
@@ -95,11 +122,18 @@ export function InquiryForm({
     setPending(true);
     setErrors({});
 
+    const eventDate = composeDate(values.eventDay, values.eventMonth, values.eventYear);
+    if ((values.eventDay || values.eventMonth || values.eventYear) && !eventDate) {
+      setErrors({ eventDate: "Enter the date as dd/mm/yyyy, or choose a month and year. Or leave it blank." });
+      setPending(false);
+      return;
+    }
+
     try {
       const response = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, eventDate }),
       });
       const data = (await response.json()) as { ok?: boolean; errors?: Errors };
       if (!response.ok || !data.ok) {
@@ -123,7 +157,7 @@ export function InquiryForm({
       `Phone: ${values.phone}`,
       `Email: ${values.email}`,
       `Event type: ${values.eventType}`,
-      `Event date: ${values.eventDate}`,
+      `Event date: ${composeDate(values.eventDay, values.eventMonth, values.eventYear)}`,
       `City or venue: ${values.city}`,
       `Functions: ${values.functions.join(", ")}`,
       `Band interest: ${values.interest}`,
@@ -213,17 +247,59 @@ export function InquiryForm({
         </NativeSelect>
       </Field>
 
-      <Field id="eventDate" label="Event date" hint={contactFormCopy.dateHint} error={errors.eventDate}>
-        <Input
-          id="eventDate"
-          name="eventDate"
-          type="date"
-          value={values.eventDate}
-          aria-invalid={errors.eventDate ? true : undefined}
-          aria-describedby={describedBy("eventDate", true, errors.eventDate)}
-          onChange={(event) => set("eventDate", event.target.value)}
-        />
-      </Field>
+      <fieldset className="grid gap-2" aria-describedby={describedBy("eventDate", true, errors.eventDate)}>
+        <legend className="text-sm font-medium">Event date</legend>
+        <p id="eventDate-hint" className="text-sm leading-relaxed text-muted-foreground">
+          {contactFormCopy.dateHint}
+        </p>
+        <div className="grid grid-cols-3 gap-2">
+          <NativeSelect
+            id="eventDate"
+            name="eventDay"
+            aria-label="Day"
+            value={values.eventDay}
+            onChange={(event) => set("eventDay", event.target.value)}
+          >
+            <option value="">Day</option>
+            {Array.from({ length: 31 }, (_, index) => String(index + 1).padStart(2, "0")).map((day) => (
+              <option key={day} value={day}>
+                {day}
+              </option>
+            ))}
+          </NativeSelect>
+          <NativeSelect
+            name="eventMonth"
+            aria-label="Month"
+            value={values.eventMonth}
+            onChange={(event) => set("eventMonth", event.target.value)}
+          >
+            <option value="">Month</option>
+            {MONTHS.map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </NativeSelect>
+          <NativeSelect
+            name="eventYear"
+            aria-label="Year"
+            value={values.eventYear}
+            onChange={(event) => set("eventYear", event.target.value)}
+          >
+            <option value="">Year</option>
+            {EVENT_YEARS.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </NativeSelect>
+        </div>
+        {errors.eventDate ? (
+          <p id="eventDate-error" className="text-sm text-destructive">
+            {errors.eventDate}
+          </p>
+        ) : null}
+      </fieldset>
 
       <Field id="city" label="City / venue *" error={errors.city}>
         <Input

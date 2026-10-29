@@ -23,7 +23,7 @@ export const contactFormCopy = {
   heading: "Send your inquiry",
   intro: "The more you can tell us, the faster we can help. Fields marked * are required.",
   phoneHint: "Tushar ji will call you on this number.",
-  dateHint: "Not fixed yet? Leave blank or tell us the month below.",
+  dateHint: "dd/mm/yyyy. Not fixed yet? Leave blank, or choose the month and year.",
   cityPlaceholder: "Mumbai, venue to be decided",
   submit: "Send my inquiry",
   privacy: "We'll only use your details to reply to your inquiry.",
@@ -32,7 +32,7 @@ export const contactFormCopy = {
 export const contactAfter = {
   heading: "What happens after you send your inquiry",
   steps: [
-    `You'll receive a confirmation email from ${site.email} with a copy of your details.`,
+    "Tushar ji's team will get back to you personally.",
     "Our founder, Tushar Sonigra, personally reviews every inquiry and will get back to you by phone or email.",
     "He'll ask about your date, city or venue and the functions you're planning, if they're not already in your inquiry.",
     "Together you'll talk through the right band for each function, availability and pricing.",
@@ -51,14 +51,14 @@ export const contactReach = {
 export const thankYouSeo = {
   title: "Thank You | Beats16",
   description:
-    "Tushar Sonigra reviews every inquiry and will reply by phone or email. A confirmation is on its way from beats16@gmail.com.",
+    "Tushar Sonigra reviews every inquiry. Tushar ji's team will get back to you personally.",
 } as const;
 
 export const thankYouCopy = {
   eyebrow: "Inquiry received",
   h1: "Thank you — we've received your inquiry",
   lead: "Congratulations on your upcoming celebration, and thank you for thinking of Beats16.",
-  body: `Our founder, Tushar Sonigra, personally reviews every inquiry and will get back to you by phone or email. A confirmation with a copy of your details is on its way to your inbox from ${site.email} — if you can't see it, please check your spam or promotions folder.`,
+  body: "Our founder, Tushar Sonigra, personally reviews every inquiry and will get back to you by phone or email. Tushar ji's team will get back to you personally.",
   prepareHeading: "To help us prepare",
   prepare:
     "If you didn't include them, it helps to have these ready for our conversation:",

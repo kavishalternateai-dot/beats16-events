@@ -1,13 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { m, useReducedMotion } from "motion/react";
 import type { ResolvedMedia } from "@/lib/resolve-media";
-import { dur, ease } from "@/lib/motion";
-import { useMotionReady } from "@/components/motion";
 import { FadeUp } from "@/components/motion/pieces";
 import { LineReveal } from "@/components/motion/line-reveal";
 import { BandhaniPattern } from "@/components/ornament/bandhani";
+import { Equaliser } from "@/components/ornament/equaliser";
 import { GoldThread } from "@/components/ornament/gold-thread";
 import { PlanActions } from "@/components/plan-actions";
 
@@ -22,19 +20,25 @@ export function HomeHero({
   title: string;
   subhead: string;
 }) {
-  const ready = useMotionReady();
-  const reduce = useReducedMotion();
-  const play = ready && reduce === false;
   const videoRef = useRef<HTMLVideoElement>(null);
   const rootRef = useRef<HTMLElement>(null);
   const [userPaused, setUserPaused] = useState<boolean | null>(null);
   const [saveData, setSaveData] = useState(false);
   const [armed, setArmed] = useState(false);
   const [narrow, setNarrow] = useState(false);
-  const paused = (userPaused ?? Boolean(reduce)) || (saveData && !armed);
+  const [reduce, setReduce] = useState(false);
+  const paused = userPaused === true || reduce || (saveData && !armed);
   const hasVideo = Boolean(media.src && media.kind === "video");
   const posterFirst = narrow || saveData;
   const showVideo = (hasVideo && Boolean(media.src) && !posterFirst) || (hasVideo && armed);
+
+  useEffect(() => {
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReduce(motion.matches);
+    apply();
+    motion.addEventListener("change", apply);
+    return () => motion.removeEventListener("change", apply);
+  }, []);
 
   useEffect(() => {
     const query = window.matchMedia("(max-width: 767px)");
@@ -53,11 +57,14 @@ export function HomeHero({
   }, []);
 
   useEffect(() => {
-    const video = videoRef.current;
     const root = rootRef.current;
-    if (!video || !root || !hasVideo) return;
+    if (!root) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (!entry?.isIntersecting || paused) video.pause();
+      const visible = Boolean(entry?.isIntersecting);
+      root.classList.toggle("is-off", !visible);
+      const video = videoRef.current;
+      if (!video || !hasVideo) return;
+      if (!visible || paused) video.pause();
       else video.play().catch(() => setUserPaused(true));
     });
     observer.observe(root);
@@ -67,19 +74,14 @@ export function HomeHero({
   return (
     <section ref={rootRef} className="relative isolate min-h-[88svh] overflow-x-clip text-cream md:min-h-[100svh]" aria-labelledby="home-title">
       {showVideo && media.src ? (
-        <m.div
-          className="absolute inset-0"
-          initial={play ? { opacity: 0, scale: 1.08 } : false}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: play ? dur.hero : 0, ease: ease.silk }}
-        >
+        <div className="hero-media absolute inset-0">
           <video
             ref={videoRef}
             className="h-full w-full object-cover"
             playsInline
             muted
             loop
-            autoPlay={play && !posterFirst}
+            autoPlay={!posterFirst && !reduce}
             preload="metadata"
             poster={media.poster ?? undefined}
             aria-hidden="true"
@@ -88,27 +90,31 @@ export function HomeHero({
             <source src={media.src} type={media.src.endsWith(".webm") ? "video/webm" : "video/mp4"} media="(min-width: 768px)" />
             <source src={media.src} type="video/mp4" media="(max-width: 767px)" />
           </video>
-        </m.div>
+        </div>
       ) : (
-        <m.div
-          className="absolute inset-0 overflow-hidden"
-          initial={play ? { opacity: 0, scale: 1.08 } : false}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: play ? dur.hero : 0, ease: ease.silk }}
-        >
+        <div className="hero-media absolute inset-0 overflow-hidden">
           <div className="hero-drift absolute top-0 -left-1/2 h-full w-[200%]" />
           <BandhaniPattern className="text-cream" />
-        </m.div>
+        </div>
       )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-kajal via-kajal/80 to-transparent" />
-      <div className="site-wrap relative flex min-h-[88svh] flex-col justify-end pb-24 pt-28 md:min-h-[100svh] md:pb-16">
-        <p className="eyebrow text-cream/90">{eyebrow}</p>
-        <GoldThread className="mt-3" delay={0.3} />
-        <LineReveal as="h1" id="home-title" text={title} className="display-title mt-4 max-w-5xl" delay={0.45} />
-        <FadeUp delay={0.9} distance={16} className="mt-5 max-w-xl">
+      <div className="site-wrap relative flex min-h-[88svh] min-w-0 flex-col justify-end pb-24 pt-28 md:min-h-[100svh] md:pb-16">
+        <Equaliser className="mb-4" />
+        <p className="eyebrow max-w-full text-cream/90">{eyebrow}</p>
+        <GoldThread className="mt-3" delay={0.15} />
+        <LineReveal
+          as="h1"
+          id="home-title"
+          text={title}
+          lineWords={[3, 2, 5]}
+          className="home-display mt-4 max-w-full"
+          delay={0.08}
+          wordStagger={0.06}
+        />
+        <FadeUp hero delay={0.62} className="mt-5 max-w-xl">
           <p className="text-lg leading-relaxed text-cream">{subhead}</p>
         </FadeUp>
-        <FadeUp delay={1} distance={16}>
+        <FadeUp hero delay={0.78}>
           <PlanActions source="home-page" onDark className="mt-8" />
         </FadeUp>
       </div>

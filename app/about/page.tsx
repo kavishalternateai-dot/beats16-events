@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { aboutSeo, aboutStory } from "@/content/about";
+import { aboutBeliefs, aboutBands, aboutClose, aboutCraft, aboutCraftIds, aboutEarlyMedia, aboutHero, aboutQuote, aboutScale, aboutScaleMedia, aboutSeo, aboutVideo } from "@/content/about";
 import { MEDIA } from "@/content/media";
-import { proofLines, site } from "@/content/site";
-import { InstagramProfile } from "@/components/instagram-profile";
+import { proofLines } from "@/content/site";
+import { aboutEras } from "@/content/timeline";
+import { AboutTimeline } from "@/components/about-timeline";
+import { FounderQuote, FounderVideo } from "@/components/about-slots";
+import { FounderPortrait } from "@/components/founder-portrait";
 import { JsonLd } from "@/components/json-ld";
 import { MediaFrame } from "@/components/media-frame";
-import { Mosaic } from "@/components/mosaic";
-import { PlanActions } from "@/components/plan-actions";
-import { ArchReveal, ColorWipe } from "@/components/motion/pieces";
-import { ArchThread, GoldThread } from "@/components/ornament/gold-thread";
+import { LineReveal } from "@/components/motion/line-reveal";
+import { ColorWipe } from "@/components/motion/pieces";
 import { CountUp } from "@/components/count-up";
+import { GoldThread } from "@/components/ornament/gold-thread";
+import { buttonVariants } from "@/components/ui/button";
 import { aboutPageJsonLd, breadcrumbJsonLd, organizationJsonLd } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
-import { resolveGallery, resolveMedia } from "@/lib/resolve-media";
+import { resolveMedia } from "@/lib/resolve-media";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = pageMetadata({
   title: aboutSeo.title,
@@ -22,82 +25,115 @@ export const metadata: Metadata = pageMetadata({
   path: "/about",
 });
 
-const tileTone = ["bg-haldi text-kajal", "bg-rani-deep text-cream", "bg-neel text-cream"] as const;
-const cardTone = ["bg-haldi text-kajal", "bg-rani-deep text-cream", "bg-neel text-cream", "bg-sindoor text-cream"] as const;
+const bandSurface = {
+  haldi: "bg-haldi text-kajal",
+  rani: "bg-rani-deep text-cream",
+  neel: "bg-neel text-cream",
+  bandhani: "bandhani-hero text-cream",
+} as const;
+
+const bandHero = {
+  "/gauri": MEDIA.bands.gauri.hero,
+  "/rdx": MEDIA.bands.rdx.hero,
+  "/daastan-e-ghazal": MEDIA.bands.ghazal.hero,
+  "/navratri": MEDIA.bands.navratri.hero,
+} as const;
 
 export default function AboutPage() {
-  const began = aboutStory.sections.find((section) => section.kind === "prose" && section.heading === "How Beats16 began");
-  const shaped = aboutStory.sections.find((section) => section.kind === "points");
-  const family = aboutStory.sections.find((section) => section.kind === "cards");
-  const where = aboutStory.sections.find((section) => section.kind === "prose" && section.instagram);
   const founder = resolveMedia(MEDIA.founder);
+  const early = resolveMedia(aboutEarlyMedia);
+  const scale = resolveMedia(aboutScaleMedia);
+  const craft = aboutCraftIds.map((id) => resolveMedia(MEDIA.gallery.find((item) => item.id === id)!));
 
   return (
     <>
       <JsonLd data={organizationJsonLd()} />
-      <JsonLd data={aboutPageJsonLd({ name: aboutStory.hero.h1, description: aboutSeo.description, path: "/about" })} />
+      <JsonLd data={aboutPageJsonLd({ name: aboutHero.h1, description: aboutSeo.description, path: "/about" })} />
       <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])} />
-      <section className="site-wrap grid items-center gap-10 pt-28 pb-14 md:grid-cols-[minmax(16rem,24rem)_1fr] md:pt-32">
-        <div className="relative">
-          <ArchReveal curtainClass="bg-haldi" className="min-h-[28rem]">
-            <MediaFrame item={founder} priority sizes="(min-width: 768px) 24rem, 80vw" className="min-h-[28rem]" />
-          </ArchReveal>
-          <ArchThread />
-        </div>
-        <div>
-          <p className="eyebrow text-mor">{aboutStory.hero.eyebrow}</p>
-          <GoldThread />
-          <h1 className="display-title mt-4">{aboutStory.hero.h1}</h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed">{aboutStory.hero.subhead}</p>
-          {began && began.kind === "prose"
-            ? began.paragraphs?.map((paragraph) => (
-                <p key={paragraph} className="mt-4 max-w-xl leading-relaxed">
-                  {paragraph}
-                </p>
-              ))
-            : null}
-          <PlanActions source="about-page" className="mt-8" />
-        </div>
-      </section>
 
-      <section className="bg-chandan" aria-labelledby="official-mark">
-        <div className="site-wrap flex flex-col items-center py-14 md:py-16">
-          <GoldThread />
-          <h2 id="official-mark" className="mt-4 text-center font-display text-4xl leading-none md:text-5xl">
-            {site.name}
-          </h2>
-          <Image
-            src="/brand/beats16-logo-original.jpg"
-            alt="Tushar Sonigra's Beats 16 official mark"
-            width={1079}
-            height={769}
-            className="mt-8 h-auto w-full max-w-2xl rounded-3xl"
-          />
+      <section className="site-wrap grid items-center gap-10 pt-28 pb-8 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] md:pt-32 md:pb-12">
+        <div className="min-w-0 max-w-full">
+          <FounderPortrait item={founder} priority sizes="(min-width: 768px) 22rem, 90vw" />
         </div>
-      </section>
-
-      {shaped && shaped.kind === "points" ? (
-        <section aria-labelledby="shaped" className="py-6">
-          <h2 id="shaped" className="sr-only">
-            {shaped.heading}
-          </h2>
-          <div className="grid md:grid-cols-3">
-            {shaped.points.map((point, index) => (
-              <ColorWipe key={point.title} from={index % 2 ? "right" : "left"} className={tileTone[index]}>
-                <div className="px-6 py-16 md:px-10 md:py-24">
-                  <h3 className="font-display text-[clamp(2.4rem,4vw,3.6rem)] leading-[0.95]">{point.title}</h3>
-                  <p className="mt-4 max-w-sm text-lg leading-relaxed">{point.text}</p>
-                </div>
-              </ColorWipe>
-            ))}
+        <div className="min-w-0 max-w-full">
+          <p className="eyebrow text-mor">{aboutHero.eyebrow}</p>
+          <GoldThread />
+          <LineReveal as="h1" text={aboutHero.h1} lineWords={[5, 5]} className="display-title mt-4" delay={0.05} />
+          {aboutHero.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="mt-4 max-w-xl text-lg leading-relaxed">
+              {paragraph}
+            </p>
+          ))}
+          <div className="mt-8 max-w-xl min-w-0">
+            <MediaFrame item={early} className="rounded-3xl" sizes="(min-width: 768px) 36rem, 100vw" />
           </div>
-        </section>
-      ) : null}
+        </div>
+      </section>
 
-      <section className="site-wrap py-14" aria-labelledby="about-numbers">
-        <h2 id="about-numbers" className="font-display text-4xl leading-none">
-          The work in numbers
+      <section className="site-wrap py-12 md:py-16" aria-labelledby="about-craft">
+        <h2 id="about-craft" className="max-w-3xl font-display text-[clamp(2rem,5vw,3.5rem)] leading-[0.98] [overflow-wrap:anywhere]">
+          {aboutCraft.heading}
         </h2>
+        <div className="mt-6 grid max-w-3xl gap-4">
+          {aboutCraft.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="leading-relaxed">
+              {paragraph}
+            </p>
+          ))}
+        </div>
+        <ul className="mt-8 grid gap-3 sm:grid-cols-3">
+          {craft.map((item) => (
+            <li key={item.id} className="min-w-0 overflow-hidden">
+              <MediaFrame item={item} className="rounded-3xl" sizes="(min-width: 640px) 30vw, 100vw" />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="bg-cream py-12 md:py-16" aria-labelledby="about-bands">
+        <div className="site-wrap">
+          <h2 id="about-bands" className="max-w-3xl font-display text-[clamp(2rem,5vw,3.5rem)] leading-[0.98] [overflow-wrap:anywhere]">
+            {aboutBands.heading}
+          </h2>
+          {aboutBands.intro.map((paragraph) => (
+            <p key={paragraph} className="mt-4 max-w-3xl text-lg leading-relaxed">
+              {paragraph}
+            </p>
+          ))}
+          <ul className="mt-8 grid gap-4 md:grid-cols-2">
+            {aboutBands.cards.map((card) => (
+              <li key={card.href} className="min-w-0">
+                <Link href={card.href} className={cn("lift-card block h-full overflow-hidden rounded-3xl", bandSurface[card.tone])}>
+                  <div className="aspect-[16/9] overflow-hidden">
+                    <MediaFrame item={resolveMedia(bandHero[card.href])} fill className="h-full w-full" sizes="(min-width: 768px) 40vw, 100vw" />
+                  </div>
+                  <div className="p-6">
+                    <p className="eyebrow opacity-80">{card.reason}</p>
+                    <h3 className="mt-2 font-display text-[clamp(2rem,4vw,3rem)] leading-none [overflow-wrap:anywhere]">{card.title}</h3>
+                    <p className="mt-3 leading-relaxed">{card.text}</p>
+                    <span className="mt-4 inline-flex min-h-11 items-center font-medium">{card.link} →</span>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p id="independent-bands" className="mt-6 max-w-3xl scroll-mt-28 text-lg leading-relaxed">
+            {aboutBands.independent}
+          </p>
+        </div>
+      </section>
+
+      <section className="site-wrap py-14 md:py-20" aria-labelledby="about-scale">
+        <h2 id="about-scale" className="max-w-3xl font-display text-[clamp(2rem,5vw,3.5rem)] leading-[0.98] [overflow-wrap:anywhere]">
+          {aboutScale.heading}
+        </h2>
+        <div className="mt-6 grid max-w-3xl gap-4">
+          {aboutScale.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="leading-relaxed">
+              {paragraph}
+            </p>
+          ))}
+        </div>
         <dl className="mt-8 grid gap-6 sm:grid-cols-3">
           {proofLines.map((item) => (
             <div key={item.value}>
@@ -108,57 +144,59 @@ export default function AboutPage() {
             </div>
           ))}
         </dl>
+        <div className="mt-10 min-w-0 overflow-hidden">
+          <MediaFrame item={scale} className="rounded-3xl" sizes="(min-width: 768px) 72rem, 100vw" />
+        </div>
       </section>
 
-      {family && family.kind === "cards" ? (
-        <section className="site-wrap py-8" aria-labelledby="family">
-          <h2 id="family" className="font-display text-4xl leading-none md:text-6xl">
-            {family.heading}
+      <AboutTimeline eras={aboutEras} />
+
+      <section aria-labelledby="about-beliefs">
+        <div className="site-wrap py-12 md:py-16">
+          <h2 id="about-beliefs" className="max-w-4xl font-display text-[clamp(2rem,5vw,3.5rem)] leading-[0.98] [overflow-wrap:anywhere]">
+            {aboutBeliefs.heading}
           </h2>
-          <ul className="mt-8 grid gap-4 md:grid-cols-2">
-            {family.cards.map((card, index) => (
-              <li key={card.href}>
-                <Link href={card.href} className={`lift-card block rounded-3xl p-6 ${cardTone[index]}`}>
-                  <h3 className="font-display text-4xl leading-none">{card.title}</h3>
-                  <p className="mt-3 leading-relaxed">{card.text}</p>
-                  <span className="mt-4 inline-flex min-h-11 items-center font-medium">{card.link} →</span>
-                </Link>
-              </li>
+          <div className="mt-6 grid max-w-3xl gap-4">
+            {aboutBeliefs.intro.map((paragraph) => (
+              <p key={paragraph} className="leading-relaxed">
+                {paragraph}
+              </p>
             ))}
-          </ul>
-          {family.note ? (
-            <p id="independent-bands" className="mt-5 scroll-mt-28">
-              {family.note}
-            </p>
-          ) : null}
-        </section>
-      ) : null}
-
-      <section className="site-wrap py-12" aria-labelledby="about-photos">
-        <h2 id="about-photos" className="font-display text-4xl leading-none">
-          Photographs
-        </h2>
-        <Mosaic items={resolveGallery("about")} label="Photographs" />
+          </div>
+        </div>
+        <div className="grid md:grid-cols-3">
+          {aboutBeliefs.points.map((point, index) => (
+            <ColorWipe key={point.title} from={index % 2 ? "right" : "left"} className={point.tone}>
+              <div className="px-6 py-14 md:px-10 md:py-20">
+                <h3 className="font-display text-[clamp(2rem,4vw,3.2rem)] leading-[0.95] [overflow-wrap:anywhere]">{point.title}</h3>
+                <p className="mt-4 max-w-sm text-lg leading-relaxed">{point.text}</p>
+              </div>
+            </ColorWipe>
+          ))}
+        </div>
+        <p className="site-wrap py-10 text-lg leading-relaxed md:py-14">{aboutBeliefs.close}</p>
       </section>
 
-      {where && where.kind === "prose" ? (
-        <section className="site-wrap max-w-3xl py-8" aria-labelledby="where">
-          <h2 id="where" className="font-display text-4xl leading-none">
-            {where.heading}
-          </h2>
-          {where.body ? <p className="mt-4 leading-relaxed">{where.body}</p> : null}
-          <p className="mt-4 text-lg">
-            <InstagramProfile />
-          </p>
-          {where.link ? (
-            <p className="mt-4">
-              <Link href={where.link.href} className="font-medium text-mor underline underline-offset-4">
-                {where.link.label}
-              </Link>
+      <section className="site-wrap pb-16" aria-labelledby="about-close">
+        <h2 id="about-close" className="max-w-3xl font-display text-[clamp(2rem,5vw,3.5rem)] leading-[0.98] [overflow-wrap:anywhere]">
+          {aboutClose.heading}
+        </h2>
+        <div className="mt-6 grid max-w-3xl gap-4">
+          {aboutClose.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="text-lg leading-relaxed">
+              {paragraph}
             </p>
-          ) : null}
-        </section>
-      ) : null}
+          ))}
+        </div>
+        <FounderQuote quote={aboutQuote} />
+        <FounderVideo src={aboutVideo} />
+        <Link
+          href={aboutClose.ctaHref}
+          className={cn(buttonVariants({ size: "cta" }), "mt-8 h-auto min-h-11 max-w-full rounded-full px-7 py-2 text-center whitespace-normal")}
+        >
+          {aboutClose.cta}
+        </Link>
+      </section>
     </>
   );
 }

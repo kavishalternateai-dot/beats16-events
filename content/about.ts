@@ -1,128 +1,161 @@
 /**
- * Approved About copy, AQ-007 (2026-10-27).
- * Founder: Tushar Sonigra. "Tushar ji" only on the personal reply line.
- * No biography, dates, clients, or numbers beyond the published proof.
+ * About story. Confirm-lines and unconfirmed years are omitted, not shown as placeholders.
+ * "Four decades" appears twice in this copy and nowhere else on the page.
  */
 
-import { inquiryHref, standardProof, type PageStory } from "@/content/story";
+import type { MediaItem } from "@/content/media";
 import { site } from "@/content/site";
-
-const inquiry = inquiryHref({ source: "about-page" });
 
 export const aboutSeo = {
   title: "About Beats16 | Indian Wedding Music from Mumbai",
   description:
-    "Beats16 brings live music to Indian weddings and festivals: 5,000+ events and 80+ Navratris, from Mumbai to the world. Read our story.",
+    "Tushar Sonigra started Beats16 in Mumbai. Live music for Indian weddings and festivals, with 5,000+ events and 80+ Navratris.",
 } as const;
 
-export const aboutStory: PageStory = {
-  hero: {
-    eyebrow: `About ${site.name} · ${site.city}`,
-    h1: "Music for Indian weddings and festivals",
-    subhead:
-      "Tushar Sonigra started Beats16 in Mumbai. We have played more than 5,000 events. We still bring the same care to every celebration.",
-    cta: "Send an inquiry",
-    ctaHref: inquiry,
-    note: `Based in ${site.city}. Performing across India and abroad.`,
-  },
-  sections: [
-    {
-      kind: "prose",
-      heading: "How Beats16 began",
-      paragraphs: [
-        "Tushar Sonigra started Beats16 in Mumbai. It began as music for family celebrations. Wedding by wedding, and festival by festival, that work has grown to more than 5,000 events in India and abroad.",
-        "Families trust us with important days: the mehendi, the sangeet, the pheras and the reception. Communities trust us with their festivals. We have organised more than 80 Navratris for audiences around the world.",
-        "Today, Tushar Sonigra — Tushar ji to the families we work with — still personally speaks with the families and organisers who get in touch, so every celebration starts with a real conversation.",
-      ],
-    },
-    {
-      kind: "gallery",
-      heading: "Photographs",
-      intro: "More photographs from the work will be added here.",
-      slotIds: ["about-celebration", "about-band"],
-    },
-    {
-      kind: "proof",
-      compact: true,
-      heading: "The work in numbers",
-      items: standardProof,
-    },
-    {
-      kind: "points",
-      heading: "Music shaped around each function",
-      intro:
-        "An Indian wedding is many celebrations in one, and each function has its own mood. That's why we plan a tailored musical concept for every function, and why we have more than one band.",
-      points: [
-        {
-          title: "Rituals deserve calm",
-          text: "The pheras and traditional ceremonies call for music that sits gently with the moment.",
-        },
-        {
-          title: "Celebrations deserve energy",
-          text: "Sangeet nights, garba and dandiya call for music that fills the floor and keeps it full.",
-        },
-        {
-          title: "Evenings deserve soul",
-          text: "Cultural and community evenings call for music made for listening.",
-        },
-      ],
-    },
-    {
-      kind: "cards",
-      heading: "The Beats16 family of bands",
-      cards: [
-        {
-          href: "/gauri",
-          title: "Gauri",
-          text: "For wedding rituals and traditional ceremonies.",
-          link: "Meet Gauri",
-        },
-        {
-          href: "/rdx",
-          title: "RDX",
-          text: "Our wireless band for sangeet nights and private events.",
-          link: "Meet RDX",
-        },
-        {
-          href: "/daastan-e-ghazal",
-          title: "Daastan-e-Ghazal",
-          text: "Ghazal evenings for cultural, community and private events.",
-          link: "Explore Daastan-e-Ghazal",
-        },
-        {
-          href: "/navratri",
-          title: "Navratri band by Beats16",
-          text: "Garba and dandiya, in India and around the world.",
-          link: "See our Navratri band",
-        },
-      ],
-      note: "We also put together independent bands for private shows.",
-    },
-    {
-      kind: "prose",
-      heading: "Where to find us",
-      body: "Weddings are our speciality. We also perform at cultural programmes, religious celebrations, community gatherings and corporate events.",
-      link: { href: "/corporate-cultural", label: "Corporate & cultural events" },
-      instagram: true,
-    },
-    {
-      kind: "prose",
-      heading: "Indian weddings and traditional festivals",
-      body: "Beats16 plays Indian weddings and traditional festivals only. That focus keeps the rituals, customs and music close to what families expect. If your celebration is a different kind of ceremony, we will say so, plainly and kindly.",
-    },
-    {
-      kind: "prose",
-      heading: "Based in Mumbai, performing across India and abroad",
-      body: "Our home is Mumbai, but our music travels: to weddings across India, to destination celebrations abroad, and to Navratri events for audiences around the world.",
-    },
-    { kind: "pricing", heading: "About pricing" },
+export const aboutHero = {
+  eyebrow: `About ${site.name} · ${site.city}`,
+  h1: "A story told in songs, one celebration at a time",
+  paragraphs: [
+    "Beats16 began in Mumbai with one man and a love for music.",
+    "His name is Tushar Sonigra. Families call him Tushar ji.",
   ],
-  faqs: [],
-  faqHeading: "",
-  close: {
-    heading: "Tell us about your celebration",
-    body: "Share your date, city and the functions you're planning, and Tushar ji will get back to you personally.",
-    cta: "Fill the inquiry form",
-    ctaHref: inquiry,
-  },
-};
+} as const;
+
+export const aboutCraft = {
+  heading: "Wedding by wedding, festival by festival",
+  paragraphs: [
+    "For four decades, Beats16 has grown with the families it plays for.",
+    "One wedding led to the next. One festival led to another.",
+    "Each one taught us something new.",
+    "We learned that a mehendi and a sangeet do not want the same song.",
+    "We learned that the pheras ask for quiet respect, not a party.",
+    "We learned that a garba circle needs music that never lets it break.",
+    "That is how the craft grew: by listening, one celebration at a time.",
+  ],
+} as const;
+
+export const aboutBands = {
+  heading: "Why we have more than one band",
+  intro: [
+    "A wedding needs more than one sound. So Beats16 grew more than one band.",
+    "Each was born for a reason.",
+  ],
+  cards: [
+    {
+      href: "/gauri",
+      title: "Gauri",
+      reason: "For the rituals.",
+      text: "Some moments ask for calm. Gauri plays traditional music for the pheras and wedding ceremonies. The music follows the ritual. It never takes over.",
+      link: "Meet Gauri",
+      tone: "haldi" as const,
+    },
+    {
+      href: "/rdx",
+      title: "RDX",
+      reason: "For the sangeet.",
+      text: "The best sangeet nights don't stay on one stage. RDX is our wireless band. It walks in with the family and plays among the guests, wherever the party goes.",
+      link: "Meet RDX",
+      tone: "rani" as const,
+    },
+    {
+      href: "/daastan-e-ghazal",
+      title: "Daastan-e-Ghazal",
+      reason: "For listening.",
+      text: "Not every evening needs a dance floor. Daastan-e-Ghazal brings slow, soulful ghazal evenings to cultural programmes, community gatherings and private family nights.",
+      link: "Explore Daastan-e-Ghazal",
+      tone: "neel" as const,
+    },
+    {
+      href: "/navratri",
+      title: "Navratri band by Beats16",
+      reason: "For the circle.",
+      text: "Nine nights, one circle, and music that keeps everyone moving. Our Navratri band plays live garba and dandiya, in India and around the world.",
+      link: "See our Navratri band",
+      tone: "bandhani" as const,
+    },
+  ],
+  independent: "When a private show needs its own line-up, we put one together.",
+} as const;
+
+export const aboutScale = {
+  heading: "5,000+ celebrations, and counting",
+  paragraphs: [
+    "More than 5,000 events. Weddings, festivals, cultural programmes, community gatherings and corporate events.",
+    "More than 80 Navratris organised, for audiences around the world.",
+    "Our home is Mumbai. Our music travels across India and abroad.",
+  ],
+} as const;
+
+export const aboutBeliefs = {
+  heading: "Music shaped around each function, culture held with care",
+  intro: [
+    "An Indian wedding is many celebrations in one.",
+    "So we don't play one playlist for all of it.",
+    "We plan the music for each function, so it feels connected from the first song to the last dance.",
+  ],
+  points: [
+    {
+      title: "Rituals deserve calm.",
+      text: "The pheras call for music that sits gently with the moment.",
+      tone: "bg-haldi text-kajal",
+    },
+    {
+      title: "Celebrations deserve energy.",
+      text: "Sangeet nights, garba and dandiya call for a full floor.",
+      tone: "bg-rani-deep text-cream",
+    },
+    {
+      title: "Evenings deserve soul.",
+      text: "Cultural and community evenings call for music made for listening.",
+      tone: "bg-neel text-cream",
+    },
+  ],
+  close:
+    "We play Indian weddings and traditional festivals only. That focus keeps the rituals, customs and music close to what families expect.",
+} as const;
+
+export const aboutClose = {
+  heading: "Every celebration still starts with a conversation",
+  paragraphs: [
+    "Four decades on, one thing has not changed.",
+    "Tushar ji still speaks personally with every family and organiser who gets in touch.",
+    "He listens first: your date, your city, your functions, your family's customs.",
+    "Then we plan the music around you.",
+  ],
+  cta: "Plan your music",
+  ctaHref: "/contact?source=about-page#inquiry-form",
+} as const;
+
+/** Unconfirmed. The quote block stays unrendered while this is unset. */
+export const aboutQuote: string | undefined = undefined;
+
+/** Unconfirmed. The founder video stays unrendered while this is unset. */
+export const aboutVideo: string | undefined = undefined;
+
+function poster(item: MediaItem): MediaItem {
+  return item;
+}
+
+export const aboutEarlyMedia = poster({
+  id: "about-early",
+  kind: "image",
+  alt: "Beats16 in the early years.",
+  ratio: "3:2",
+  word: "Mumbai",
+  tone: "haldi",
+  envKey: "MEDIA_ABOUT_EARLY",
+});
+
+export const aboutScaleMedia = poster({
+  id: "about-scale",
+  kind: "image",
+  alt: "A Beats16 celebration.",
+  ratio: "16:9",
+  word: "Navratri",
+  script: "ગરબા",
+  scriptFont: "gujarati",
+  tone: "bandhani",
+  envKey: "MEDIA_ABOUT_SCALE",
+});
+
+export const aboutCraftIds = ["gallery-mehendi", "gallery-sangeet", "gallery-pheras"] as const;

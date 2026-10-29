@@ -22,8 +22,10 @@ export function SiteFooter() {
         </div>
         <div className="grid gap-10 sm:grid-cols-2">
           <div>
-            <h2 className="eyebrow text-cream/80">Contact</h2>
-            <ul className="mt-4 grid gap-2">
+            <p id="footer-contact" className="eyebrow text-cream/80">
+              Contact
+            </p>
+            <ul aria-labelledby="footer-contact" className="mt-4 grid gap-2">
               <li>
                 <PhoneLink location="footer" className="underline decoration-sona/70 underline-offset-4" />
               </li>
@@ -49,8 +51,10 @@ export function SiteFooter() {
             </ul>
           </div>
           <div>
-            <h2 className="eyebrow text-cream/80">Pages</h2>
-            <ul className="mt-4 grid gap-2 text-sm">
+            <p id="footer-pages" className="eyebrow text-cream/80">
+              Pages
+            </p>
+            <ul aria-labelledby="footer-pages" className="mt-4 grid gap-2 text-sm">
               {footerNav.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="underline-offset-4 hover:underline">

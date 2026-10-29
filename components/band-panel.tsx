@@ -11,6 +11,7 @@ import { ArchReveal } from "@/components/motion/pieces";
 import { LineReveal } from "@/components/motion/line-reveal";
 import { MediaFrame } from "@/components/media-frame";
 import { toneClass } from "@/components/tones";
+import { cn } from "@/lib/utils";
 
 function useNarrowPanel() {
   const [narrow, setNarrow] = useState(false);
@@ -62,13 +63,13 @@ export function BandPanel({
       transition={reduce !== false ? { duration: 0.3 } : { duration: dur.medium, delay: 0.45, ease: ease.curtain }}
     >
       <div className="grid md:grid-cols-2 md:items-stretch">
-        <div className={flip ? "md:order-2" : undefined}>
-          <ArchReveal className="min-h-64 md:min-h-[28rem] md:p-8" curtainClass={colors.bg}>
-            <MediaFrame item={media} className="h-full min-h-64 w-full md:min-h-[24rem]" sizes="(min-width: 768px) 40vw, 100vw" />
+        <div className={cn("order-2 min-w-0 max-md:max-h-[50svh] max-md:overflow-hidden", flip ? "md:order-2" : "md:order-1")}>
+          <ArchReveal className="h-full max-md:max-h-[50svh] md:min-h-[28rem] md:p-8" curtainClass={colors.bg}>
+            <MediaFrame item={media} fill className="h-full max-h-[50svh] w-full max-w-full md:max-h-none md:min-h-[24rem]" sizes="(min-width: 768px) 40vw, 100vw" />
           </ArchReveal>
         </div>
-        <div className="flex flex-col justify-center px-6 py-12 md:px-12 md:py-16">
-          <LineReveal as="h2" text={name} className="font-display text-[clamp(3.2rem,7vw,5.6rem)] leading-[0.95]" delay={0.15} />
+        <div className={cn("order-1 flex min-w-0 flex-col justify-center px-6 py-10 md:px-12 md:py-16", flip ? "md:order-1" : "md:order-2")}>
+          <LineReveal as="h2" text={name} className="font-display text-[clamp(2rem,8vw,5.6rem)] leading-[0.95]" delay={0.08} />
           <m.p
             className="mt-4 max-w-md text-lg leading-snug"
             initial={false}

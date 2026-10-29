@@ -25,8 +25,8 @@ export function MobileCtaBar() {
         <PhoneLink location="mobile_bar" className="inline-flex h-12 items-center justify-center bg-kajal text-base font-medium text-cream">
           Call
         </PhoneLink>
-        <Link href="/contact?source=mobile-bar#inquiry-form" className="inline-flex h-12 items-center justify-center bg-sindoor text-base font-medium text-cream">
-          Inquire
+        <Link href="/contact?source=mobile-bar#inquiry-form" className="inline-flex h-12 items-center justify-center bg-sindoor px-2 text-center text-sm font-medium leading-tight text-cream">
+          Plan your music
         </Link>
       </div>
     </div>

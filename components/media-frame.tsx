@@ -10,20 +10,23 @@ export function MediaFrame({
   className,
   sizes = "(min-width: 1024px) 40rem, 100vw",
   controls = false,
+  fill = false,
 }: {
   item: ResolvedMedia;
   priority?: boolean;
   className?: string;
   sizes?: string;
   controls?: boolean;
+  /** Stretch to the parent instead of locking an aspect ratio. */
+  fill?: boolean;
 }) {
   if (item.empty || !item.src) {
-    return <PosterTile item={item} className={className} />;
+    return <PosterTile item={item} fill={fill} className={className} />;
   }
 
   if (item.kind === "video") {
     return (
-      <div className={cn("relative overflow-hidden bg-kajal", ratioClass(item.ratio), className)}>
+      <div className={cn("relative overflow-hidden bg-kajal", fill ? "h-full w-full" : ratioClass(item.ratio), className)}>
         <video
           className="h-full w-full object-cover"
           controls={controls}
@@ -43,12 +46,13 @@ export function MediaFrame({
 
   const remote = item.src.startsWith("https://");
   return (
-    <div className={cn("relative overflow-hidden bg-chandan", ratioClass(item.ratio), className)}>
+    <div className={cn("relative max-w-full overflow-hidden bg-chandan", fill ? "h-full w-full" : ratioClass(item.ratio), className)}>
       <Image
         src={item.src}
         alt={item.alt}
         fill
         priority={priority}
+        fetchPriority={priority ? "high" : undefined}
         sizes={sizes}
         unoptimized={remote}
         className="object-cover"

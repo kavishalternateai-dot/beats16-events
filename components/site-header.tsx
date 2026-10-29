@@ -12,20 +12,24 @@ import { cn } from "@/lib/utils";
 
 const bandHrefs: readonly string[] = bandNav.map((item) => item.href);
 
+const darkHeroPaths = new Set<string>(["/", "/weddings", "/gauri", "/rdx", "/daastan-e-ghazal", "/navratri", "/corporate-cultural"]);
+
 function isCurrent(pathname: string, href: string) {
   return pathname === href;
 }
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const [solid, setSolid] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const darkHero = darkHeroPaths.has(pathname);
+  const solid = !darkHero || scrolled;
   const [menuOpen, setMenuOpen] = useState(false);
   const [bandsOpen, setBandsOpen] = useState(false);
   const bandsRef = useRef<HTMLDivElement>(null);
   const bandOn = bandHrefs.includes(pathname);
 
   useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > 80);
+    const onScroll = () => setScrolled(window.scrollY > 80);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -224,10 +228,12 @@ export function SiteHeader() {
 }
 
 export function SiteHeaderFallback() {
+  const pathname = usePathname();
+  const darkHero = darkHeroPaths.has(pathname);
   return (
-    <div className="fixed inset-x-0 top-0 z-40 bg-kajal/70">
+    <div className={darkHero ? "fixed inset-x-0 top-0 z-40 bg-kajal/70" : "fixed inset-x-0 top-0 z-40 bg-cream text-kajal shadow-[0_1px_0_var(--sona)]"}>
       <div className="site-wrap flex h-16 items-center">
-        <BrandLockup tone="light" markClassName="h-8" />
+        <BrandLockup tone={darkHero ? "light" : "dark"} markClassName="h-8" />
       </div>
     </div>
   );

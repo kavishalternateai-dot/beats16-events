@@ -76,6 +76,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${hanken.variable} ${rozha.variable} ${tiro.variable} ${gujarati.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col overflow-x-clip bg-background pb-24 text-foreground md:pb-0">
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.setAttribute('data-motion-ready','true')}catch(e){}",
+          }}
+        />
         <MotionRoot>
           <a href="#main" className="skip-link">
             Skip to content

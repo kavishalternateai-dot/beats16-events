@@ -66,6 +66,8 @@ const envValues: Record<string, string | undefined> = {
   MEDIA_NAVRATRI_PHOTO_1: process.env.MEDIA_NAVRATRI_PHOTO_1,
   MEDIA_NAVRATRI_PHOTO_2: process.env.MEDIA_NAVRATRI_PHOTO_2,
   MEDIA_NAVRATRI_PHOTO_3: process.env.MEDIA_NAVRATRI_PHOTO_3,
+  MEDIA_ABOUT_EARLY: process.env.MEDIA_ABOUT_EARLY,
+  MEDIA_ABOUT_SCALE: process.env.MEDIA_ABOUT_SCALE,
 };
 
 function readEnv(key: string | undefined): string {
@@ -163,7 +165,7 @@ export function resolveGallery(tag: GalleryTag): ResolvedMedia[] {
   return MEDIA.gallery.filter((item) => item.tags?.includes(tag)).map((item) => resolveMedia(item));
 }
 
-/** Posters never outnumber photographs. With no photographs yet, keep a three-tile graphic. */
+/** With fewer than four photographs, keep every poster slot so the grid stays full. */
 export function mosaicItems(items: ResolvedMedia[]): ResolvedMedia[] {
   return chooseMosaic(items);
 }

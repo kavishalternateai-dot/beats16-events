@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { FaqList } from "@/components/faq-list";
 import { MediaFrame } from "@/components/media-frame";
 import { JsonLd } from "@/components/json-ld";
+import { Mosaic } from "@/components/mosaic";
 import { PlanActions } from "@/components/plan-actions";
 import { PosterTile } from "@/components/poster-tile";
 import { ReelStrip } from "@/components/reel-strip";
@@ -106,26 +107,26 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
       <JsonLd data={faqJsonLd(band.story.faqs)} />
       <section className={`relative overflow-hidden ${tone.bg} ${tone.text}`}>
-        <BandhaniPattern />
+        <BandhaniPattern multi={visual.tone === "bandhani"} />
         {visual.tone !== "haldi" ? (
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-kajal/75 to-transparent" />
         ) : null}
-        <div className="site-wrap relative grid items-end gap-8 pt-28 pb-12 md:grid-cols-[1.1fr_0.9fr] md:pt-32 md:pb-16">
-          <div>
+        <div className="site-wrap relative grid items-end gap-8 pt-28 pb-12 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:pt-32 md:pb-16">
+          <div className="min-w-0 max-w-full">
             <Breadcrumbs items={crumbs} />
-            <p className="eyebrow mt-6 opacity-90">{band.story.hero.eyebrow}</p>
-            <GoldThread className="mt-3" delay={0.2} />
+            <p className="eyebrow mt-6 max-w-full opacity-90">{band.story.hero.eyebrow}</p>
+            <GoldThread className="mt-3" delay={0.08} />
             <LineReveal
               as="h1"
               text={band.story.hero.h1}
-              className="display-title mt-3 text-balance"
-              delay={0.35}
+              className="display-title mt-3"
+              delay={0.05}
               pace={pace}
-              wordStagger={wordStagger}
-              script={heroMedia.script}
+              wordStagger={wordStagger ?? 0.045}
+              script={bandId === "navratri" ? undefined : heroMedia.script}
               scriptClassName={heroMedia.scriptFont === "gujarati" ? "font-gujarati" : "font-devanagari"}
             />
-            <FadeUp delay={0.55} distance={16} pace={pace} className="mt-5 max-w-xl">
+            <FadeUp hero delay={0.42} pace={pace} className="mt-5 max-w-xl">
               <p className="text-lg leading-relaxed">{band.story.hero.subhead}</p>
             </FadeUp>
             <ul className="mt-5 flex flex-wrap gap-2">
@@ -135,16 +136,16 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
                 </li>
               ))}
             </ul>
-            <FadeUp delay={0.7} distance={16} pace={pace} className="mt-8">
+            <FadeUp hero delay={0.55} pace={pace} className="mt-8">
               <PlanActions source={`${bandId}-page`} primary={band.story.hero.cta} onDark={visual.tone !== "haldi"} onSindoor={visual.tone === "sindoor" || visual.tone === "bandhani"} />
             </FadeUp>
           </div>
-          <div className="relative">
-          <ArchReveal className="min-h-80" curtainClass={tone.bg} pace={pace}>
+          <div className="relative min-w-0 max-w-full">
+          <ArchReveal className="min-h-64 md:min-h-80" curtainClass={tone.bg} pace={pace}>
             {heroMedia.empty ? (
-              <PosterTile item={heroMedia} className="min-h-80 rounded-3xl" />
+              <PosterTile item={heroMedia} className="min-h-64 rounded-3xl md:min-h-80" />
             ) : (
-              <MediaFrame item={heroMedia} priority className="min-h-80 rounded-3xl" sizes="(min-width: 768px) 40vw, 100vw" />
+              <MediaFrame item={heroMedia} priority className="min-h-64 rounded-3xl md:min-h-80" sizes="(min-width: 768px) 40vw, 100vw" />
             )}
           </ArchReveal>
           </div>
@@ -198,13 +199,7 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
         <h2 id={`${bandId}-photos`} className="font-display text-4xl leading-none">
           From the floor
         </h2>
-        <ul className="mt-6 grid gap-4 sm:grid-cols-3">
-          {photos.map((photo) => (
-            <li key={photo.id} className="mosaic-tile group relative overflow-hidden">
-              <MediaFrame item={photo} className="mosaic-media" sizes="(min-width: 640px) 30vw, 100vw" />
-            </li>
-          ))}
-        </ul>
+        <Mosaic items={photos} label={`${band.name} photographs`} />
       </section>
 
       <section className="site-wrap py-8" aria-labelledby={`${bandId}-pairs`}>

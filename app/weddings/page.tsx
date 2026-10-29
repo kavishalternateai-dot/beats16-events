@@ -42,21 +42,37 @@ export default function WeddingsPage() {
       <JsonLd data={serviceJsonLd({ name: weddingsStory.hero.h1, description: weddingsSeo.description, path: "/weddings" })} />
       <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Weddings", path: "/weddings" }])} />
       <JsonLd data={faqJsonLd(weddingFaqs)} />
-      <section className="relative overflow-hidden bg-rani-deep text-cream">
-        <BandhaniPattern />
-        <div className="site-wrap grid items-center gap-8 pt-28 pb-14 md:grid-cols-2 md:pt-32">
-          <div>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-y-0 left-0 w-full bg-rani-deep md:w-[62%]" aria-hidden="true" />
+        <div className="absolute inset-y-0 right-0 hidden bg-haldi md:block md:w-[38%]" aria-hidden="true" />
+        <div className="site-wrap relative grid items-center gap-8 pt-28 pb-14 text-cream md:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] md:pt-32">
+          <div className="relative min-w-0 max-w-full overflow-hidden">
+            <BandhaniPattern className="text-cream" />
             <p className="eyebrow">{weddingsStory.hero.eyebrow}</p>
-            <GoldThread className="mt-3" delay={0.2} />
-            <LineReveal as="h1" text={weddingsStory.hero.h1} className="display-title mt-3" delay={0.35} />
-            <FadeUp delay={0.55} distance={16} className="mt-5 max-w-xl">
+            <GoldThread className="mt-3" delay={0.08} />
+            <LineReveal
+              as="h1"
+              text={weddingsStory.hero.h1}
+              lineWords={[4, 4]}
+              className="wedding-display relative mt-3"
+              delay={0.05}
+            />
+            <FadeUp hero delay={0.4} className="relative mt-5 max-w-xl">
               <p className="text-lg leading-relaxed">{weddingsStory.hero.subhead}</p>
             </FadeUp>
-            <FadeUp delay={0.7} distance={16}>
+            <FadeUp hero delay={0.52} className="relative">
               <PlanActions source="weddings-page" onDark className="mt-8" />
             </FadeUp>
           </div>
-          <MediaFrame item={hero} priority className="min-h-72 rounded-3xl" sizes="(min-width: 768px) 40vw, 100vw" />
+          <div className="relative min-h-72 min-w-0 overflow-hidden rounded-3xl bg-haldi text-kajal">
+            <MediaFrame
+              item={{ ...hero, tone: "haldi" }}
+              priority
+              fill
+              className="h-full min-h-72"
+              sizes="(min-width: 768px) 34vw, 100vw"
+            />
+          </div>
         </div>
       </section>
 

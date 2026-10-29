@@ -22,7 +22,7 @@ export function PlanActions({
         href={`/contact?source=${source}#inquiry-form`}
         className={cn(
           buttonVariants({ size: "cta" }),
-          "enquiry-cta rounded-full px-7 tracking-wide",
+          "enquiry-cta h-auto min-h-11 max-w-full rounded-full px-7 py-2 text-center tracking-wide whitespace-normal",
           onSindoor && "bg-kajal text-cream hover:bg-kajal/90",
         )}
       >
@@ -32,7 +32,7 @@ export function PlanActions({
         location={source}
         className={cn(
           buttonVariants({ size: "cta", variant: "outline" }),
-          "rounded-full px-6",
+          "h-auto min-h-11 max-w-full rounded-full px-6 py-2 text-center whitespace-normal",
           onDark || onSindoor
             ? "border-cream/70 bg-transparent text-cream hover:bg-cream hover:text-kajal"
             : "border-kajal/30 bg-transparent text-kajal hover:bg-kajal hover:text-cream",

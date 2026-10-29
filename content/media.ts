@@ -199,6 +199,8 @@ export const MEDIA = {
         alt: "Gauri performing at a wedding ceremony.",
         ratio: "4:5",
         word: "Pheras",
+        script: "फेरे",
+        scriptFont: "devanagari",
         tone: "haldi",
         envKey: "MEDIA_GAURI_HERO",
       }),
