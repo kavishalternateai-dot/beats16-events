@@ -16,6 +16,8 @@ export async function ogImage({
   color: string;
 }) {
   const font = await readFile(join(process.cwd(), "assets/fonts/RozhaOne-Regular.ttf"));
+  const mark = await readFile(join(process.cwd(), "public/brand/beats16-wordmark.png"));
+  const markSrc = `data:image/png;base64,${mark.toString("base64")}`;
   return new ImageResponse(
     (
       <div
@@ -27,12 +29,28 @@ export async function ogImage({
           justifyContent: "space-between",
           background,
           color,
-          padding: "72px",
+          padding: "64px",
         }}
       >
-        <div style={{ display: "flex", fontSize: 28, letterSpacing: "0.16em", textTransform: "uppercase" }}>{eyebrow}</div>
-        <div style={{ display: "flex", fontSize: 92, lineHeight: 0.95, fontFamily: "Rozha One" }}>{title}</div>
-        <div style={{ display: "flex", fontSize: 32 }}>Beats16 · Mumbai</div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              background: "#FFF4E2",
+              borderRadius: 16,
+              padding: "10px 14px",
+            }}
+          >
+            {/* next/og ImageResponse only accepts a plain img. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={markSrc} width={250} height={144} alt="" />
+          </div>
+        </div>
+        <div style={{ display: "flex", fontSize: 84, lineHeight: 0.95, fontFamily: "Rozha One" }}>{title}</div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", fontSize: 28, letterSpacing: "0.14em", textTransform: "uppercase" }}>{eyebrow}</div>
+          <div style={{ display: "flex", fontSize: 32, marginTop: 10 }}>Beats16 Events & Entertainment</div>
+        </div>
       </div>
     ),
     {

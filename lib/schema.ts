@@ -53,7 +53,7 @@ export function organizationJsonLd() {
         url: site.url,
         telephone: site.phoneDisplay,
         email: site.email,
-        logo: `${site.url}/icon`,
+        logo: `${site.url}/brand/beats16-wordmark.png`,
         image: `${site.url}/opengraph-image`,
         ...(instagram ? { sameAs: [instagram] } : {}),
         founder: {

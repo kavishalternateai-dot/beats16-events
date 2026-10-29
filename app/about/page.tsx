@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { aboutSeo, aboutStory } from "@/content/about";
 import { MEDIA } from "@/content/media";
-import { proofLines } from "@/content/site";
+import { proofLines, site } from "@/content/site";
 import { InstagramProfile } from "@/components/instagram-profile";
 import { JsonLd } from "@/components/json-ld";
 import { MediaFrame } from "@/components/media-frame";
@@ -56,6 +57,22 @@ export default function AboutPage() {
               ))
             : null}
           <PlanActions source="about-page" className="mt-8" />
+        </div>
+      </section>
+
+      <section className="bg-chandan" aria-labelledby="official-mark">
+        <div className="site-wrap flex flex-col items-center py-14 md:py-16">
+          <GoldThread />
+          <h2 id="official-mark" className="mt-4 text-center font-display text-4xl leading-none md:text-5xl">
+            {site.name}
+          </h2>
+          <Image
+            src="/brand/beats16-logo-original.jpg"
+            alt="Tushar Sonigra's Beats 16 official mark"
+            width={1079}
+            height={769}
+            className="mt-8 h-auto w-full max-w-2xl rounded-3xl"
+          />
         </div>
       </section>
 

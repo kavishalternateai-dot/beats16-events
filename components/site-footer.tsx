@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { footerFocus, footerNav, site, WHATSAPP_NUMBER } from "@/content/site";
 import { EmailLink, PhoneLink } from "@/components/contact-links";
@@ -12,7 +13,10 @@ export function SiteFooter() {
       <div className="h-px bg-sona" />
       <div className="site-wrap grid gap-12 py-16 md:grid-cols-[1.2fr_1fr] md:py-20">
         <div>
-          <p className="font-display text-6xl leading-none">{site.shortName}</p>
+          <span className="inline-flex rounded-md bg-cream px-2 py-1.5 ring-1 ring-sona/50">
+            <Image src="/brand/beats16-wordmark@2x.png" alt="" width={301} height={174} className="h-14 w-auto" />
+          </span>
+          <p className="mt-5 max-w-md font-display text-3xl leading-tight md:text-4xl">{site.name}</p>
           <p className="mt-6 max-w-md font-display text-3xl leading-tight">Let&apos;s make it sound like your family.</p>
           <p className="mt-6 max-w-md text-cream/85">{footerFocus}</p>
         </div>

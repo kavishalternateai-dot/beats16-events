@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { bandNav, primaryNav, site } from "@/content/site";
+import { BrandLockup } from "@/components/brand-lockup";
 import { PhoneLink } from "@/components/contact-links";
 import { Toran } from "@/components/ornament/toran";
 import { buttonVariants } from "@/components/ui/button";
@@ -78,8 +79,8 @@ export function SiteHeader() {
       style={{ viewTransitionName: "site-header" }}
     >
       <div className="site-wrap flex items-center gap-4 py-3 lg:grid lg:grid-cols-[auto_minmax(0,1fr)_auto]">
-        <Link href="/" className={cn("font-display text-3xl leading-none", ink)} aria-label={`${site.name}, home`}>
-          {site.shortName}
+        <Link href="/" className="min-w-0" aria-label={`${site.name}, home`}>
+          <BrandLockup tone={solid ? "dark" : "light"} />
         </Link>
         <nav aria-label="Primary" className="hidden lg:block">
           <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
@@ -180,7 +181,7 @@ export function SiteHeader() {
       {menuOpen ? (
         <div id="mobile-nav" className="fixed inset-0 z-50 flex flex-col bg-neel text-cream lg:hidden">
           <div className="flex items-center justify-between px-6 py-4">
-            <span className="font-display text-3xl">Beats16</span>
+            <BrandLockup tone="light" markClassName="h-9" />
             <button type="button" className="min-h-11 px-3 text-lg" onClick={() => setMenuOpen(false)}>
               Close
             </button>
@@ -226,7 +227,7 @@ export function SiteHeaderFallback() {
   return (
     <div className="fixed inset-x-0 top-0 z-40 bg-kajal/70">
       <div className="site-wrap flex h-16 items-center">
-        <span className="font-display text-3xl text-cream">{site.shortName}</span>
+        <BrandLockup tone="light" markClassName="h-8" />
       </div>
     </div>
   );
