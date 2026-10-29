@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
-import { Fraunces, Source_Sans_3 } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Hanken_Grotesk, Noto_Serif_Gujarati, Rozha_One, Tiro_Devanagari_Hindi } from "next/font/google";
 import { Suspense } from "react";
 import { AnalyticsScript } from "@/components/analytics-script";
+import { CtaBand } from "@/components/cta-band";
 import { MobileCtaBar } from "@/components/mobile-cta-bar";
 import { MotionRoot } from "@/components/motion";
 import { SiteFooter } from "@/components/site-footer";
@@ -11,19 +12,34 @@ import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 import "./globals.css";
 
-const sourceSans = Source_Sans_3({
+const hanken = Hanken_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-source",
+  weight: ["400", "500", "700"],
+  variable: "--font-hanken",
   display: "swap",
 });
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-fraunces",
+const rozha = Rozha_One({
+  subsets: ["latin", "devanagari"],
+  weight: "400",
+  variable: "--font-rozha",
   display: "swap",
+});
+
+const tiro = Tiro_Devanagari_Hindi({
+  subsets: ["devanagari"],
+  weight: "400",
+  variable: "--font-tiro",
+  display: "swap",
+  preload: false,
+});
+
+const gujarati = Noto_Serif_Gujarati({
+  subsets: ["gujarati"],
+  weight: "400",
+  variable: "--font-noto-gujarati",
+  display: "swap",
+  preload: false,
 });
 
 const homeMeta = pageMetadata({
@@ -49,13 +65,17 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#D7263D",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${sourceSans.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${hanken.variable} ${rozha.variable} ${tiro.variable} ${gujarati.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-background pb-20 text-foreground md:pb-0">
+      <body className="flex min-h-full flex-col overflow-x-clip bg-background pb-24 text-foreground md:pb-0">
         <MotionRoot>
           <a href="#main" className="skip-link">
             Skip to content
@@ -66,6 +86,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main id="main" tabIndex={-1} className="flex-1 outline-none">
             {children}
           </main>
+          <CtaBand />
           <SiteFooter />
           <MobileCtaBar />
           <AnalyticsScript />

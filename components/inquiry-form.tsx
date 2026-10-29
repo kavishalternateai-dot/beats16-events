@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   bandInterests,
   eventTypes,
@@ -24,7 +24,7 @@ import { trackEvent } from "@/lib/analytics";
 
 type Errors = Record<string, string>;
 
-const initial = {
+const blank = {
   name: "",
   phone: "",
   email: "",
@@ -48,24 +48,35 @@ function clip(value: string | null, max = 160) {
   return (value ?? "").replace(/[\u0000-\u001f]+/g, " ").trim().slice(0, max);
 }
 
-export function InquiryForm() {
+export function InquiryForm({
+  initial,
+}: {
+  initial?: {
+    event?: string | null;
+    band?: string | null;
+    heard?: string | null;
+    source?: string | null;
+    utmSource?: string | null;
+    utmMedium?: string | null;
+    utmCampaign?: string | null;
+  };
+} = {}) {
   const router = useRouter();
-  const params = useSearchParams();
   const [values, setValues] = useState({
-    ...initial,
-    eventType: matchOption(params.get("event"), eventTypes, legacyEventTypes),
-    interest: matchOption(params.get("band"), bandInterests, legacyBandInterests),
-    heardAbout: matchOption(params.get("heard"), hearAboutOptions, legacyHearAbout),
-    source: clip(params.get("source")) || "contact-page",
-    utmSource: clip(params.get("utm_source")),
-    utmMedium: clip(params.get("utm_medium")),
-    utmCampaign: clip(params.get("utm_campaign")),
+    ...blank,
+    eventType: matchOption(initial?.event ?? null, eventTypes, legacyEventTypes),
+    interest: matchOption(initial?.band ?? null, bandInterests, legacyBandInterests),
+    heardAbout: matchOption(initial?.heard ?? null, hearAboutOptions, legacyHearAbout),
+    source: clip(initial?.source ?? null) || "contact-page",
+    utmSource: clip(initial?.utmSource ?? null),
+    utmMedium: clip(initial?.utmMedium ?? null),
+    utmCampaign: clip(initial?.utmCampaign ?? null),
   });
   const [errors, setErrors] = useState<Errors>({});
   const [pending, setPending] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  function set<K extends keyof typeof initial>(key: K, value: (typeof initial)[K]) {
+  function set<K extends keyof typeof blank>(key: K, value: (typeof blank)[K]) {
     setValues((current) => ({ ...current, [key]: value }));
   }
 

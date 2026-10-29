@@ -1,278 +1,415 @@
-import type { ShowreelBandId } from "@/content/forms";
-
 /**
- * Copy / media swap: reel permalinks and showreel URLs.
- *
- * Leave `permalink` or `showreelUrl` empty until a real link exists.
- * A real Instagram permalink looks like https://www.instagram.com/reel/SHORTCODE/
- * A real showreel URL is an https link (for example a Drive file).
- *
- * Photographs and performance films use `visualSlots` below.
- * Drop a file in `public/media/` named `{id}.jpg` (or png, webp; mp4 or webm for films)
- * and redeploy. Optional poster: `{id}-poster.jpg`.
- * Or set `src` here, or the matching `MEDIA_*` env var, to a `/media/...` path.
- *
- * Environment variables override these values at build time without a code edit.
- * Redeploy after changing either the file or the env vars.
- * See .env.example for the variable names.
+ * Single media registry. Set `src` (and `poster` for video) to show a real
+ * asset. Leave `src` unset and the slot renders as a pattern poster.
+ * A file at `public/media/{id}.jpg` (png, webp, or mp4/webm) is also picked up.
+ * Optional `envKey` values override `src` at build time. See .env.example.
  */
 
-export type ReelSlot = {
+export type MediaRatio = "16:9" | "4:5" | "9:16" | "1:1" | "3:2";
+export type MediaKind = "image" | "video" | "reel";
+export type MediaTone = "sindoor" | "haldi" | "rani" | "mor" | "neel" | "mehendi" | "bandhani";
+export type GalleryTag = "home" | "wedding" | "about";
+export type ScriptFont = "devanagari" | "gujarati";
+
+export type MediaItem = {
   id: string;
-  title: string;
-  /** Full permalink. Empty means the slot is a labeled placeholder. */
-  permalink: string;
-  envKey: string;
+  kind: MediaKind;
+  src?: string;
+  poster?: string;
+  alt: string;
+  ratio: MediaRatio;
+  credit?: string;
+  /** Large Latin word on an empty poster. */
+  word: string;
+  /** Decorative script. Never the only label. */
+  script?: string;
+  scriptFont?: ScriptFont;
+  tone: MediaTone;
+  tags?: readonly GalleryTag[];
+  /** Desktop bento spans. Ignored on the mobile scroller. */
+  col?: number;
+  row?: number;
+  envKey?: string;
+  posterEnvKey?: string;
 };
 
 export type BandMedia = {
-  reels: ReelSlot[];
-  /** https URL. Empty means the gated download is the placeholder PDF. */
-  showreelUrl: string;
+  hero: MediaItem;
+  /** Instagram reel permalinks. Empty until a real URL is set. */
+  reels: string[];
+  reelEnvKeys?: readonly string[];
+  photos: MediaItem[];
+  /**
+   * Real showreel file (https). Omit until the file exists.
+   * The download form stays hidden while this is unset.
+   */
+  showreelUrl?: string;
   showreelEnvKey: string;
   showreelFilename: string;
 };
 
-export const bandMedia: Record<ShowreelBandId, BandMedia> = {
-  gauri: {
-    showreelUrl: "",
-    showreelEnvKey: "SHOWREEL_GAURI_URL",
-    showreelFilename: "gauri-showreel-placeholder.pdf",
-    reels: [
-      {
-        id: "gauri-1",
-        title: "Gauri reel 1",
-        permalink: "",
-        envKey: "REEL_GAURI_1",
-      },
-      {
-        id: "gauri-2",
-        title: "Gauri reel 2",
-        permalink: "",
-        envKey: "REEL_GAURI_2",
-      },
-    ],
-  },
-  rdx: {
-    showreelUrl: "",
-    showreelEnvKey: "SHOWREEL_RDX_URL",
-    showreelFilename: "rdx-showreel-placeholder.pdf",
-    reels: [
-      {
-        id: "rdx-1",
-        title: "RDX reel 1",
-        permalink: "",
-        envKey: "REEL_RDX_1",
-      },
-      {
-        id: "rdx-2",
-        title: "RDX reel 2",
-        permalink: "",
-        envKey: "REEL_RDX_2",
-      },
-    ],
-  },
-  "daastan-e-ghazal": {
-    showreelUrl: "",
-    showreelEnvKey: "SHOWREEL_DAASTAN_URL",
-    showreelFilename: "daastan-e-ghazal-showreel-placeholder.pdf",
-    reels: [
-      {
-        id: "daastan-1",
-        title: "Daastan-e-Ghazal reel 1",
-        permalink: "",
-        envKey: "REEL_DAASTAN_1",
-      },
-      {
-        id: "daastan-2",
-        title: "Daastan-e-Ghazal reel 2",
-        permalink: "",
-        envKey: "REEL_DAASTAN_2",
-      },
-    ],
-  },
-  navratri: {
-    showreelUrl: "",
-    showreelEnvKey: "SHOWREEL_NAVRATRI_URL",
-    showreelFilename: "navratri-showreel-placeholder.pdf",
-    reels: [
-      {
-        id: "navratri-1",
-        title: "Navratri reel 1",
-        permalink: "",
-        envKey: "REEL_NAVRATRI_1",
-      },
-      {
-        id: "navratri-2",
-        title: "Navratri reel 2",
-        permalink: "",
-        envKey: "REEL_NAVRATRI_2",
-      },
-    ],
-  },
-  independent: {
-    showreelUrl: "",
-    showreelEnvKey: "SHOWREEL_INDEPENDENT_URL",
-    showreelFilename: "independent-showreel-placeholder.pdf",
-    reels: [
-      {
-        id: "independent-1",
-        title: "Independent band reel 1",
-        permalink: "",
-        envKey: "REEL_INDEPENDENT_1",
-      },
-      {
-        id: "independent-2",
-        title: "Independent band reel 2",
-        permalink: "",
-        envKey: "REEL_INDEPENDENT_2",
-      },
-    ],
-  },
-};
-
-/** Frame treatment used by placeholder cards. Live slots use VisualSlot. */
-export type MediaPattern = "ceremony" | "floor" | "listening" | "garba" | "private";
-
-export type VisualKind = "image" | "video";
-
-export type VisualSlot = {
-  id: string;
-  /** Short scene name. Shown on the empty frame and as the caption. */
-  label: string;
-  /** Honest description for when the file is present. */
-  alt: string;
-  /** Public path such as /media/gauri-hero.jpg. Empty uses auto-discovery. */
-  src: string;
-  poster: string;
-  envKey: string;
-  posterEnvKey: string;
-  kind: VisualKind;
-};
-
-function visual(slot: {
-  id: string;
-  label: string;
-  alt: string;
-  envKey: string;
-  kind?: VisualKind;
-}): VisualSlot {
-  return {
-    id: slot.id,
-    label: slot.label,
-    alt: slot.alt,
-    src: "",
-    poster: "",
-    envKey: slot.envKey,
-    posterEnvKey: slot.kind === "video" ? `${slot.envKey}_POSTER` : "",
-    kind: slot.kind ?? "image",
-  };
+function slot(item: MediaItem): MediaItem {
+  return item;
 }
 
-/**
- * Future photos and films. Empty until Kavish shares files.
- * See the file comment for how a file plugs in.
- */
-export const visualSlots = {
-  "home-wedding": visual({
-    id: "home-wedding",
-    label: "Wedding",
-    alt: "Beats16 performing at an Indian wedding.",
-    envKey: "MEDIA_HOME_WEDDING",
-  }),
-  "home-navratri": visual({
-    id: "home-navratri",
-    label: "Navratri",
-    alt: "Beats16 performing at a Navratri celebration.",
-    envKey: "MEDIA_HOME_NAVRATRI",
-  }),
-  "home-film": visual({
-    id: "home-film",
-    label: "A live performance",
-    alt: "A film of Beats16 performing live.",
-    envKey: "MEDIA_HOME_FILM",
+export const MEDIA = {
+  homeHero: slot({
+    id: "home-hero",
     kind: "video",
+    alt: "Beats16 performing live.",
+    ratio: "16:9",
+    word: "Beats16",
+    tone: "sindoor",
+    envKey: "MEDIA_HOME_HERO",
+    posterEnvKey: "MEDIA_HOME_HERO_POSTER",
   }),
-  "about-celebration": visual({
-    id: "about-celebration",
-    label: "A celebration",
-    alt: "Beats16 at a wedding or festival.",
-    envKey: "MEDIA_ABOUT_CELEBRATION",
+  founder: slot({
+    id: "founder",
+    kind: "image",
+    src: "/media/tushar-sonigra.jpg",
+    alt: "Tushar Sonigra, founder of Beats16",
+    ratio: "4:5",
+    word: "Tushar",
+    tone: "haldi",
+    envKey: "MEDIA_FOUNDER",
   }),
-  "about-band": visual({
-    id: "about-band",
-    label: "The band",
-    alt: "The Beats16 band.",
-    envKey: "MEDIA_ABOUT_BAND",
-  }),
-  "weddings-hero": visual({
+  gallery: [
+    slot({
+      id: "gallery-mehendi",
+      kind: "image",
+      alt: "Live music at a mehendi.",
+      ratio: "4:5",
+      word: "Mehendi",
+      script: "मेहंदी",
+      scriptFont: "devanagari",
+      tone: "haldi",
+      tags: ["home", "wedding", "about"],
+      col: 2,
+      row: 2,
+      envKey: "MEDIA_GALLERY_MEHENDI",
+    }),
+    slot({
+      id: "gallery-sangeet",
+      kind: "image",
+      alt: "Live music at a sangeet.",
+      ratio: "9:16",
+      word: "Sangeet",
+      script: "संगीत",
+      scriptFont: "devanagari",
+      tone: "rani",
+      tags: ["home", "wedding", "about"],
+      col: 2,
+      row: 2,
+      envKey: "MEDIA_GALLERY_SANGEET",
+    }),
+    slot({
+      id: "gallery-pheras",
+      kind: "image",
+      alt: "Live music at wedding pheras.",
+      ratio: "3:2",
+      word: "Pheras",
+      tone: "mehendi",
+      tags: ["home", "wedding", "about"],
+      col: 2,
+      row: 2,
+      envKey: "MEDIA_GALLERY_PHERAS",
+    }),
+    slot({
+      id: "gallery-reception",
+      kind: "image",
+      alt: "Live music at a wedding reception.",
+      ratio: "16:9",
+      word: "Reception",
+      tone: "sindoor",
+      tags: ["home", "wedding", "about"],
+      col: 4,
+      row: 1,
+      envKey: "MEDIA_GALLERY_RECEPTION",
+    }),
+    slot({
+      id: "gallery-garba",
+      kind: "image",
+      alt: "Live garba with the Navratri band by Beats16.",
+      ratio: "4:5",
+      word: "Garba",
+      script: "ગરબા",
+      scriptFont: "gujarati",
+      tone: "bandhani",
+      tags: ["home", "about"],
+      col: 2,
+      row: 2,
+      envKey: "MEDIA_GALLERY_GARBA",
+    }),
+    slot({
+      id: "gallery-dandiya",
+      kind: "image",
+      alt: "Live dandiya with the Navratri band by Beats16.",
+      ratio: "1:1",
+      word: "Dandiya",
+      tone: "mor",
+      tags: ["home", "about"],
+      col: 2,
+      row: 2,
+      envKey: "MEDIA_GALLERY_DANDIYA",
+    }),
+    slot({
+      id: "gallery-ghazal",
+      kind: "image",
+      alt: "A Daastan-e-Ghazal evening.",
+      ratio: "4:5",
+      word: "Ghazal",
+      script: "ग़ज़ल",
+      scriptFont: "devanagari",
+      tone: "neel",
+      tags: ["home", "about"],
+      col: 2,
+      row: 2,
+      envKey: "MEDIA_GALLERY_GHAZAL",
+    }),
+    slot({
+      id: "gallery-baraat",
+      kind: "video",
+      alt: "A film of Beats16 performing live.",
+      ratio: "16:9",
+      word: "Baraat",
+      tone: "sindoor",
+      tags: ["home", "wedding", "about"],
+      col: 4,
+      row: 1,
+      envKey: "MEDIA_GALLERY_BARAAT",
+      posterEnvKey: "MEDIA_GALLERY_BARAAT_POSTER",
+    }),
+  ],
+  weddingsHero: slot({
     id: "weddings-hero",
-    label: "A wedding",
+    kind: "image",
     alt: "Live music at an Indian wedding.",
+    ratio: "16:9",
+    word: "Sangeet",
+    script: "संगीत",
+    scriptFont: "devanagari",
+    tone: "rani",
     envKey: "MEDIA_WEDDINGS_HERO",
   }),
-  "gauri-hero": visual({
-    id: "gauri-hero",
-    label: "Gauri at a ceremony",
-    alt: "Gauri performing at a wedding ceremony.",
-    envKey: "MEDIA_GAURI_HERO",
-  }),
-  "rdx-hero": visual({
-    id: "rdx-hero",
-    label: "RDX at a sangeet",
-    alt: "RDX performing at a sangeet.",
-    envKey: "MEDIA_RDX_HERO",
-  }),
-  "daastan-hero": visual({
-    id: "daastan-hero",
-    label: "A ghazal evening",
-    alt: "Daastan-e-Ghazal performing at an evening gathering.",
-    envKey: "MEDIA_DAASTAN_HERO",
-  }),
-  "navratri-hero": visual({
-    id: "navratri-hero",
-    label: "A Navratri night",
-    alt: "The Navratri band by Beats16 performing garba and dandiya.",
-    envKey: "MEDIA_NAVRATRI_HERO",
-  }),
-  "corporate-hero": visual({
-    id: "corporate-hero",
-    label: "A gathering",
-    alt: "Beats16 performing at a cultural or community gathering.",
-    envKey: "MEDIA_CORPORATE_HERO",
-  }),
-  "faq-hero": visual({
-    id: "faq-hero",
-    label: "A celebration",
-    alt: "Beats16 performing at a celebration.",
-    envKey: "MEDIA_FAQ_HERO",
-  }),
-  "contact-hero": visual({
-    id: "contact-hero",
-    label: "A celebration",
-    alt: "Beats16 performing at a celebration.",
-    envKey: "MEDIA_CONTACT_HERO",
-  }),
-  "independent-hero": visual({
-    id: "independent-hero",
-    label: "A private show",
-    alt: "An independent Beats16 band at a private show.",
-    envKey: "MEDIA_INDEPENDENT_HERO",
-  }),
-} as const satisfies Record<string, VisualSlot>;
+  bands: {
+    gauri: {
+      hero: slot({
+        id: "gauri-hero",
+        kind: "image",
+        alt: "Gauri performing at a wedding ceremony.",
+        ratio: "4:5",
+        word: "Pheras",
+        tone: "haldi",
+        envKey: "MEDIA_GAURI_HERO",
+      }),
+      reels: [],
+      reelEnvKeys: ["REEL_GAURI_1", "REEL_GAURI_2"],
+      photos: [
+        slot({
+          id: "gauri-photo-1",
+          kind: "image",
+          alt: "Gauri at a wedding ritual.",
+          ratio: "4:5",
+          word: "Pheras",
+          tone: "haldi",
+          envKey: "MEDIA_GAURI_PHOTO_1",
+        }),
+        slot({
+          id: "gauri-photo-2",
+          kind: "image",
+          alt: "Gauri with the wedding family.",
+          ratio: "3:2",
+          word: "Rituals",
+          tone: "mehendi",
+          envKey: "MEDIA_GAURI_PHOTO_2",
+        }),
+        slot({
+          id: "gauri-photo-3",
+          kind: "image",
+          alt: "Gauri performing during a ceremony.",
+          ratio: "1:1",
+          word: "Gauri",
+          tone: "haldi",
+          envKey: "MEDIA_GAURI_PHOTO_3",
+        }),
+      ],
+      showreelUrl: undefined as string | undefined,
+      showreelEnvKey: "SHOWREEL_GAURI_URL",
+      showreelFilename: "gauri-showreel",
+    },
+    rdx: {
+      hero: slot({
+        id: "rdx-hero",
+        kind: "image",
+        alt: "RDX performing at a sangeet.",
+        ratio: "4:5",
+        word: "Sangeet",
+        script: "संगीत",
+        scriptFont: "devanagari",
+        tone: "rani",
+        envKey: "MEDIA_RDX_HERO",
+      }),
+      reels: [],
+      reelEnvKeys: ["REEL_RDX_1", "REEL_RDX_2"],
+      photos: [
+        slot({
+          id: "rdx-photo-1",
+          kind: "image",
+          alt: "RDX at a sangeet.",
+          ratio: "9:16",
+          word: "Sangeet",
+          script: "संगीत",
+          scriptFont: "devanagari",
+          tone: "rani",
+          envKey: "MEDIA_RDX_PHOTO_1",
+        }),
+        slot({
+          id: "rdx-photo-2",
+          kind: "image",
+          alt: "RDX playing among guests.",
+          ratio: "4:5",
+          word: "RDX",
+          tone: "rani",
+          envKey: "MEDIA_RDX_PHOTO_2",
+        }),
+        slot({
+          id: "rdx-photo-3",
+          kind: "image",
+          alt: "RDX at a private event.",
+          ratio: "3:2",
+          word: "Party",
+          tone: "sindoor",
+          envKey: "MEDIA_RDX_PHOTO_3",
+        }),
+      ],
+      showreelUrl: undefined as string | undefined,
+      showreelEnvKey: "SHOWREEL_RDX_URL",
+      showreelFilename: "rdx-showreel",
+    },
+    ghazal: {
+      hero: slot({
+        id: "ghazal-hero",
+        kind: "image",
+        alt: "Daastan-e-Ghazal performing at an evening gathering.",
+        ratio: "4:5",
+        word: "Ghazal",
+        script: "ग़ज़ल",
+        scriptFont: "devanagari",
+        tone: "neel",
+        envKey: "MEDIA_DAASTAN_HERO",
+      }),
+      reels: [],
+      reelEnvKeys: ["REEL_DAASTAN_1", "REEL_DAASTAN_2"],
+      photos: [
+        slot({
+          id: "ghazal-photo-1",
+          kind: "image",
+          alt: "A Daastan-e-Ghazal evening.",
+          ratio: "4:5",
+          word: "Ghazal",
+          script: "ग़ज़ल",
+          scriptFont: "devanagari",
+          tone: "neel",
+          envKey: "MEDIA_GHAZAL_PHOTO_1",
+        }),
+        slot({
+          id: "ghazal-photo-2",
+          kind: "image",
+          alt: "Daastan-e-Ghazal performing for a seated gathering.",
+          ratio: "3:2",
+          word: "Mehfil",
+          tone: "neel",
+          envKey: "MEDIA_GHAZAL_PHOTO_2",
+        }),
+        slot({
+          id: "ghazal-photo-3",
+          kind: "image",
+          alt: "Daastan-e-Ghazal at a cultural evening.",
+          ratio: "1:1",
+          word: "Listen",
+          tone: "mor",
+          envKey: "MEDIA_GHAZAL_PHOTO_3",
+        }),
+      ],
+      showreelUrl: undefined as string | undefined,
+      showreelEnvKey: "SHOWREEL_DAASTAN_URL",
+      showreelFilename: "daastan-e-ghazal-showreel",
+    },
+    navratri: {
+      hero: slot({
+        id: "navratri-hero",
+        kind: "image",
+        alt: "The Navratri band by Beats16 performing garba and dandiya.",
+        ratio: "16:9",
+        word: "Garba",
+        script: "ગરબા",
+        scriptFont: "gujarati",
+        tone: "bandhani",
+        envKey: "MEDIA_NAVRATRI_HERO",
+      }),
+      reels: [],
+      reelEnvKeys: ["REEL_NAVRATRI_1", "REEL_NAVRATRI_2"],
+      photos: [
+        slot({
+          id: "navratri-photo-1",
+          kind: "image",
+          alt: "Garba with the Navratri band by Beats16.",
+          ratio: "4:5",
+          word: "Garba",
+          script: "ગરબા",
+          scriptFont: "gujarati",
+          tone: "bandhani",
+          envKey: "MEDIA_NAVRATRI_PHOTO_1",
+        }),
+        slot({
+          id: "navratri-photo-2",
+          kind: "image",
+          alt: "Dandiya with the Navratri band by Beats16.",
+          ratio: "4:5",
+          word: "Dandiya",
+          tone: "mor",
+          envKey: "MEDIA_NAVRATRI_PHOTO_2",
+        }),
+        slot({
+          id: "navratri-photo-3",
+          kind: "image",
+          alt: "A Navratri night with Beats16.",
+          ratio: "16:9",
+          word: "Navratri",
+          tone: "sindoor",
+          envKey: "MEDIA_NAVRATRI_PHOTO_3",
+        }),
+      ],
+      showreelUrl: undefined as string | undefined,
+      showreelEnvKey: "SHOWREEL_NAVRATRI_URL",
+      showreelFilename: "navratri-showreel",
+    },
+  },
+} as const satisfies {
+  homeHero: MediaItem;
+  founder: MediaItem;
+  gallery: MediaItem[];
+  weddingsHero: MediaItem;
+  bands: {
+    gauri: BandMedia;
+    rdx: BandMedia;
+    ghazal: BandMedia;
+    navratri: BandMedia;
+  };
+};
 
-const heroSlots = {
-  "/weddings": "weddings-hero",
-  "/gauri": "gauri-hero",
-  "/rdx": "rdx-hero",
-  "/daastan-e-ghazal": "daastan-hero",
-  "/navratri": "navratri-hero",
-  "/corporate-cultural": "corporate-hero",
-  "/faq": "faq-hero",
-  "/contact": "contact-hero",
+export const showreelSources = {
+  gauri: MEDIA.bands.gauri,
+  rdx: MEDIA.bands.rdx,
+  "daastan-e-ghazal": MEDIA.bands.ghazal,
+  navratri: MEDIA.bands.navratri,
+  independent: {
+    showreelUrl: undefined as string | undefined,
+    showreelEnvKey: "SHOWREEL_INDEPENDENT_URL",
+    showreelFilename: "independent-showreel",
+    reels: [] as string[],
+    reelEnvKeys: ["REEL_INDEPENDENT_1", "REEL_INDEPENDENT_2"] as const,
+  },
 } as const;
 
-export function heroSlotId(path: string): string | null {
-  if (path in heroSlots) return heroSlots[path as keyof typeof heroSlots];
-  return null;
-}
+export type MediaBandKey = keyof typeof MEDIA.bands;

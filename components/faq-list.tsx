@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { FaqItem } from "@/content/faqs";
-import { sectionTitleClass } from "@/components/blocks";
 import { Reveal } from "@/components/motion";
 
 export function FaqList({
@@ -8,15 +7,17 @@ export function FaqList({
   heading = "Questions people ask",
   headingId = "faq-heading",
   intro,
+  ruleClassName = "border-sindoor",
 }: {
   items: FaqItem[];
   heading?: string;
   headingId?: string;
   intro?: string;
+  ruleClassName?: string;
 }) {
   return (
-    <Reveal as="section" className="section-block" labelledBy={headingId}>
-      <h2 id={headingId} className={sectionTitleClass}>
+    <Reveal as="section" className={`border-l-4 pl-5 ${ruleClassName}`} labelledBy={headingId}>
+      <h2 id={headingId} className="font-display text-4xl leading-none md:text-5xl">
         {heading}
       </h2>
       {intro ? <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">{intro}</p> : null}
@@ -32,7 +33,7 @@ export function FaqList({
                 –
               </span>
             </summary>
-            <div className="max-w-3xl pb-4">
+            <div className="faq-answer max-w-3xl pb-4">
               <p className="leading-relaxed text-pretty">{item.answer}</p>
               {item.related ? (
                 <p className="mt-3">

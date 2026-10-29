@@ -1,0 +1,47 @@
+# Beats16 Events & Entertainment
+
+Beats16 is a live music company in Mumbai, started by Tushar Sonigra. It plays Indian weddings and traditional festivals, in India and abroad.
+
+Site: https://beats16-events.vercel.app
+
+## Bands
+
+- Gauri: wedding rituals and traditional ceremonies, including the pheras. https://beats16-events.vercel.app/gauri
+- RDX: wireless band for sangeet nights and private events. https://beats16-events.vercel.app/rdx
+- Daastan-e-Ghazal: ghazal evenings for cultural programmes, community gatherings and private events. https://beats16-events.vercel.app/daastan-e-ghazal
+- Navratri band by Beats16: live garba and dandiya. Beats16 has organised 80+ Navratris. https://beats16-events.vercel.app/navratri
+- Independent bands: put together for private shows that are not one of the four bands above.
+
+## Record
+
+- 5,000+ events, weddings and festivals
+- 80+ Navratris organised
+- Home base: Mumbai
+- Performs across India and abroad
+
+## What Beats16 plays
+
+Indian weddings, including mehendi, sangeet, pheras and reception. Traditional festivals such as Navratri. Also cultural programmes, religious celebrations, community gatherings and corporate events.
+
+Beats16 specialises in Indian weddings and traditional festivals. For a different kind of ceremony, they say so plainly and kindly.
+
+Pricing is discussed personally once they know the date, city and functions. Dates are confirmed only after a conversation with Tushar Sonigra.
+
+## Contact
+
+- Phone: +91 9820133078
+- Email: beats16@gmail.com
+- Instagram: https://www.instagram.com/beats16bytushar/
+
+## Pages
+
+- Home: https://beats16-events.vercel.app/
+- Weddings: https://beats16-events.vercel.app/weddings
+- Gauri: https://beats16-events.vercel.app/gauri
+- RDX: https://beats16-events.vercel.app/rdx
+- Daastan-e-Ghazal: https://beats16-events.vercel.app/daastan-e-ghazal
+- Navratri: https://beats16-events.vercel.app/navratri
+- Corporate and cultural: https://beats16-events.vercel.app/corporate-cultural
+- About: https://beats16-events.vercel.app/about
+- FAQ: https://beats16-events.vercel.app/faq
+- Contact: https://beats16-events.vercel.app/contact

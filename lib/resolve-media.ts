@@ -1,30 +1,25 @@
 import fs from "node:fs";
 import path from "node:path";
-import { bandMedia, visualSlots, type ReelSlot, type VisualKind, type VisualSlot } from "@/content/media";
+import { chooseMosaic } from "@/lib/mosaic-layout";
+import {
+  MEDIA,
+  showreelSources,
+  type GalleryTag,
+  type MediaItem,
+  type MediaKind,
+  type MediaRatio,
+  type MediaTone,
+  type ScriptFont,
+} from "@/content/media";
 import type { ShowreelBandId } from "@/content/forms";
 
-const INSTAGRAM_PERMALINK =
-  /^https:\/\/(www\.)?instagram\.com\/(reel|p)\/[A-Za-z0-9_-]+\/?/i;
+const INSTAGRAM_PERMALINK = /^https:\/\/(www\.)?instagram\.com\/(reel|p)\/[A-Za-z0-9_-]+\/?/i;
 
-export type ResolvedReel = {
-  id: string;
-  title: string;
-  envKey: string;
-  placeholder: boolean;
-  permalink: string | null;
-  embedUrl: string | null;
-};
-
-export type ResolvedShowreel = {
-  url: string;
-  filename: string;
-  placeholder: boolean;
-  external: boolean;
-};
+const IMAGE_EXT = ["jpg", "jpeg", "png", "webp", "avif"] as const;
+const VIDEO_EXT = ["mp4", "webm"] as const;
 
 /**
  * Static `process.env.NAME` reads so Next can inline them at build time.
- * Dynamic `process.env[key]` lookups are avoided on purpose.
  */
 const envValues: Record<string, string | undefined> = {
   REEL_GAURI_1: process.env.REEL_GAURI_1,
@@ -42,102 +37,67 @@ const envValues: Record<string, string | undefined> = {
   SHOWREEL_DAASTAN_URL: process.env.SHOWREEL_DAASTAN_URL,
   SHOWREEL_NAVRATRI_URL: process.env.SHOWREEL_NAVRATRI_URL,
   SHOWREEL_INDEPENDENT_URL: process.env.SHOWREEL_INDEPENDENT_URL,
-  MEDIA_HOME_WEDDING: process.env.MEDIA_HOME_WEDDING,
-  MEDIA_HOME_NAVRATRI: process.env.MEDIA_HOME_NAVRATRI,
-  MEDIA_HOME_FILM: process.env.MEDIA_HOME_FILM,
-  MEDIA_HOME_FILM_POSTER: process.env.MEDIA_HOME_FILM_POSTER,
-  MEDIA_ABOUT_CELEBRATION: process.env.MEDIA_ABOUT_CELEBRATION,
-  MEDIA_ABOUT_BAND: process.env.MEDIA_ABOUT_BAND,
+  MEDIA_HOME_HERO: process.env.MEDIA_HOME_HERO,
+  MEDIA_HOME_HERO_POSTER: process.env.MEDIA_HOME_HERO_POSTER,
+  MEDIA_FOUNDER: process.env.MEDIA_FOUNDER,
+  MEDIA_GALLERY_MEHENDI: process.env.MEDIA_GALLERY_MEHENDI,
+  MEDIA_GALLERY_SANGEET: process.env.MEDIA_GALLERY_SANGEET,
+  MEDIA_GALLERY_PHERAS: process.env.MEDIA_GALLERY_PHERAS,
+  MEDIA_GALLERY_RECEPTION: process.env.MEDIA_GALLERY_RECEPTION,
+  MEDIA_GALLERY_GARBA: process.env.MEDIA_GALLERY_GARBA,
+  MEDIA_GALLERY_DANDIYA: process.env.MEDIA_GALLERY_DANDIYA,
+  MEDIA_GALLERY_GHAZAL: process.env.MEDIA_GALLERY_GHAZAL,
+  MEDIA_GALLERY_BARAAT: process.env.MEDIA_GALLERY_BARAAT,
+  MEDIA_GALLERY_BARAAT_POSTER: process.env.MEDIA_GALLERY_BARAAT_POSTER,
   MEDIA_WEDDINGS_HERO: process.env.MEDIA_WEDDINGS_HERO,
   MEDIA_GAURI_HERO: process.env.MEDIA_GAURI_HERO,
+  MEDIA_GAURI_PHOTO_1: process.env.MEDIA_GAURI_PHOTO_1,
+  MEDIA_GAURI_PHOTO_2: process.env.MEDIA_GAURI_PHOTO_2,
+  MEDIA_GAURI_PHOTO_3: process.env.MEDIA_GAURI_PHOTO_3,
   MEDIA_RDX_HERO: process.env.MEDIA_RDX_HERO,
+  MEDIA_RDX_PHOTO_1: process.env.MEDIA_RDX_PHOTO_1,
+  MEDIA_RDX_PHOTO_2: process.env.MEDIA_RDX_PHOTO_2,
+  MEDIA_RDX_PHOTO_3: process.env.MEDIA_RDX_PHOTO_3,
   MEDIA_DAASTAN_HERO: process.env.MEDIA_DAASTAN_HERO,
+  MEDIA_GHAZAL_PHOTO_1: process.env.MEDIA_GHAZAL_PHOTO_1,
+  MEDIA_GHAZAL_PHOTO_2: process.env.MEDIA_GHAZAL_PHOTO_2,
+  MEDIA_GHAZAL_PHOTO_3: process.env.MEDIA_GHAZAL_PHOTO_3,
   MEDIA_NAVRATRI_HERO: process.env.MEDIA_NAVRATRI_HERO,
-  MEDIA_CORPORATE_HERO: process.env.MEDIA_CORPORATE_HERO,
-  MEDIA_FAQ_HERO: process.env.MEDIA_FAQ_HERO,
-  MEDIA_CONTACT_HERO: process.env.MEDIA_CONTACT_HERO,
-  MEDIA_INDEPENDENT_HERO: process.env.MEDIA_INDEPENDENT_HERO,
+  MEDIA_NAVRATRI_PHOTO_1: process.env.MEDIA_NAVRATRI_PHOTO_1,
+  MEDIA_NAVRATRI_PHOTO_2: process.env.MEDIA_NAVRATRI_PHOTO_2,
+  MEDIA_NAVRATRI_PHOTO_3: process.env.MEDIA_NAVRATRI_PHOTO_3,
 };
 
-function readEnv(key: string): string {
+function readEnv(key: string | undefined): string {
+  if (!key) return "";
   return envValues[key]?.trim() ?? "";
 }
 
-function permalinkFrom(slot: ReelSlot): string {
-  return readEnv(slot.envKey) || slot.permalink.trim();
-}
-
-export function resolveReels(bandId: ShowreelBandId): ResolvedReel[] {
-  return bandMedia[bandId].reels.map((slot) => {
-    const raw = permalinkFrom(slot);
-    const match = INSTAGRAM_PERMALINK.exec(raw);
-    if (!match) {
-      return {
-        id: slot.id,
-        title: slot.title,
-        envKey: slot.envKey,
-        placeholder: true,
-        permalink: null,
-        embedUrl: null,
-      };
-    }
-
-    const permalink = match[0].replace(/\/?$/, "/");
-    const pathname = new URL(permalink).pathname.replace(/\/?$/, "/");
-    return {
-      id: slot.id,
-      title: slot.title,
-      envKey: slot.envKey,
-      placeholder: false,
-      permalink,
-      embedUrl: `https://www.instagram.com${pathname}embed`,
-    };
-  });
-}
-
-function isHttpsUrl(value: string): boolean {
-  try {
-    return new URL(value).protocol === "https:";
-  } catch {
-    return false;
-  }
-}
-
-export function resolveShowreel(bandId: ShowreelBandId): ResolvedShowreel {
-  const media = bandMedia[bandId];
-  const configured = readEnv(media.showreelEnvKey) || media.showreelUrl.trim();
-  if (isHttpsUrl(configured)) {
-    return {
-      url: configured,
-      filename: media.showreelFilename,
-      placeholder: false,
-      external: true,
-    };
-  }
-
-  return {
-    url: `/showreels/${media.showreelFilename}`,
-    filename: media.showreelFilename,
-    placeholder: true,
-    external: false,
-  };
-}
-
-export type ResolvedVisual = {
+export type ResolvedMedia = {
   id: string;
-  label: string;
+  kind: MediaKind;
   alt: string;
-  kind: VisualKind;
-  placeholder: boolean;
+  ratio: MediaRatio;
+  word: string;
+  script?: string;
+  scriptFont?: ScriptFont;
+  tone: MediaTone;
+  col: number;
+  row: number;
   src: string | null;
   poster: string | null;
+  credit?: string;
+  empty: boolean;
 };
 
-const IMAGE_EXT = ["jpg", "jpeg", "png", "webp"] as const;
-const VIDEO_EXT = ["mp4", "webm"] as const;
+export type ResolvedShowreel = {
+  url: string;
+  filename: string;
+  external: true;
+};
 
 function publicFileExists(publicPath: string): boolean {
-  if (!publicPath.startsWith("/media/") || publicPath.includes("..")) return false;
+  if (!publicPath.startsWith("/") || publicPath.includes("..")) return false;
   const root = path.resolve(process.cwd(), "public");
   const abs = path.resolve(root, `.${publicPath}`);
   if (abs !== root && !abs.startsWith(root + path.sep)) return false;
@@ -150,6 +110,8 @@ function publicFileExists(publicPath: string): boolean {
 
 function acceptedMediaPath(value: string, extensions: readonly string[]): string | null {
   const trimmed = value.trim();
+  if (!trimmed) return null;
+  if (/^https:\/\//i.test(trimmed)) return trimmed;
   const match = /^\/media\/[a-z0-9][a-z0-9/_-]*\.([a-z0-9]+)$/i.exec(trimmed);
   if (!match || !extensions.includes(match[1].toLowerCase())) return null;
   return publicFileExists(trimmed) ? trimmed : null;
@@ -164,51 +126,75 @@ function discoverMedia(id: string, extensions: readonly string[]): string | null
   return null;
 }
 
-function resolvePath(slot: VisualSlot, extensions: readonly string[]): string | null {
-  const fromEnv = acceptedMediaPath(readEnv(slot.envKey), extensions);
-  if (fromEnv) return fromEnv;
-  const fromSrc = acceptedMediaPath(slot.src, extensions);
-  if (fromSrc) return fromSrc;
-  return discoverMedia(slot.id, extensions);
+function extensionsFor(kind: MediaKind): readonly string[] {
+  return kind === "video" ? VIDEO_EXT : IMAGE_EXT;
 }
 
-function resolvePoster(slot: VisualSlot): string | null {
-  if (slot.posterEnvKey) {
-    const fromEnv = acceptedMediaPath(readEnv(slot.posterEnvKey), IMAGE_EXT);
-    if (fromEnv) return fromEnv;
-  }
-  const fromSrc = acceptedMediaPath(slot.poster, IMAGE_EXT);
-  if (fromSrc) return fromSrc;
-  return discoverMedia(`${slot.id}-poster`, IMAGE_EXT);
-}
+export function resolveMedia(item: MediaItem): ResolvedMedia {
+  const extensions = extensionsFor(item.kind);
+  const fromEnv = acceptedMediaPath(readEnv(item.envKey), extensions);
+  const fromSrc = item.src ? acceptedMediaPath(item.src, extensions) : null;
+  const src = fromEnv || fromSrc || discoverMedia(item.id, extensions);
+  const posterExtensions = IMAGE_EXT;
+  const poster =
+    acceptedMediaPath(readEnv(item.posterEnvKey), posterExtensions) ||
+    (item.poster ? acceptedMediaPath(item.poster, posterExtensions) : null) ||
+    (item.kind === "video" ? discoverMedia(`${item.id}-poster`, posterExtensions) : null);
 
-export function resolveVisual(id: string): ResolvedVisual {
-  const slot = visualSlots[id as keyof typeof visualSlots];
-  if (!slot) {
-    return {
-      id,
-      label: "Photograph",
-      alt: "",
-      kind: "image",
-      placeholder: true,
-      src: null,
-      poster: null,
-    };
-  }
-
-  const extensions = slot.kind === "video" ? VIDEO_EXT : IMAGE_EXT;
-  const src = resolvePath(slot, extensions);
   return {
-    id: slot.id,
-    label: slot.label,
-    alt: slot.alt,
-    kind: slot.kind,
-    placeholder: src == null,
+    id: item.id,
+    kind: item.kind,
+    alt: item.alt,
+    ratio: item.ratio,
+    word: item.word,
+    script: item.script,
+    scriptFont: item.scriptFont,
+    tone: item.tone,
+    col: item.col ?? 2,
+    row: item.row ?? 1,
     src,
-    poster: slot.kind === "video" ? resolvePoster(slot) : null,
+    poster,
+    credit: item.credit,
+    empty: src == null,
   };
 }
 
-export function resolveVisuals(ids: readonly string[]): ResolvedVisual[] {
-  return ids.map((id) => resolveVisual(id));
+export function resolveGallery(tag: GalleryTag): ResolvedMedia[] {
+  return MEDIA.gallery.filter((item) => item.tags?.includes(tag)).map((item) => resolveMedia(item));
+}
+
+/** Posters never outnumber photographs. With no photographs yet, keep a three-tile graphic. */
+export function mosaicItems(items: ResolvedMedia[]): ResolvedMedia[] {
+  return chooseMosaic(items);
+}
+
+export function resolveReelUrls(urls: readonly string[], envKeys: readonly string[] = []): string[] {
+  const found: string[] = [];
+  const raw = [...urls, ...envKeys.map((key) => readEnv(key))];
+  for (const value of raw) {
+    const match = INSTAGRAM_PERMALINK.exec(value.trim());
+    if (!match) continue;
+    const permalink = match[0].replace(/\/?$/, "/");
+    if (!found.includes(permalink)) found.push(permalink);
+  }
+  return found;
+}
+
+function isHttpsUrl(value: string): boolean {
+  try {
+    return new URL(value).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+export function resolveShowreel(bandId: ShowreelBandId): ResolvedShowreel | null {
+  const media = showreelSources[bandId];
+  const configured = readEnv(media.showreelEnvKey) || (media.showreelUrl ?? "").trim();
+  if (!isHttpsUrl(configured)) return null;
+  return {
+    url: configured,
+    filename: media.showreelFilename,
+    external: true,
+  };
 }

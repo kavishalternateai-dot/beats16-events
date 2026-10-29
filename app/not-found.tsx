@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageContainer, PageHero } from "@/components/blocks";
+import { bandNav } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -11,17 +11,26 @@ export const metadata = pageMetadata({
 
 export default function NotFound() {
   return (
-    <PageContainer>
-      <PageHero
-        eyebrow="404"
-        title="That page is not here."
-        lede="The address may be old, or the page was never on this site. The inquiry form is the surest next step."
-        actions={
-          <Link href="/contact" className="font-semibold text-primary underline underline-offset-2">
-            Go to the inquiry form
+    <div className="site-wrap pt-32 pb-16">
+      <p className="eyebrow text-sindoor">404</p>
+      <h1 className="display-title mt-4">That page is not here.</h1>
+      <p className="mt-5 max-w-xl text-lg leading-relaxed">
+        The address may be old, or the page was never on this site.
+      </p>
+      <ul className="mt-8 flex flex-wrap gap-3">
+        {bandNav.map((band) => (
+          <li key={band.href}>
+            <Link href={band.href} className="inline-flex min-h-11 items-center rounded-full bg-chandan px-4 font-medium">
+              {band.label}
+            </Link>
+          </li>
+        ))}
+        <li>
+          <Link href="/contact" className="inline-flex min-h-11 items-center rounded-full bg-sindoor px-4 font-medium text-cream">
+            Plan your music
           </Link>
-        }
-      />
-    </PageContainer>
+        </li>
+      </ul>
+    </div>
   );
 }

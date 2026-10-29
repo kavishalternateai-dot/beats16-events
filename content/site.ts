@@ -3,18 +3,42 @@
  * Founder spelling is confirmed: Tushar Sonigra.
  */
 
-/** Shared proof. The long history is named once, on the home hero. */
+/** Shared proof. Shown on the home founder section and About only. */
 export const proofLines = [
   { value: "5,000+", detail: "events, weddings and festivals" },
   { value: "80+", detail: "Navratris organised" },
   { value: "Mumbai", detail: "home base, in India and abroad" },
 ] as const;
 
+/**
+ * Confirmed WhatsApp number, digits with country code. Null hides the button.
+ * Leave null until a number is confirmed.
+ */
+export const WHATSAPP_NUMBER: string | null = null;
+
+const FALLBACK_SITE_URL = "https://beats16-events.vercel.app";
+
+function stripTrailingSlash(url: string) {
+  return url.replace(/\/$/, "");
+}
+
+/** Canonical origin for metadata, sitemap, and schema. */
+export function siteUrl() {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (configured) return stripTrailingSlash(configured);
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (vercel) {
+    const host = vercel.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    return `https://${host}`;
+  }
+  return FALLBACK_SITE_URL;
+}
+
 export const site = {
   name: "Beats16 Events & Entertainment",
   shortName: "Beats16",
   founder: "Tushar Sonigra",
-  url: "https://beats16.events",
+  url: siteUrl(),
   locale: "en_IN",
   phoneDisplay: "+91 9820133078",
   phoneTel: "+919820133078",
@@ -51,20 +75,29 @@ export function instagramProfileUrl(): string | null {
 
 export const instagramPendingCopy = `${site.founder}'s Instagram will appear here once the handle is confirmed.`;
 
-export const primaryNav = [
-  { href: "/weddings", label: "Weddings" },
+export const bandNav = [
   { href: "/gauri", label: "Gauri" },
   { href: "/rdx", label: "RDX" },
   { href: "/daastan-e-ghazal", label: "Daastan-e-Ghazal" },
   { href: "/navratri", label: "Navratri" },
+] as const;
+
+export const primaryNav = [
+  { href: "/weddings", label: "Weddings" },
   { href: "/corporate-cultural", label: "Corporate & cultural" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
 ] as const;
 
+export const footerFocus = "We specialise in Indian weddings and traditional festivals.";
+
 export const footerNav = [
   { href: "/", label: "Home" },
-  ...primaryNav,
+  { href: "/weddings", label: "Weddings" },
+  ...bandNav,
+  { href: "/corporate-cultural", label: "Corporate & cultural" },
+  { href: "/about", label: "About" },
+  { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
   { href: "/#independent-bands", label: "Independent bands" },
 ] as const;

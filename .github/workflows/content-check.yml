@@ -1,0 +1,15 @@
+name: content-checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  facts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject a forbidden word in site source
+        run: "! grep -ri hindu app content components public"
+      - name: Count the longevity phrase and coming-soon labels
+        run: node scripts/check-content.mjs

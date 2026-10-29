@@ -1,4 +1,4 @@
-import { instagramHandle, instagramPendingCopy, instagramProfileUrl, site } from "@/content/site";
+import { instagramHandle, instagramPendingCopy, instagramProfileUrl } from "@/content/site";
 
 /**
  * Tushar Sonigra's profile link. With INSTAGRAM_HANDLE unset, this is copy only:
@@ -18,12 +18,12 @@ export function InstagramProfile({ tone = "light" }: { tone?: "light" | "dark" }
 
   const linkClass =
     tone === "dark"
-      ? "underline decoration-[#e4c88a]/70 underline-offset-4"
+      ? "underline decoration-sona/70 underline-offset-4"
       : "underline underline-offset-4";
 
   return (
     <a href={href} className={linkClass} rel="noopener noreferrer" target="_blank">
-      {site.founder} on Instagram (@{handle})
+      @{handle} on Instagram
       <span className="sr-only"> (opens in a new tab)</span>
     </a>
   );

@@ -1,132 +1,153 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import {
-  homeAbout,
-  homeBands,
-  homeClose,
-  homeFaqs,
-  homeFaqHeading,
-  homeGallery,
-  homeHero,
-  homeProof,
-  homeWeddings,
-} from "@/content/home";
-import { InquiryClose, PageContainer, PageHero, ProofStrip, SplitHero, sectionTitleClass } from "@/components/blocks";
-import { Reveal } from "@/components/motion";
-import { FounderPortrait } from "@/components/founder-portrait";
-import { MediaGallery } from "@/components/media-slot";
-import { resolveVisuals } from "@/lib/resolve-media";
+import { homeBands, homeFaqs, homeFaqHeading, homeFunctions, homeGallery, homeHero, homeMeet } from "@/content/home";
+import { MEDIA } from "@/content/media";
+import { instagramHandle, instagramProfileUrl, proofLines } from "@/content/site";
+const BandPanel = dynamic(() => import("@/components/band-panel").then((mod) => mod.BandPanel));
+const Mosaic = dynamic(() => import("@/components/mosaic").then((mod) => mod.Mosaic));
+const CountUp = dynamic(() => import("@/components/count-up").then((mod) => mod.CountUp));
 import { FaqList } from "@/components/faq-list";
+import { FunctionTimeline } from "@/components/function-timeline";
+import { HomeHero } from "@/components/home-hero";
+import { MediaFrame } from "@/components/media-frame";
 import { JsonLd } from "@/components/json-ld";
-import { buttonVariants } from "@/components/ui/button";
+import { LineReveal } from "@/components/motion/line-reveal";
+import { ArchReveal } from "@/components/motion/pieces";
+import { ArchThread, GoldThread } from "@/components/ornament/gold-thread";
+import { Ticker } from "@/components/ornament/ticker";
 import { faqJsonLd, organizationJsonLd } from "@/lib/schema";
-import { cn } from "@/lib/utils";
+import { resolveGallery, resolveMedia } from "@/lib/resolve-media";
+
+const teaserIds = ["home-kinds", "home-functions", "home-which-band", "home-price"];
+
+const panelMedia = {
+  "/gauri": MEDIA.bands.gauri.hero,
+  "/rdx": MEDIA.bands.rdx.hero,
+  "/daastan-e-ghazal": MEDIA.bands.ghazal.hero,
+  "/navratri": MEDIA.bands.navratri.hero,
+} as const;
+
+const panelTone = {
+  "/gauri": "haldi",
+  "/rdx": "rani",
+  "/daastan-e-ghazal": "neel",
+  "/navratri": "bandhani",
+} as const;
+
+const panelChips = {
+  "/gauri": ["Pheras", "Rituals"],
+  "/rdx": ["Sangeet", "Private events"],
+  "/daastan-e-ghazal": ["Ghazal", "Mehfil"],
+  "/navratri": ["Garba", "Dandiya"],
+} as const;
+
+const panelPromise = {
+  "/gauri": "Music that lets the pheras lead.",
+  "/rdx": "The band that follows the party.",
+  "/daastan-e-ghazal": "An evening made for listening.",
+  "/navratri": "Nine nights. One circle. Live.",
+} as const;
 
 export default function HomePage() {
+  const instagram = instagramProfileUrl();
+  const handle = instagramHandle();
+  const founder = resolveMedia(MEDIA.founder);
+  const teaser = homeFaqs.filter((item) => teaserIds.includes(item.id));
+
   return (
     <>
       <JsonLd data={organizationJsonLd()} />
-      <JsonLd data={faqJsonLd(homeFaqs)} />
-      <div className="hero-wash">
-        <div className="site-wrap py-16 md:py-20">
-          <SplitHero
-            media={<FounderPortrait priority />}
-            copy={
-              <PageHero
-                eyebrow={homeHero.eyebrow}
-                title={homeHero.h1}
-                lede={homeHero.subhead}
-                actions={
-                  <div className="flex flex-col items-start gap-3">
-                    <Link href={homeHero.ctaHref} className={cn(buttonVariants({ size: "cta" }))}>
-                      {homeHero.cta}
-                    </Link>
-                    <p className="text-sm text-muted-foreground">{homeHero.note}</p>
-                  </div>
-                }
-              />
-            }
-          />
+      <JsonLd data={faqJsonLd(teaser)} />
+      <HomeHero
+        media={resolveMedia(MEDIA.homeHero)}
+        eyebrow={homeHero.eyebrow}
+        title={homeHero.h1}
+        subhead={homeHero.subhead}
+      />
+      <Ticker />
+
+      <section aria-labelledby="bands-heading">
+        <div className="site-wrap py-12 md:py-16">
+          <GoldThread />
+          <LineReveal as="h2" id="bands-heading" text={homeBands.heading} className="mt-2 font-display text-4xl leading-none md:text-6xl" />
+          <p className="mt-4 max-w-xl leading-relaxed">{homeBands.intro}</p>
         </div>
-      </div>
-      <PageContainer compactTop>
-        <Reveal as="section" className="section-block" labelledBy="proof-heading">
-          <h2 id="proof-heading" className="text-xs font-semibold tracking-[0.16em] text-primary uppercase">
-            {homeProof.label}
-          </h2>
-          <div className="mt-6">
-            <ProofStrip items={homeProof.items} />
-          </div>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-foreground/80">{homeProof.support}</p>
-        </Reveal>
+        {homeBands.cards.map((band, index) => (
+          <BandPanel
+            key={band.href}
+            name={band.name}
+            href={band.href}
+            promise={panelPromise[band.href]}
+            chips={[...panelChips[band.href]]}
+            link={band.link}
+            media={resolveMedia(panelMedia[band.href])}
+            tone={panelTone[band.href]}
+            flip={index % 2 === 1}
+          />
+        ))}
+        <p id="independent-bands" className="site-wrap scroll-mt-28 py-8 text-lg">
+          {homeBands.independent}
+        </p>
+      </section>
 
-        <MediaGallery
-          headingId="home-gallery"
-          heading={homeGallery.heading}
-          intro={homeGallery.intro}
-          slots={resolveVisuals(homeGallery.slotIds)}
-        />
+      <section className="bg-cream py-14 md:py-20" aria-labelledby="functions-heading">
+        <div className="site-wrap">
+          <GoldThread />
+          <LineReveal as="h2" id="functions-heading" text="Your wedding, function by function." className="mt-2 font-display text-4xl leading-none md:text-6xl" />
+          <FunctionTimeline items={homeFunctions} />
+          <p className="mt-5 text-sm">Haldi or baraat too? Tell us.</p>
+        </div>
+      </section>
 
-        <Reveal as="section" className="section-block" labelledBy="bands-heading">
-          <h2 id="bands-heading" className={sectionTitleClass}>
-            {homeBands.heading}
-          </h2>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">{homeBands.intro}</p>
-          <ul className="mt-8 grid items-stretch gap-5 md:grid-cols-2">
-            {homeBands.cards.map((band) => (
-              <li key={band.href} className="jewel-card flex flex-col p-6 md:p-7">
-                <h3 className="font-heading text-2xl leading-tight">
-                  <Link href={band.href} className="underline-offset-2 hover:underline">
-                    {band.name}
-                  </Link>
-                </h3>
-                <p className="mt-3 leading-relaxed text-foreground/80">{band.text}</p>
-                <Link href={band.href} className="mt-auto inline-flex min-h-11 items-center pt-4 text-sm font-semibold text-primary">
-                  {band.link}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <p id="independent-bands" className="mt-5 scroll-mt-28 text-sm leading-relaxed text-muted-foreground">
-            {homeBands.independent}
+      <section className="site-wrap py-14 md:py-20" aria-labelledby="gallery-heading">
+          <GoldThread />
+          <LineReveal as="h2" id="gallery-heading" text={homeGallery.heading} className="font-display text-4xl leading-none md:text-6xl" />
+        <Mosaic items={resolveGallery("home")} label="Photographs and films" />
+        {instagram ? (
+          <p className="mt-6">
+            <a href={instagram} className="font-medium underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+              More on Instagram @{handle}
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
           </p>
-        </Reveal>
+        ) : null}
+      </section>
 
-        <Reveal as="section" className="jewel-card section-block p-6 md:p-10" labelledBy="weddings-heading">
-          <h2 id="weddings-heading" className={sectionTitleClass}>
-            {homeWeddings.heading}
-          </h2>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-foreground/80">{homeWeddings.body}</p>
-          <p className="mt-5 text-sm font-semibold tracking-wide text-primary">{homeWeddings.functions}</p>
-          <Link href={homeWeddings.href} className="mt-4 inline-flex min-h-11 items-center font-semibold text-primary underline underline-offset-2">
-            {homeWeddings.link}
-          </Link>
-        </Reveal>
+      <section className="bg-chandan py-14 md:py-20" aria-labelledby="founder-heading">
+        <div className="site-wrap grid items-center gap-10 md:grid-cols-[minmax(16rem,22rem)_1fr]">
+          <div className="relative mx-auto max-w-sm">
+            <ArchReveal curtainClass="bg-haldi">
+              <MediaFrame item={founder} sizes="(min-width: 768px) 22rem, 80vw" className="min-h-[26rem]" />
+            </ArchReveal>
+            <ArchThread />
+          </div>
+          <div>
+            <GoldThread />
+            <LineReveal as="h2" id="founder-heading" text={homeMeet.heading} className="mt-2 font-display text-5xl leading-none md:text-6xl" />
+            <p className="mt-6 max-w-xl text-lg leading-relaxed">{homeMeet.lines[0]}</p>
+            <p className="mt-3 max-w-xl text-lg leading-relaxed">{homeMeet.lines[1]}</p>
+            <dl className="mt-8 grid gap-6 sm:grid-cols-2">
+              {proofLines.slice(0, 2).map((item) => (
+                <div key={item.value}>
+                  <dt className="font-display text-5xl leading-none text-sindoor">
+                    <CountUp value={item.value} />
+                  </dt>
+                  <dd className="mt-2 text-sm">{item.detail}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
 
-        <Reveal as="section" className="section-block" labelledBy="about-heading">
-          <h2 id="about-heading" className={sectionTitleClass}>
-            {homeAbout.heading}
-          </h2>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed">{homeAbout.body}</p>
-          <Link href={homeAbout.href} className="mt-4 inline-flex min-h-11 items-center font-semibold text-primary underline underline-offset-2">
-            {homeAbout.link}
-          </Link>
-        </Reveal>
-
-        <FaqList items={homeFaqs} heading={homeFaqHeading} />
-        <p className="mt-4">
-          <Link href="/faq" className="font-semibold text-primary underline underline-offset-2">
+      <section className="site-wrap py-14 md:py-20">
+        <FaqList items={teaser} heading={homeFaqHeading} />
+        <p className="mt-6">
+          <Link href="/faq" className="font-medium text-mor underline underline-offset-4">
             See all FAQs
           </Link>
         </p>
-
-        <InquiryClose
-          title={homeClose.heading}
-          text={homeClose.body}
-          cta={homeClose.cta}
-          href={homeClose.ctaHref}
-          contactLocation="home_cta"
-        />
-      </PageContainer>
+      </section>
     </>
   );
 }

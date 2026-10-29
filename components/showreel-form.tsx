@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { showreelBands, type ShowreelBandId } from "@/content/forms";
-import { site } from "@/content/site";
 import { EmailLink, PhoneLink } from "@/components/contact-links";
 import { ErrorSummary, Field, describedBy } from "@/components/field";
 import { Button } from "@/components/ui/button";
@@ -37,7 +36,7 @@ function deliverDownload(delivery: Delivery) {
 export function ShowreelForm({
   defaultBand,
   heading = "Download showreel",
-  intro = "Name, email, phone, and the band. The file starts downloading after you send this. Until a real showreel is linked, the file is a labeled placeholder.",
+  intro = "Name, email, phone, and the band. The file starts downloading after you send this.",
   note,
 }: {
   defaultBand: ShowreelBandId;
@@ -104,12 +103,6 @@ export function ShowreelForm({
         <p className="mt-3 leading-relaxed">
           If it did not, use the link below. We have your name, email, and phone with this request.
         </p>
-        {delivery.placeholder ? (
-          <p className="mt-3 leading-relaxed">
-            This file is a placeholder showreel. The real film will replace it later. You can still
-            keep this copy.
-          </p>
-        ) : null}
         <p className="mt-4">
           <a
             href={delivery.downloadUrl}
@@ -129,7 +122,6 @@ export function ShowreelForm({
             send the <Link href="/contact" className="underline underline-offset-2">inquiry form</Link>.
             We reply personally.
           </p>
-          <p className="mt-3 leading-relaxed">{site.pricing}</p>
         </div>
       </div>
     );
@@ -140,9 +132,6 @@ export function ShowreelForm({
       <div>
         <h2 className="font-heading text-3xl tracking-tight">{heading}</h2>
         <p className="mt-3 leading-relaxed">{intro}</p>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Until a real showreel is linked, the file is a labeled placeholder.
-        </p>
       </div>
       <ErrorSummary errors={errors} />
       <Field id="name" label="Name" error={errors.name}>

@@ -2,7 +2,7 @@
 
 Marketing site for Beats16, a Mumbai band for Indian weddings and traditional festivals. The copy sticks to the facts we were given: 5,000+ events, 80+ Navratris, founder Tushar Sonigra, and a Mumbai base. The long history is named once, on the home hero. The site does not invent clients, reviews, or prices.
 
-Canonical domain in metadata: `https://beats16.events`. That domain is not attached yet.
+Canonical origin for metadata, sitemap, and schema is `NEXT_PUBLIC_SITE_URL`, or `https://beats16-events.vercel.app` when that variable is unset. `beats16.events` is not live yet.
 
 ## Run locally
 
@@ -46,10 +46,13 @@ Copy `.env.example` to `.env.local`. All variables are optional. The site runs w
 
 | Variable | Purpose |
 | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin. Unset uses `https://beats16-events.vercel.app`. |
 | `NEXT_PUBLIC_GA_ID` | GA4 measurement ID (`G-XXXXXXXX`). Anything else is ignored, and the snippet is omitted when this is empty. |
 | `RESEND_API_KEY` | Resend API key. Together with the two addresses below, inquiry and showreel leads are emailed. |
-| `INQUIRY_FROM_EMAIL` | Verified Resend sender, for example `Beats16 Inquiries <inquiries@beats16.events>`. |
+| `INQUIRY_FROM_EMAIL` | Verified Resend sender, for example `Beats16 Inquiries <inquiries@your-verified-domain>`. |
 | `INQUIRY_TO_EMAIL` | Inbox that receives leads. Suggested: `beats16@gmail.com`. |
+| `LEADS_WEBHOOK_URL` | Optional. Each lead is POSTed here as JSON. For Apps Script, include `?secret=`. |
+| `LEADS_WEBHOOK_SECRET` | Optional. Sent as `X-Beats16-Secret` when set. |
 | `REEL_*` | Instagram reel permalinks. See `.env.example`. |
 | `SHOWREEL_*_URL` | `https` link to a real showreel file. |
 
@@ -57,15 +60,93 @@ Copy `.env.example` to `.env.local`. All variables are optional. The site runs w
 
 Reel and showreel URLs are read when the site is built. Redeploy after changing them.
 
-### Leads, email, and the mailto fallback
+### Leads
 
-`POST /api/inquiry` and `POST /api/showreel` both validate the body, ignore honeypot submissions for logging, and write a JSON line to the server log (`[beats16 lead]`).
+`POST /api/inquiry` and `POST /api/showreel` validate the body, ignore honeypot submissions, and write a JSON line to the server log (`[beats16 lead]`).
 
-- If `RESEND_API_KEY`, `INQUIRY_FROM_EMAIL`, and `INQUIRY_TO_EMAIL` are all set, the lead is emailed through the Resend API. The visitor’s address is `reply_to`. A short confirmation is also sent to the visitor from `INQUIRY_FROM_EMAIL`. The thank-you page names `beats16@gmail.com` as that mailbox once the sender is verified.
-- If any of those three is missing, the log is the record and the form still succeeds. No confirmation email is sent. Until `beats16.events` is on a domain Resend can verify, leave the email settings empty.
-- If Resend is configured and the request fails, the API returns 502. The inquiry form then offers a `mailto:beats16@gmail.com` link with the details filled in. The showreel form offers the same phone and email.
+Two sinks are optional and independent. The log is always written. The form succeeds when at least one configured sink accepts the lead. It returns 502 only when a configured sink fails and none succeeded. With neither sink configured, the log is enough and the form still succeeds.
+
+**Resend.** Set all three of `RESEND_API_KEY`, `INQUIRY_FROM_EMAIL`, and `INQUIRY_TO_EMAIL`. The lead is emailed through the Resend API. The visitor’s address is `reply_to`. A short confirmation is also sent to the visitor. A failed confirmation does not fail the form. Leave these empty until a domain Resend can verify is attached.
+
+**Webhook.** Set `LEADS_WEBHOOK_URL`. The site POSTs the lead JSON with an 8 second timeout. If `LEADS_WEBHOOK_SECRET` is set, it is sent as `X-Beats16-Secret`. A Google Apps Script web app answers the first POST with a redirect, so the site repeats the POST to that location and keeps the body. A response of `{ "ok": false }` counts as a failure.
 
 There is no database.
+
+#### Google Sheet via Apps Script
+
+1. Create a Google Sheet. Extensions → Apps Script. Replace the default file with `scripts/apps-script-leads.gs` (also pasted below).
+2. Project Settings → Script properties: `WEBHOOK_SECRET` (a long random string) and `ALERT_TO` (comma-separated inboxes, for example `beats16@gmail.com`).
+3. Deploy → New deployment → Web app. Execute as **Me**. Who has access: **Anyone**. Copy the web app URL.
+4. In Vercel, set `LEADS_WEBHOOK_SECRET` to the same secret, and set `LEADS_WEBHOOK_URL` to the web app URL plus `?secret=` and that secret. Apps Script does not give `doPost` custom headers, so the query string is what the script checks. The header is still sent for any receiver that can read it.
+5. Redeploy the site. Send a test inquiry. A row appears on the `Leads` tab, and `ALERT_TO` gets one email.
+
+```javascript
+var LEAD_COLUMNS = [
+  "kind", "at", "name", "phone", "email",
+  "eventType", "eventDate", "city", "functions", "interest",
+  "guestCount", "organisation", "message", "heardAbout",
+  "source", "utmSource", "utmMedium", "utmCampaign", "band",
+];
+
+function doPost(e) {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    var expected = props.getProperty("WEBHOOK_SECRET") || "";
+    var provided = readSecret_(e);
+    if (!expected || provided !== expected) {
+      return json_({ ok: false, error: "unauthorized" });
+    }
+    if (!e.postData || !e.postData.contents) {
+      return json_({ ok: false, error: "empty body" });
+    }
+    var lead = JSON.parse(e.postData.contents);
+    appendLead_(lead);
+    try {
+      sendAlert_(props.getProperty("ALERT_TO") || "", lead);
+    } catch (mailError) {
+      console.error(mailError);
+    }
+    return json_({ ok: true });
+  } catch (err) {
+    return json_({ ok: false, error: String(err && err.message ? err.message : err) });
+  }
+}
+
+function readSecret_(e) {
+  var headers = e.headers || {};
+  var fromHeader = headers["X-Beats16-Secret"] || headers["x-beats16-secret"] || "";
+  if (fromHeader) return String(fromHeader);
+  if (e.parameter && e.parameter.secret) return String(e.parameter.secret);
+  return "";
+}
+
+function appendLead_(lead) {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName("Leads");
+  if (!sheet) sheet = spreadsheet.insertSheet("Leads");
+  if (sheet.getLastRow() === 0) sheet.appendRow(LEAD_COLUMNS);
+  var row = LEAD_COLUMNS.map(function (key) {
+    var value = lead[key];
+    return value == null ? "" : String(value);
+  });
+  sheet.appendRow(row);
+}
+
+function sendAlert_(alertTo, lead) {
+  if (!alertTo) return;
+  var subject = lead.kind === "showreel"
+    ? "Beats16 showreel: " + (lead.name || "")
+    : "Beats16 inquiry: " + (lead.name || "") + " — " + (lead.city || "");
+  var lines = LEAD_COLUMNS.map(function (key) {
+    return key + ": " + (lead[key] == null ? "" : lead[key]);
+  });
+  MailApp.sendEmail(alertTo, subject, lines.join("\n"));
+}
+
+function json_(payload) {
+  return ContentService.createTextOutput(JSON.stringify(payload)).setMimeType(ContentService.MimeType.JSON);
+}
+```
 
 ### Instagram reels
 
@@ -107,7 +188,7 @@ This is a Next.js App Router project. Import the repository in Vercel, leave the
 
 1. Add any environment variables from `.env.example` in the Vercel project (Production, and Preview if you want them there).
 2. Deploy. `npm run build` is the build command.
-3. Attach `beats16.events` later, under Project → Settings → Domains. Metadata, sitemap, robots, and JSON-LD already use `https://beats16.events`. No code change is required when the domain goes live, unless you also verify that domain for Resend.
+3. When `beats16.events` is live, set `NEXT_PUBLIC_SITE_URL` to `https://beats16.events` and redeploy. Until then the canonical origin stays `https://beats16-events.vercel.app`. Verify that domain in Resend before setting `INQUIRY_FROM_EMAIL`.
 
 Do not add prices or client names when you connect the domain. Do not add Facebook, LinkedIn, or WhatsApp. Tushar Sonigra’s Instagram is the only social profile, and only after `INSTAGRAM_HANDLE` is set.
 

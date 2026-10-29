@@ -74,22 +74,95 @@ function leadText(lead: LeadRecord): string {
   return lines.join("\n");
 }
 
+const WEBHOOK_TIMEOUT_MS = 8000;
+
 /**
- * Logs every lead. Sends email only when Resend is fully configured.
- * Returns emailed: false when email is not configured (the log is the record).
- * Throws when Resend is configured and the request fails.
+ * Logs every lead. Two optional sinks run independently:
+ * Resend (unchanged) when its three variables are set, and
+ * LEADS_WEBHOOK_URL when that is set.
+ * The request fails only when a configured sink fails and none succeeded.
  */
-export async function recordLead(lead: LeadRecord): Promise<{ emailed: boolean }> {
+export async function recordLead(lead: LeadRecord): Promise<{ emailed: boolean; webhooked: boolean }> {
   console.info(`[beats16 lead] ${JSON.stringify(lead)}`);
 
+  const webhookUrl = process.env.LEADS_WEBHOOK_URL?.trim() ?? "";
   const apiKey = process.env.RESEND_API_KEY?.trim();
   const to = process.env.INQUIRY_TO_EMAIL?.trim();
   const from = process.env.INQUIRY_FROM_EMAIL?.trim();
+  const resendReady = Boolean(apiKey && to && from);
 
-  if (!apiKey || !to || !from) {
-    return { emailed: false };
+  const webhookAttempt = webhookUrl ? deliverWebhook(lead, webhookUrl) : Promise.resolve(false);
+  const resendAttempt = resendReady ? deliverResend(lead, apiKey!, from!, to!) : Promise.resolve(false);
+  const [webhookResult, resendResult] = await Promise.allSettled([webhookAttempt, resendAttempt]);
+
+  const webhooked = webhookResult.status === "fulfilled" && webhookResult.value === true;
+  const emailed = resendResult.status === "fulfilled" && resendResult.value === true;
+
+  if (webhookResult.status === "rejected") {
+    console.error("[beats16 lead] Webhook failed.", webhookResult.reason);
+  }
+  if (resendResult.status === "rejected") {
+    console.error("[beats16 lead] Resend failed.", resendResult.reason);
   }
 
+  const configured = Boolean(webhookUrl || resendReady);
+  if (configured && !webhooked && !emailed) {
+    throw new Error("Lead delivery failed");
+  }
+
+  return { emailed, webhooked };
+}
+
+async function deliverWebhook(lead: LeadRecord, url: string): Promise<true> {
+  const secret = process.env.LEADS_WEBHOOK_SECRET?.trim();
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (secret) headers["X-Beats16-Secret"] = secret;
+  const body = JSON.stringify(lead);
+  const signal = AbortSignal.timeout(WEBHOOK_TIMEOUT_MS);
+
+  let response = await fetch(url, {
+    method: "POST",
+    headers,
+    body,
+    redirect: "manual",
+    signal,
+  });
+
+  if (response.status >= 300 && response.status < 400) {
+    const location = response.headers.get("location");
+    if (!location) {
+      throw new Error(`Lead webhook redirect ${response.status} had no location`);
+    }
+    response = await fetch(location, {
+      method: "POST",
+      headers,
+      body,
+      redirect: "follow",
+      signal,
+    });
+  }
+
+  const detail = await response.text();
+  if (!response.ok) {
+    throw new Error(`Lead webhook failed ${response.status}: ${detail.slice(0, 300)}`);
+  }
+
+  if (detail.trim()) {
+    try {
+      const parsed = JSON.parse(detail) as { ok?: boolean };
+      if (parsed.ok === false) {
+        throw new Error("Lead webhook rejected the lead");
+      }
+    } catch (error) {
+      if (error instanceof SyntaxError) return true;
+      throw error;
+    }
+  }
+
+  return true;
+}
+
+async function deliverResend(lead: LeadRecord, apiKey: string, from: string, to: string): Promise<true> {
   const subject =
     lead.kind === "inquiry"
       ? `Inquiry: ${singleLine(lead.name)} — ${singleLine(lead.city)}`
@@ -124,7 +197,7 @@ export async function recordLead(lead: LeadRecord): Promise<{ emailed: boolean }
     }
   }
 
-  return { emailed: true };
+  return true;
 }
 
 async function sendVisitorConfirmation(apiKey: string, from: string, lead: Extract<LeadRecord, { kind: "inquiry" }>) {

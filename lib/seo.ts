@@ -23,6 +23,7 @@ export function pageMetadata(options: {
 }): Metadata {
   assertSeo(options.title, options.description);
   const index = options.index !== false;
+  const imagePath = options.path === "/" || options.path === "/404" ? "/opengraph-image" : `${options.path}/opengraph-image`;
 
   return {
     title: { absolute: options.title },
@@ -38,11 +39,13 @@ export function pageMetadata(options: {
       type: "website",
       locale: site.locale,
       siteName: site.name,
+      images: [{ url: imagePath, width: 1200, height: 630, alt: options.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: options.title,
       description: options.description,
+      images: [imagePath],
     },
   };
 }

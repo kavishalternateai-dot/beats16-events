@@ -18,12 +18,15 @@ export async function POST(request: Request) {
   if (!result.ok) return jsonError(result.errors);
 
   const showreel = resolveShowreel(result.data.band);
+  if (!showreel) {
+    return jsonError({ form: "That showreel is not ready yet. Please call or email us." }, 404);
+  }
 
   if (result.data.companyWebsite) {
     return NextResponse.json({
       ok: true,
       downloadUrl: showreel.url,
-      placeholder: showreel.placeholder,
+      placeholder: false,
       external: showreel.external,
       filename: showreel.filename,
     });
@@ -38,7 +41,7 @@ export async function POST(request: Request) {
   return NextResponse.json({
     ok: true,
     downloadUrl: showreel.url,
-    placeholder: showreel.placeholder,
+    placeholder: false,
     external: showreel.external,
     filename: showreel.filename,
   });

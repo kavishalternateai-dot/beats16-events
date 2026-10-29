@@ -16,7 +16,7 @@ export default function Error({
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-16">
-      <h1 className="font-heading text-4xl">This page did not load.</h1>
+      <h1 className="font-display text-5xl leading-none">This page did not load.</h1>
       <p className="mt-4 text-lg leading-relaxed">
         Please try again. If it still fails, call {site.phoneDisplay} or email {site.email}.
       </p>

@@ -3,8 +3,6 @@ import type { FaqItem } from "@/content/faqs";
 import { inquiryHref, standardProof, type PageStory } from "@/content/story";
 import { site } from "@/content/site";
 
-export type { MediaPattern } from "@/content/media";
-
 /**
  * Approved band-page copy, AQ-003 through AQ-006.
  * Do not add line-ups, songs, instruments, clients, or prices.
@@ -207,10 +205,10 @@ export const bandPages: BandPage[] = [
     story: {
       hero: {
         eyebrow: "Gauri · a Beats16 band",
-        h1: "Gauri: traditional music for Indian wedding rituals",
+        h1: "Music that lets the pheras lead.",
         subhead:
-          "Some moments in a wedding ask for quiet respect, not a party. Gauri plays for the rituals and traditional ceremonies, with music that sits gently alongside the pheras and lets the ceremony lead.",
-        cta: "Send an inquiry for Gauri",
+          "Gauri plays for the rituals and traditional ceremonies, and lets the ceremony lead.",
+        cta: "Plan Gauri for your date",
         ctaHref: gauriInquiry,
         note: `From Beats16, ${site.city}. Performing across India and abroad.`,
       },
@@ -285,10 +283,9 @@ export const bandPages: BandPage[] = [
     story: {
       hero: {
         eyebrow: "RDX · a Beats16 band",
-        h1: "RDX: the wireless band that moves with your sangeet",
-        subhead:
-          "The best sangeet nights don't stay on one stage. RDX is our wireless band, so the music can move with your guests, from the entry to the dance floor and wherever the party goes next.",
-        cta: "Send an inquiry for RDX",
+        h1: "The band that follows the party.",
+        subhead: "RDX is our wireless band for sangeet nights and private events.",
+        cta: "Plan RDX for your date",
         ctaHref: rdxInquiry,
         note: `From Beats16, ${site.city}. Performing across India and abroad.`,
       },
@@ -363,10 +360,10 @@ export const bandPages: BandPage[] = [
     story: {
       hero: {
         eyebrow: "Daastan-e-Ghazal · a Beats16 band",
-        h1: "Daastan-e-Ghazal: ghazal evenings made for listening",
+        h1: "An evening made for listening.",
         subhead:
-          "Not every celebration needs a dance floor. Daastan-e-Ghazal brings unhurried, soulful ghazal evenings to cultural programmes, community gatherings and private events, where the music is the reason everyone stays.",
-        cta: "Send an inquiry for Daastan-e-Ghazal",
+          "Unhurried ghazal evenings for cultural programmes, community gatherings and private events.",
+        cta: "Plan Daastan-e-Ghazal for your date",
         ctaHref: ghazalInquiry,
         note: `From Beats16, ${site.city}. Performing across India and abroad.`,
       },
@@ -440,11 +437,11 @@ export const bandPages: BandPage[] = [
     faqGroup: "navratri",
     story: {
       hero: {
-        eyebrow: "Navratri band by Beats16",
-        h1: "Live garba and dandiya nights, from 80+ Navratris of experience",
+        eyebrow: "Navratri band by Beats16 · 80+ Navratris organised",
+        h1: "Nine nights. One circle. Live.",
         subhead:
-          "Nine nights, one circle, and music that keeps everyone moving. The Navratri band by Beats16 brings live garba and dandiya to communities in India and around the world.",
-        cta: "Send a Navratri inquiry",
+          "Live garba and dandiya for communities in India and around the world.",
+        cta: "Plan Navratri for your date",
         ctaHref: navratriInquiry,
         note: `From Beats16, ${site.city}. Navratri events for audiences in India and abroad.`,
       },
@@ -535,6 +532,6 @@ export const independentBand = {
   paragraphs: [
     "We do not list the independent bands by name on this site. The right group depends on the show, the date, and the city. Write with those three and we will say whether we can put a band there.",
     "A private show can be a family evening, a host’s gathering, or a small programme that is not a full wedding ceremony and not Navratri. If it is an Indian wedding ritual, ask for Gauri. If it is a sangeet, ask for RDX.",
-    "The reels and the showreel on this section are placeholders until the real links are added. The form still works: you receive the file we have today, and we keep your name, email, and phone with the other leads.",
+    "Tell us the show, the date, and the city. We will say whether an independent band fits.",
   ],
 };

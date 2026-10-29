@@ -18,8 +18,8 @@ export const homeHero = {
   /** The only public longevity line. Do not repeat it on other pages. */
   h1: "Live music for Indian weddings and Navratri, for 40 years",
   subhead:
-    "From the first song at the mehendi to the last dance at the reception. We shape the music for each part of your celebration.",
-  cta: "Fill the inquiry form",
+    "From the first song at the mehendi to the last garba round. Four bands, one family, from Mumbai.",
+  cta: "Plan your music",
   ctaHref: "/contact?source=home-page#inquiry-form",
   note: `Based in ${site.city}. Performing across India and abroad.`,
 } as const;
@@ -31,13 +31,13 @@ export const homeProof = {
 } as const;
 
 export const homeGallery = {
-  heading: "Photographs and films",
+  heading: "From the floor",
   intro: "Pictures and films from weddings, festivals and Navratri will be added here.",
   slotIds: ["home-wedding", "home-navratri", "home-film"],
 } as const;
 
 export const homeBands = {
-  heading: "A band for every part of the celebration",
+  heading: "Four bands. Four moods.",
   intro: "Every function has its own mood. That's why we have more than one band.",
   cards: [
     {
@@ -132,6 +132,46 @@ export const homeFaqHeading = "Questions families often ask";
 export const homeClose = {
   heading: "Tell us about your celebration",
   body: "Share your date, city and the functions you're planning, and Tushar Sonigra will get back to you personally.",
-  cta: "Fill the inquiry form",
+  cta: "Plan your music",
   ctaHref: "/contact?source=home-page#inquiry-form",
+} as const;
+
+export const homeFunctions = [
+  {
+    title: "Mehendi",
+    tone: "haldi" as const,
+    line: "Colour, chatter, and music that stays light.",
+    href: "/weddings",
+    link: "Plan this function",
+  },
+  {
+    title: "Sangeet",
+    tone: "rani" as const,
+    line: "The night everyone dances.",
+    href: "/rdx",
+    link: "Meet RDX",
+  },
+  {
+    title: "Pheras",
+    tone: "mehendi" as const,
+    line: "Calm music that lets the ceremony lead.",
+    href: "/gauri",
+    link: "Meet Gauri",
+  },
+  {
+    title: "Reception",
+    tone: "sindoor" as const,
+    line: "Warm music for entries and the last dance.",
+    href: "/weddings",
+    link: "Plan this function",
+  },
+] as const;
+
+export const homeMeet = {
+  heading: "Meet Tushar ji",
+  lines: [
+    "Tushar Sonigra started Beats16 in Mumbai.",
+    "He still speaks with every family personally.",
+    "5,000+ events and 80+ Navratris.",
+  ],
 } as const;

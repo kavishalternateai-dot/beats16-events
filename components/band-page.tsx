@@ -1,0 +1,252 @@
+import Link from "next/link";
+import { getBandPage, type BandPage } from "@/content/bands";
+import { MEDIA, type MediaBandKey, type MediaTone } from "@/content/media";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { FaqList } from "@/components/faq-list";
+import { MediaFrame } from "@/components/media-frame";
+import { JsonLd } from "@/components/json-ld";
+import { PlanActions } from "@/components/plan-actions";
+import { PosterTile } from "@/components/poster-tile";
+import { ReelStrip } from "@/components/reel-strip";
+import { ShowreelForm } from "@/components/showreel-form";
+import { Steps } from "@/components/steps";
+import { toneClass } from "@/components/tones";
+import { BandhaniPattern } from "@/components/ornament/bandhani";
+import { GoldThread } from "@/components/ornament/gold-thread";
+import { LineReveal } from "@/components/motion/line-reveal";
+import { FadeUp, ArchReveal } from "@/components/motion/pieces";
+import { breadcrumbJsonLd, faqJsonLd, organizationJsonLd, performingGroup, serviceJsonLd } from "@/lib/schema";
+import { resolveMedia, resolveReelUrls, resolveShowreel } from "@/lib/resolve-media";
+import type { StorySection } from "@/content/story";
+
+const mediaKey: Record<BandPage["id"], MediaBandKey> = {
+  gauri: "gauri",
+  rdx: "rdx",
+  "daastan-e-ghazal": "ghazal",
+  navratri: "navratri",
+};
+
+const visuals: Record<
+  BandPage["id"],
+  {
+    tone: MediaTone;
+    chips: string[];
+    pairs: { href: string; name: string; text: string }[];
+    rule: string;
+  }
+> = {
+  gauri: {
+    tone: "haldi",
+    chips: ["Pheras", "Rituals"],
+    pairs: [
+      { href: "/rdx", name: "RDX", text: "For the sangeet, when the party wants to move." },
+      { href: "/daastan-e-ghazal", name: "Daastan-e-Ghazal", text: "For a quieter evening beside the rituals." },
+    ],
+    rule: "border-haldi",
+  },
+  rdx: {
+    tone: "rani",
+    chips: ["Sangeet", "Private events"],
+    pairs: [
+      { href: "/gauri", name: "Gauri", text: "For the rituals and the pheras." },
+      { href: "/daastan-e-ghazal", name: "Daastan-e-Ghazal", text: "For a listening evening in the same wedding." },
+    ],
+    rule: "border-rani",
+  },
+  "daastan-e-ghazal": {
+    tone: "neel",
+    chips: ["Ghazal", "Mehfil"],
+    pairs: [
+      { href: "/gauri", name: "Gauri", text: "For the rituals, when the wedding needs calm." },
+      { href: "/rdx", name: "RDX", text: "For the sangeet, when the floor should fill." },
+    ],
+    rule: "border-neel",
+  },
+  navratri: {
+    tone: "bandhani",
+    chips: ["Garba", "Dandiya"],
+    pairs: [
+      { href: "/gauri", name: "Gauri", text: "Wedding rituals and pheras." },
+      { href: "/rdx", name: "RDX", text: "Sangeet nights and private events." },
+    ],
+    rule: "border-sindoor",
+  },
+};
+
+function findSection<K extends StorySection["kind"]>(sections: StorySection[], kind: K) {
+  return sections.find((section): section is Extract<StorySection, { kind: K }> => section.kind === kind);
+}
+
+export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
+  const band = getBandPage(bandId);
+  const visual = visuals[bandId];
+  const media = MEDIA.bands[mediaKey[bandId]];
+  const heroMedia = resolveMedia(media.hero);
+  const photos = media.photos.map((photo) => resolveMedia(photo));
+  const reels = resolveReelUrls(media.reels, media.reelEnvKeys);
+  const showreel = resolveShowreel(bandId);
+  const pace = bandId === "daastan-e-ghazal" ? 1.25 : 1;
+  const wordStagger = bandId === "rdx" ? 0.05 : undefined;
+  const tone = toneClass[visual.tone];
+  const points = findSection(band.story.sections, "points");
+  const steps = findSection(band.story.sections, "steps");
+  const prose = band.story.sections.filter((section) => section.kind === "prose");
+  const showreelCopy = findSection(band.story.sections, "showreel");
+  const crumbs = [
+    { name: "Home", path: "/" },
+    { name: band.name, path: band.href },
+  ];
+  const group = performingGroup(bandId);
+
+  return (
+    <>
+      <JsonLd data={organizationJsonLd()} />
+      <JsonLd data={serviceJsonLd({ name: band.name, description: band.metaDescription, path: band.href })} />
+      {group ? <JsonLd data={{ "@context": "https://schema.org", ...group }} /> : null}
+      <JsonLd data={breadcrumbJsonLd(crumbs)} />
+      <JsonLd data={faqJsonLd(band.story.faqs)} />
+      <section className={`relative overflow-hidden ${tone.bg} ${tone.text}`}>
+        <BandhaniPattern />
+        {visual.tone !== "haldi" ? (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-kajal/75 to-transparent" />
+        ) : null}
+        <div className="site-wrap relative grid items-end gap-8 pt-28 pb-12 md:grid-cols-[1.1fr_0.9fr] md:pt-32 md:pb-16">
+          <div>
+            <Breadcrumbs items={crumbs} />
+            <p className="eyebrow mt-6 opacity-90">{band.story.hero.eyebrow}</p>
+            <GoldThread className="mt-3" delay={0.2} />
+            <LineReveal
+              as="h1"
+              text={band.story.hero.h1}
+              className="display-title mt-3 text-balance"
+              delay={0.35}
+              pace={pace}
+              wordStagger={wordStagger}
+              script={heroMedia.script}
+              scriptClassName={heroMedia.scriptFont === "gujarati" ? "font-gujarati" : "font-devanagari"}
+            />
+            <FadeUp delay={0.55} distance={16} pace={pace} className="mt-5 max-w-xl">
+              <p className="text-lg leading-relaxed">{band.story.hero.subhead}</p>
+            </FadeUp>
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {visual.chips.map((chip) => (
+                <li key={chip} className={`eyebrow rounded-full border px-3 py-2 ${tone.chip}`}>
+                  {chip}
+                </li>
+              ))}
+            </ul>
+            <FadeUp delay={0.7} distance={16} pace={pace} className="mt-8">
+              <PlanActions source={`${bandId}-page`} primary={band.story.hero.cta} onDark={visual.tone !== "haldi"} onSindoor={visual.tone === "sindoor" || visual.tone === "bandhani"} />
+            </FadeUp>
+          </div>
+          <div className="relative">
+          <ArchReveal className="min-h-80" curtainClass={tone.bg} pace={pace}>
+            {heroMedia.empty ? (
+              <PosterTile item={heroMedia} className="min-h-80 rounded-3xl" />
+            ) : (
+              <MediaFrame item={heroMedia} priority className="min-h-80 rounded-3xl" sizes="(min-width: 768px) 40vw, 100vw" />
+            )}
+          </ArchReveal>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-wrap py-12 md:py-16" aria-labelledby={`${bandId}-reels`}>
+        <LineReveal as="h2" id={`${bandId}-reels`} text={bandId === "navratri" ? "See a Navratri night" : `See ${band.name}`} className="font-display text-4xl leading-none" pace={pace} wordStagger={wordStagger} />
+        <div className="mt-6">
+          <ReelStrip urls={reels} toneClassName={`${tone.bg} ${tone.text}`} />
+        </div>
+      </section>
+
+      {points && bandId !== "navratri" ? (
+        <section className="bg-chandan py-14 md:py-20" aria-labelledby={`${bandId}-made`}>
+          <div className="site-wrap">
+            <h2 id={`${bandId}-made`} className="font-display text-4xl leading-none md:text-5xl">
+              {points.heading}
+            </h2>
+            {points.intro ? <p className="mt-4 max-w-2xl leading-relaxed">{points.intro}</p> : null}
+            <ul className="mt-8 grid gap-4 md:grid-cols-3">
+              {points.points.map((point) => (
+                <li key={point.title} className="rounded-3xl bg-cream p-6">
+                  <h3 className="font-display text-3xl leading-none">{point.title}</h3>
+                  <p className="mt-3 leading-relaxed">{point.text}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
+
+      {bandId === "navratri" && points ? (
+        <section className="site-wrap grid gap-4 py-12 md:grid-cols-2" aria-labelledby="navratri-garba">
+          <h2 id="navratri-garba" className="font-display text-4xl leading-none md:col-span-2 md:text-5xl">
+            {points.heading}
+          </h2>
+          {points.points.slice(0, 2).map((point) => (
+            <article key={point.title} className={`rounded-3xl p-8 ${point.title === "Dandiya" ? "bg-mor text-cream" : "bg-sindoor text-cream"}`}>
+              <h2 className="font-display text-5xl leading-none">{point.title}</h2>
+              <p className="mt-4 max-w-md leading-relaxed">{point.text}</p>
+            </article>
+          ))}
+          {points.points[2] ? (
+            <p className="md:col-span-2 max-w-2xl leading-relaxed">{points.points[2].text}</p>
+          ) : null}
+        </section>
+      ) : null}
+
+      <section className="site-wrap py-12" aria-labelledby={`${bandId}-photos`}>
+        <h2 id={`${bandId}-photos`} className="font-display text-4xl leading-none">
+          From the floor
+        </h2>
+        <ul className="mt-6 grid gap-4 sm:grid-cols-3">
+          {photos.map((photo) => (
+            <li key={photo.id} className="mosaic-tile group relative overflow-hidden">
+              <MediaFrame item={photo} className="mosaic-media" sizes="(min-width: 640px) 30vw, 100vw" />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="site-wrap py-8" aria-labelledby={`${bandId}-pairs`}>
+        <h2 id={`${bandId}-pairs`} className="font-display text-4xl leading-none">
+          {bandId === "navratri" ? "More from Beats16" : "Pairs well with"}
+        </h2>
+        <ul className="mt-6 grid gap-4 md:grid-cols-2">
+          {visual.pairs.map((pair) => (
+            <li key={pair.href}>
+              <Link href={pair.href} className="lift-card block rounded-3xl bg-chandan p-6">
+                <span className="font-display text-3xl leading-none">{pair.name}</span>
+                <span className="mt-3 block leading-relaxed">{pair.text}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {prose.map((section) => (
+        <section key={section.heading} className="site-wrap max-w-3xl py-6" aria-labelledby={section.heading}>
+          <h2 className="font-display text-4xl leading-none">{section.heading}</h2>
+          <div className="mt-4 grid gap-4">
+            {(section.paragraphs ?? (section.body ? [section.body] : [])).map((paragraph) => (
+              <p key={paragraph} className="leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      {steps ? <Steps heading={steps.heading} steps={steps.steps} /> : null}
+
+      <div className="site-wrap py-8">
+        <FaqList items={band.story.faqs} heading={band.story.faqHeading} headingId={`${bandId}-faq`} ruleClassName={visual.rule} />
+      </div>
+
+      {showreel && showreelCopy ? (
+        <div className="site-wrap max-w-xl py-8">
+          <ShowreelForm defaultBand={bandId} heading={showreelCopy.heading} intro={showreelCopy.body} note={showreelCopy.note} />
+        </div>
+      ) : null}
+    </>
+  );
+}

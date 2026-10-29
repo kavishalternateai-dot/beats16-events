@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BandView } from "@/components/band-view";
+import { BandScreen } from "@/components/band-page";
 import { getBandPage } from "@/content/bands";
 import { pageMetadata } from "@/lib/seo";
 
@@ -12,5 +12,5 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function NavratriPage() {
-  return <BandView bandId="navratri" />;
+  return <BandScreen bandId="navratri" />;
 }
