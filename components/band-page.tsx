@@ -106,25 +106,24 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
       {group ? <JsonLd data={{ "@context": "https://schema.org", ...group }} /> : null}
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
       <JsonLd data={faqJsonLd(band.story.faqs)} />
-      <section className={`relative overflow-hidden ${tone.bg} ${tone.text}`}>
-        <BandhaniPattern multi={visual.tone === "bandhani"} />
-        {visual.tone !== "haldi" ? (
+      <section className={`relative overflow-hidden ${visual.tone === "bandhani" ? "bg-sindoor text-cream" : `${tone.bg} ${tone.text}`}`}>
+        {visual.tone === "bandhani" ? null : <BandhaniPattern />}
+        {visual.tone !== "haldi" && visual.tone !== "bandhani" ? (
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-kajal/75 to-transparent" />
         ) : null}
-        <div className="site-wrap relative grid items-end gap-8 pt-28 pb-12 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:pt-32 md:pb-16">
-          <div className="min-w-0 max-w-full">
+        <div className="site-wrap relative grid items-end gap-8 pt-28 pb-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,0.75fr)] md:pt-32 md:pb-16">
+          <div className="relative z-[1] min-w-0 max-w-full">
             <Breadcrumbs items={crumbs} />
-            <p className="eyebrow mt-6 max-w-full opacity-90">{band.story.hero.eyebrow}</p>
+            <p className="eyebrow mt-6 max-w-full">{band.story.hero.eyebrow}</p>
             <GoldThread className="mt-3" delay={0.08} />
             <LineReveal
               as="h1"
               text={band.story.hero.h1}
-              className="display-title mt-3"
+              lineWords={bandId === "gauri" ? [3, 3] : bandId === "rdx" ? [2, 2, 2] : bandId === "daastan-e-ghazal" ? [3, 2] : [2, 3]}
+              className="band-display mt-3"
               delay={0.05}
               pace={pace}
               wordStagger={wordStagger ?? 0.045}
-              script={bandId === "navratri" ? undefined : heroMedia.script}
-              scriptClassName={heroMedia.scriptFont === "gujarati" ? "font-gujarati" : "font-devanagari"}
             />
             <FadeUp hero delay={0.42} pace={pace} className="mt-5 max-w-xl">
               <p className="text-lg leading-relaxed">{band.story.hero.subhead}</p>

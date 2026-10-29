@@ -162,6 +162,14 @@
   font-size: clamp(2rem, 5.15vw, 4.15rem);
 }
 
+.about-display {
+  font-size: clamp(2.15rem, 3.4vw, 3.6rem);
+}
+
+.band-display {
+  font-size: clamp(2.25rem, 3.6vw, 3.9rem);
+}
+
 .wedding-display {
   font-size: clamp(2.15rem, 4vw, 3.7rem);
 }
@@ -178,6 +186,10 @@ h2,
   overflow: hidden;
   padding-bottom: 0.12em;
   margin-bottom: -0.12em;
+}
+
+.line-inner {
+  text-wrap: balance;
 }
 
 .eyebrow {
@@ -429,9 +441,9 @@ h2,
   }
 }
 
-@keyframes spine-draw {
+@keyframes thread-draw {
   to {
-    stroke-dashoffset: 0;
+    transform: scaleY(1);
   }
 }
 
@@ -484,12 +496,12 @@ h2,
   html[data-motion-ready] .hero-media {
     animation: hero-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  html[data-motion-ready] .spine-path {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
+  html[data-motion-ready] .timeline-thread {
+    transform: scaleY(0);
+    transform-origin: top center;
   }
-  html[data-motion-ready] .spine-path.is-drawn {
-    animation: spine-draw 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  html[data-motion-ready] .timeline-thread.is-drawn {
+    animation: thread-draw 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
   }
   html[data-motion-ready] .mosaic-tile {
     animation: fade-rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;

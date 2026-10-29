@@ -1,9 +1,7 @@
 /**
- * About story. Confirm-lines and unconfirmed years are omitted, not shown as placeholders.
- * "Four decades" appears twice in this copy and nowhere else on the page.
+ * About story. No duration claim lives here. The only years line on the site is the home hero.
  */
 
-import type { MediaItem } from "@/content/media";
 import { site } from "@/content/site";
 
 export const aboutSeo = {
@@ -15,16 +13,13 @@ export const aboutSeo = {
 export const aboutHero = {
   eyebrow: `About ${site.name} · ${site.city}`,
   h1: "A story told in songs, one celebration at a time",
-  paragraphs: [
-    "Beats16 began in Mumbai with one man and a love for music.",
-    "His name is Tushar Sonigra. Families call him Tushar ji.",
-  ],
+  paragraphs: ["Beats16 began in Mumbai with Tushar Sonigra. Families call him Tushar ji."],
 } as const;
 
 export const aboutCraft = {
   heading: "Wedding by wedding, festival by festival",
   paragraphs: [
-    "For four decades, Beats16 has grown with the families it plays for.",
+    "Beats16 has grown with the families it plays for.",
     "One wedding led to the next. One festival led to another.",
     "Each one taught us something new.",
     "We learned that a mehendi and a sangeet do not want the same song.",
@@ -71,7 +66,7 @@ export const aboutBands = {
       reason: "For the circle.",
       text: "Nine nights, one circle, and music that keeps everyone moving. Our Navratri band plays live garba and dandiya, in India and around the world.",
       link: "See our Navratri band",
-      tone: "bandhani" as const,
+      tone: "sindoor" as const,
     },
   ],
   independent: "When a private show needs its own line-up, we put one together.",
@@ -117,7 +112,7 @@ export const aboutBeliefs = {
 export const aboutClose = {
   heading: "Every celebration still starts with a conversation",
   paragraphs: [
-    "Four decades on, one thing has not changed.",
+    "One thing has not changed.",
     "Tushar ji still speaks personally with every family and organiser who gets in touch.",
     "He listens first: your date, your city, your functions, your family's customs.",
     "Then we plan the music around you.",
@@ -131,31 +126,5 @@ export const aboutQuote: string | undefined = undefined;
 
 /** Unconfirmed. The founder video stays unrendered while this is unset. */
 export const aboutVideo: string | undefined = undefined;
-
-function poster(item: MediaItem): MediaItem {
-  return item;
-}
-
-export const aboutEarlyMedia = poster({
-  id: "about-early",
-  kind: "image",
-  alt: "Beats16 in the early years.",
-  ratio: "3:2",
-  word: "Mumbai",
-  tone: "haldi",
-  envKey: "MEDIA_ABOUT_EARLY",
-});
-
-export const aboutScaleMedia = poster({
-  id: "about-scale",
-  kind: "image",
-  alt: "A Beats16 celebration.",
-  ratio: "16:9",
-  word: "Navratri",
-  script: "ગરબા",
-  scriptFont: "gujarati",
-  tone: "bandhani",
-  envKey: "MEDIA_ABOUT_SCALE",
-});
 
 export const aboutCraftIds = ["gallery-mehendi", "gallery-sangeet", "gallery-pheras"] as const;

@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import type { ResolvedMedia } from "@/lib/resolve-media";
 import { BandhaniPattern } from "@/components/ornament/bandhani";
-import { Equaliser } from "@/components/ornament/equaliser";
 import { ratioClass, scriptClass, toneClass } from "@/components/tones";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +14,7 @@ export function PosterTile({
   fill?: boolean;
 }) {
   const tone = toneClass[item.tone];
+  const onHaldi = item.tone === "haldi";
   return (
     <div
       aria-hidden="true"
@@ -27,19 +27,25 @@ export function PosterTile({
       )}
       style={{ containerType: "inline-size" } as CSSProperties}
     >
-      <BandhaniPattern multi={item.tone === "bandhani"} />
+      <BandhaniPattern strong={onHaldi || Boolean(item.script)} multi={item.tone === "bandhani"} />
       {item.script ? (
         <span
           className={cn(
-            "pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden px-2 text-center leading-none opacity-20 [font-size:clamp(1.35rem,30cqw,5rem)]",
+            "pointer-events-none flex min-h-0 flex-1 items-center justify-center overflow-hidden px-4 py-5 text-center leading-[1.25] opacity-35 [font-size:clamp(1.6rem,18cqw,4.25rem)]",
             scriptClass(item.scriptFont),
           )}
         >
           {item.script}
         </span>
-      ) : null}
-      <Equaliser onLight={item.tone === "haldi"} className="absolute top-3 left-3 z-[1] h-7" />
-      <p className="relative z-[1] mt-auto max-w-full px-3 pb-4 font-display leading-[0.95] [overflow-wrap:anywhere] [font-size:clamp(1.05rem,16cqw,3.2rem)]">
+      ) : (
+        <span className="min-h-6 flex-1" />
+      )}
+      <p
+        className={cn(
+          "relative z-[1] mt-auto max-w-full shrink-0 px-4 pt-2 pb-4 font-display leading-[1.05] [overflow-wrap:anywhere] [font-size:clamp(1.15rem,14cqw,3rem)]",
+          item.tone === "bandhani" && "bg-sindoor",
+        )}
+      >
         {item.word}
       </p>
     </div>

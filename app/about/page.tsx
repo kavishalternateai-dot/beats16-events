@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { aboutBeliefs, aboutBands, aboutClose, aboutCraft, aboutCraftIds, aboutEarlyMedia, aboutHero, aboutQuote, aboutScale, aboutScaleMedia, aboutSeo, aboutVideo } from "@/content/about";
+import { aboutBeliefs, aboutBands, aboutClose, aboutCraft, aboutCraftIds, aboutHero, aboutQuote, aboutScale, aboutSeo, aboutVideo } from "@/content/about";
 import { MEDIA } from "@/content/media";
 import { proofLines } from "@/content/site";
 import { aboutEras } from "@/content/timeline";
@@ -29,20 +29,11 @@ const bandSurface = {
   haldi: "bg-haldi text-kajal",
   rani: "bg-rani-deep text-cream",
   neel: "bg-neel text-cream",
-  bandhani: "bandhani-hero text-cream",
-} as const;
-
-const bandHero = {
-  "/gauri": MEDIA.bands.gauri.hero,
-  "/rdx": MEDIA.bands.rdx.hero,
-  "/daastan-e-ghazal": MEDIA.bands.ghazal.hero,
-  "/navratri": MEDIA.bands.navratri.hero,
+  sindoor: "bg-sindoor text-cream",
 } as const;
 
 export default function AboutPage() {
   const founder = resolveMedia(MEDIA.founder);
-  const early = resolveMedia(aboutEarlyMedia);
-  const scale = resolveMedia(aboutScaleMedia);
   const craft = aboutCraftIds.map((id) => resolveMedia(MEDIA.gallery.find((item) => item.id === id)!));
 
   return (
@@ -51,22 +42,19 @@ export default function AboutPage() {
       <JsonLd data={aboutPageJsonLd({ name: aboutHero.h1, description: aboutSeo.description, path: "/about" })} />
       <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])} />
 
-      <section className="site-wrap grid items-center gap-10 pt-28 pb-8 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] md:pt-32 md:pb-12">
-        <div className="min-w-0 max-w-full">
-          <FounderPortrait item={founder} priority sizes="(min-width: 768px) 22rem, 90vw" />
+      <section className="site-wrap grid items-start gap-8 pt-28 pb-8 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] md:items-center md:pt-32 md:pb-12">
+        <div className="min-w-0 w-full max-w-full">
+          <FounderPortrait item={founder} priority sizes="(max-width: 767px) 92vw, 22rem" />
         </div>
         <div className="min-w-0 max-w-full">
           <p className="eyebrow text-mor">{aboutHero.eyebrow}</p>
           <GoldThread />
-          <LineReveal as="h1" text={aboutHero.h1} lineWords={[5, 5]} className="display-title mt-4" delay={0.05} />
+          <LineReveal as="h1" text={aboutHero.h1} lineWords={[3, 2, 2, 3]} className="about-display mt-4" delay={0.05} />
           {aboutHero.paragraphs.map((paragraph) => (
             <p key={paragraph} className="mt-4 max-w-xl text-lg leading-relaxed">
               {paragraph}
             </p>
           ))}
-          <div className="mt-8 max-w-xl min-w-0">
-            <MediaFrame item={early} className="rounded-3xl" sizes="(min-width: 768px) 36rem, 100vw" />
-          </div>
         </div>
       </section>
 
@@ -103,12 +91,9 @@ export default function AboutPage() {
           <ul className="mt-8 grid gap-4 md:grid-cols-2">
             {aboutBands.cards.map((card) => (
               <li key={card.href} className="min-w-0">
-                <Link href={card.href} className={cn("lift-card block h-full overflow-hidden rounded-3xl", bandSurface[card.tone])}>
-                  <div className="aspect-[16/9] overflow-hidden">
-                    <MediaFrame item={resolveMedia(bandHero[card.href])} fill className="h-full w-full" sizes="(min-width: 768px) 40vw, 100vw" />
-                  </div>
-                  <div className="p-6">
-                    <p className="eyebrow opacity-80">{card.reason}</p>
+                <Link href={card.href} className={cn("lift-card block h-full rounded-3xl p-6", bandSurface[card.tone])}>
+                  <div>
+                    <p className="eyebrow">{card.reason}</p>
                     <h3 className="mt-2 font-display text-[clamp(2rem,4vw,3rem)] leading-none [overflow-wrap:anywhere]">{card.title}</h3>
                     <p className="mt-3 leading-relaxed">{card.text}</p>
                     <span className="mt-4 inline-flex min-h-11 items-center font-medium">{card.link} →</span>
@@ -144,9 +129,6 @@ export default function AboutPage() {
             </div>
           ))}
         </dl>
-        <div className="mt-10 min-w-0 overflow-hidden">
-          <MediaFrame item={scale} className="rounded-3xl" sizes="(min-width: 768px) 72rem, 100vw" />
-        </div>
       </section>
 
       <AboutTimeline eras={aboutEras} />

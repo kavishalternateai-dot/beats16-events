@@ -64,13 +64,12 @@ export default function WeddingsPage() {
               <PlanActions source="weddings-page" onDark className="mt-8" />
             </FadeUp>
           </div>
-          <div className="relative min-h-72 min-w-0 overflow-hidden rounded-3xl bg-haldi text-kajal">
+          <div className="relative min-w-0 md:pl-10">
             <MediaFrame
-              item={{ ...hero, tone: "haldi" }}
+              item={hero}
               priority
-              fill
-              className="h-full min-h-72"
-              sizes="(min-width: 768px) 34vw, 100vw"
+              className="min-h-72 rounded-3xl"
+              sizes="(min-width: 768px) 28vw, 100vw"
             />
           </div>
         </div>

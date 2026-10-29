@@ -13,9 +13,9 @@ export function FounderPortrait({
   sizes: string;
 }) {
   return (
-    <div className="relative mx-auto aspect-[4/5] w-full min-w-0 max-w-full">
+    <div className="relative mx-auto aspect-[4/5] w-full min-w-0 max-w-full overflow-hidden max-md:max-h-[55vh]">
       <ArchMask className="absolute inset-0">
-        <MediaFrame item={item} priority={priority} fill className="h-full w-full" sizes={sizes} />
+        <MediaFrame item={item} priority={priority} quality={priority ? 60 : undefined} fill className="h-full w-full" sizes={sizes} />
       </ArchMask>
       <ArchThread />
     </div>

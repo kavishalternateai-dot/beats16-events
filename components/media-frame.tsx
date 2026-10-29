@@ -11,6 +11,7 @@ export function MediaFrame({
   sizes = "(min-width: 1024px) 40rem, 100vw",
   controls = false,
   fill = false,
+  quality,
 }: {
   item: ResolvedMedia;
   priority?: boolean;
@@ -19,6 +20,7 @@ export function MediaFrame({
   controls?: boolean;
   /** Stretch to the parent instead of locking an aspect ratio. */
   fill?: boolean;
+  quality?: number;
 }) {
   if (item.empty || !item.src) {
     return <PosterTile item={item} fill={fill} className={className} />;
@@ -53,6 +55,7 @@ export function MediaFrame({
         fill
         priority={priority}
         fetchPriority={priority ? "high" : undefined}
+        quality={quality}
         sizes={sizes}
         unoptimized={remote}
         className="object-cover"

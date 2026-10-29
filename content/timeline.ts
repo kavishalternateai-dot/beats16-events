@@ -1,22 +1,16 @@
-import type { MediaTone } from "@/content/media";
-
 /**
- * About timeline. Leave `year` and `image` unset until they are confirmed.
- * Filling either field does not change the card layout.
- * Milestones 2, 7 and 8 stay off this list until their details are confirmed.
+ * About timeline. `year` and `image` stay empty until they are confirmed.
+ * Adding either one does not change the row structure.
+ * Milestones 2, 7 and 8 stay off until their details are confirmed.
+ * Growing up is one line, not a second copy of the band cards.
  */
 export type TimelineMilestone = {
   id: string;
   title: string;
   text: string;
-  /** Shown only when a year is confirmed. */
   year?: string;
-  /** Public path or remote image. Empty slots use a patterned poster. */
   image?: string;
   imageAlt?: string;
-  href?: string;
-  tone: MediaTone;
-  word: string;
 };
 
 export type TimelineEra = {
@@ -33,9 +27,7 @@ export const aboutEras: TimelineEra[] = [
       {
         id: "start",
         title: "Tushar Sonigra starts Beats16 in Mumbai",
-        text: "One man, and a love for music.",
-        tone: "haldi",
-        word: "Mumbai",
+        text: "Families call him Tushar ji.",
       },
     ],
   },
@@ -44,36 +36,9 @@ export const aboutEras: TimelineEra[] = [
     label: "Growing up",
     milestones: [
       {
-        id: "gauri",
-        title: "Gauri",
-        text: "For the rituals.",
-        href: "/gauri",
-        tone: "haldi",
-        word: "Gauri",
-      },
-      {
-        id: "rdx",
-        title: "RDX",
-        text: "For the sangeet.",
-        href: "/rdx",
-        tone: "rani",
-        word: "RDX",
-      },
-      {
-        id: "ghazal",
-        title: "Daastan-e-Ghazal",
-        text: "For listening.",
-        href: "/daastan-e-ghazal",
-        tone: "neel",
-        word: "Ghazal",
-      },
-      {
-        id: "navratri",
-        title: "Navratri band by Beats16",
-        text: "For the circle.",
-        href: "/navratri",
-        tone: "bandhani",
-        word: "Garba",
+        id: "bands",
+        title: "The music grows with the work",
+        text: "One wedding led to the next, and one festival led to another. Each celebration asked for its own sound.",
       },
     ],
   },
@@ -84,9 +49,7 @@ export const aboutEras: TimelineEra[] = [
       {
         id: "today",
         title: "5,000+ events and 80+ Navratris",
-        text: "Organised in India and abroad. Tushar ji still answers every inquiry personally.",
-        tone: "sindoor",
-        word: "Today",
+        text: "In India and abroad. Tushar ji still answers every inquiry personally.",
       },
     ],
   },

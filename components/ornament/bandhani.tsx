@@ -1,6 +1,14 @@
 import { cn } from "@/lib/utils";
 
-export function BandhaniPattern({ className, multi = false }: { className?: string; multi?: boolean }) {
+export function BandhaniPattern({
+  className,
+  multi = false,
+  strong = false,
+}: {
+  className?: string;
+  multi?: boolean;
+  strong?: boolean;
+}) {
   if (multi) {
     return (
       <div
@@ -14,7 +22,7 @@ export function BandhaniPattern({ className, multi = false }: { className?: stri
           ].join(", "),
           backgroundSize: "16px 16px, 26px 26px, 20px 20px",
           backgroundPosition: "0 0, 8px 10px, 4px 6px",
-          opacity: 0.55,
+          opacity: strong ? 0.7 : 0.55,
         }}
       />
     );
@@ -29,7 +37,7 @@ export function BandhaniPattern({ className, multi = false }: { className?: stri
           "radial-gradient(circle at center, currentColor 1.15px, transparent 1.35px), radial-gradient(circle at center, currentColor 2.1px, transparent 2.5px)",
         backgroundSize: "14px 14px, 28px 28px",
         backgroundPosition: "0 0, 7px 7px",
-        opacity: 0.16,
+        opacity: strong ? 0.45 : 0.16,
       }}
     />
   );
