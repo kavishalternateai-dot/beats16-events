@@ -177,17 +177,12 @@ h1 {
 
 @media (max-width: 767px) {
   h1.h1-fit {
-    --pair-em: 8.45;
-    container-type: inline-size;
-    font-size: max(2rem, min(2.6rem, calc(100cqi / var(--pair-em))));
+    font-size: max(2rem, min(2.6rem, calc((100vw - 2.5rem) / 7.9)));
   }
 
   h1.h1-fit-wide {
-    --pair-em: 10.3;
-    letter-spacing: -0.05em;
-    margin-inline: -1.25rem;
-    padding-inline: 0.45rem;
-    max-width: none;
+    letter-spacing: -0.1em;
+    font-size: max(2rem, min(2.111rem, calc((100vw - 2.5rem) / 9)));
   }
 }
 
@@ -201,8 +196,8 @@ h2,
 
 .line-mask {
   overflow: hidden;
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
+  padding: 0.32em 0.1em 0.28em;
+  margin: -0.32em -0.1em -0.28em;
 }
 
 .line-inner {
