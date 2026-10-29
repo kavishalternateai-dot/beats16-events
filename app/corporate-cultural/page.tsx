@@ -5,6 +5,7 @@ import { FaqList } from "@/components/faq-list";
 import { JsonLd } from "@/components/json-ld";
 import { PlanActions } from "@/components/plan-actions";
 import { ColorWipe } from "@/components/motion/pieces";
+import { LineReveal } from "@/components/motion/line-reveal";
 import { GoldThread } from "@/components/ornament/gold-thread";
 import { Steps } from "@/components/steps";
 import { BandhaniPattern } from "@/components/ornament/bandhani";
@@ -39,7 +40,12 @@ export default function CorporatePage() {
         <BandhaniPattern className="text-cream" />
         <div className="site-wrap relative pt-28 pb-16 md:pt-32">
           <p className="eyebrow text-cream">{corporateStory.hero.eyebrow}</p>
-          <h1 className="display-title mt-4 max-w-4xl">{corporateStory.hero.h1}</h1>
+          <LineReveal
+            as="h1"
+            text={corporateStory.hero.h1}
+            lineWords={[4, 2, 2]}
+            className="display-title mt-4 max-w-4xl"
+          />
           <p className="mt-5 max-w-xl text-lg leading-relaxed">{corporateStory.hero.subhead}</p>
           <PlanActions source="corporate-cultural-page" onDark className="mt-8" />
         </div>

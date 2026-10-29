@@ -145,16 +145,21 @@
 
 .display-title,
 .home-display,
+.about-display,
+.band-display,
 .wedding-display {
   font-family: var(--font-rozha), Georgia, serif;
-  line-height: 0.98;
+  line-height: 0.95;
   letter-spacing: -0.01em;
   max-width: 100%;
   overflow-wrap: anywhere;
-  hyphens: auto;
+  hyphens: manual;
+  text-wrap: balance;
 }
 
-.display-title {
+.display-title,
+.about-display,
+.band-display {
   font-size: clamp(2.6rem, 7vw, 6rem);
 }
 
@@ -162,16 +167,12 @@
   font-size: clamp(2rem, 5.15vw, 4.15rem);
 }
 
-.about-display {
-  font-size: clamp(2.15rem, 3.4vw, 3.6rem);
-}
-
-.band-display {
-  font-size: clamp(2.25rem, 3.6vw, 3.9rem);
-}
-
 .wedding-display {
   font-size: clamp(2.15rem, 4vw, 3.7rem);
+}
+
+h1 {
+  text-wrap: balance;
 }
 
 h1,
@@ -229,6 +230,22 @@ h2,
 
 .hero-drift {
   background-image: linear-gradient(90deg, #4a0d18, #8e1528, var(--sindoor), #7a1248, var(--haldi), var(--sindoor), #4a0d18);
+}
+
+.hero-text-scrim {
+  height: 100%;
+  background: linear-gradient(to top, #1a0f0a 0%, #1a0f0a 68%, rgb(26 15 10 / 0.98) 82%, rgb(26 15 10 / 0.72) 92%, transparent 100%);
+}
+
+@media (min-width: 768px) {
+  .hero-text-scrim {
+    height: 62%;
+    background: linear-gradient(to top, #1a0f0a 0%, #1a0f0a 58%, rgb(26 15 10 / 0.96) 78%, transparent 100%);
+  }
+}
+
+.gauri-poster {
+  background-color: #9a6400 !important;
 }
 
 .bandhani-hero {

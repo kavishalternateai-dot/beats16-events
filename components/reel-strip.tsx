@@ -53,8 +53,7 @@ export function ReelStrip({
         rel="noopener noreferrer"
         className={`lift-card relative block w-full max-w-xs overflow-hidden rounded-2xl ${toneClassName}`}
       >
-        <span className="relative flex aspect-[9/16] flex-col items-center justify-end gap-4 overflow-hidden p-5">
-          <BandhaniPattern />
+        <span className="relative flex aspect-[9/16] flex-col items-center justify-end gap-4 overflow-hidden bg-inherit p-5">
           <span aria-hidden="true" className="reel-play relative grid size-14 place-items-center rounded-full bg-cream text-2xl text-kajal">
             ▶
           </span>

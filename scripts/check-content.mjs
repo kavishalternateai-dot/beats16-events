@@ -20,6 +20,7 @@ const hindu = [];
 const coming = [];
 let years = 0;
 const yearFiles = [];
+const decades = [];
 
 for (const file of files) {
   const text = readFileSync(file, "utf8");
@@ -30,6 +31,7 @@ for (const file of files) {
     years += matches.length;
     yearFiles.push(`${file} (${matches.length})`);
   }
+  if (/\bdecades?\b/i.test(text)) decades.push(file);
 }
 
 let failed = false;
@@ -44,6 +46,10 @@ if (coming.length) {
 if (years !== 1) {
   failed = true;
   console.error(`Expected the longevity phrase once, found ${years}:\n${yearFiles.join("\n")}`);
+}
+if (decades.length) {
+  failed = true;
+  console.error("Found a decades claim in:\n" + decades.join("\n"));
 }
 
 if (failed) process.exit(1);

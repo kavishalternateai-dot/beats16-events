@@ -7,6 +7,7 @@ import { InstagramProfile } from "@/components/instagram-profile";
 import { InquiryForm } from "@/components/inquiry-form";
 import { JsonLd } from "@/components/json-ld";
 import { BandhaniPattern } from "@/components/ornament/bandhani";
+import { LineReveal } from "@/components/motion/line-reveal";
 import { GoldThread } from "@/components/ornament/gold-thread";
 import { breadcrumbJsonLd, contactPageJsonLd, organizationJsonLd } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
@@ -56,7 +57,7 @@ export default function ContactPage({
       <section className="site-wrap pb-8">
         <p className="eyebrow text-mor">{contactHero.eyebrow}</p>
         <GoldThread />
-        <h1 className="display-title mt-4 max-w-4xl">{contactHero.h1}</h1>
+        <LineReveal as="h1" text={contactHero.h1} lineWords={[3, 2]} className="display-title mt-4 max-w-4xl" />
         <p className="mt-5 max-w-2xl text-lg leading-relaxed">{contactHero.subhead}</p>
       </section>
       <div className="site-wrap grid items-start gap-10 pb-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(16rem,0.9fr)]">

@@ -30,7 +30,7 @@ const panelTone = {
   "/gauri": "haldi",
   "/rdx": "rani",
   "/daastan-e-ghazal": "neel",
-  "/navratri": "bandhani",
+  "/navratri": "sindoor",
 } as const;
 
 const panelChips = {

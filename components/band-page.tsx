@@ -17,6 +17,7 @@ import { GoldThread } from "@/components/ornament/gold-thread";
 import { LineReveal } from "@/components/motion/line-reveal";
 import { FadeUp, ArchReveal } from "@/components/motion/pieces";
 import { breadcrumbJsonLd, faqJsonLd, organizationJsonLd, performingGroup, serviceJsonLd } from "@/lib/schema";
+import { cn } from "@/lib/utils";
 import { resolveMedia, resolveReelUrls, resolveShowreel } from "@/lib/resolve-media";
 import type { StorySection } from "@/content/story";
 
@@ -119,8 +120,8 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
             <LineReveal
               as="h1"
               text={band.story.hero.h1}
-              lineWords={bandId === "gauri" ? [3, 3] : bandId === "rdx" ? [2, 2, 2] : bandId === "daastan-e-ghazal" ? [3, 2] : [2, 3]}
-              className="band-display mt-3"
+              lineWords={bandId === "gauri" ? [2, 2, 2] : bandId === "rdx" ? [2, 2, 2] : bandId === "daastan-e-ghazal" ? [3, 2] : [3, 2]}
+              className="display-title band-display mt-3"
               delay={0.05}
               pace={pace}
               wordStagger={wordStagger ?? 0.045}
@@ -139,10 +140,13 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
               <PlanActions source={`${bandId}-page`} primary={band.story.hero.cta} onDark={visual.tone !== "haldi"} onSindoor={visual.tone === "sindoor" || visual.tone === "bandhani"} />
             </FadeUp>
           </div>
-          <div className="relative min-w-0 max-w-full">
-          <ArchReveal className="min-h-64 md:min-h-80" curtainClass={tone.bg} pace={pace}>
+          <div className={cn("relative min-w-0 max-w-full", visual.tone === "haldi" && "rounded-[2rem] bg-chandan p-3 md:p-5")}>
+          <ArchReveal className="min-h-64 md:min-h-80" curtainClass={visual.tone === "haldi" ? "bg-chandan" : tone.bg} pace={pace}>
             {heroMedia.empty ? (
-              <PosterTile item={heroMedia} className="min-h-64 rounded-3xl md:min-h-80" />
+              <PosterTile
+                item={heroMedia}
+                className={cn("min-h-64 rounded-3xl md:min-h-80", visual.tone === "haldi" && "gauri-poster")}
+              />
             ) : (
               <MediaFrame item={heroMedia} priority className="min-h-64 rounded-3xl md:min-h-80" sizes="(min-width: 768px) 40vw, 100vw" />
             )}
@@ -154,7 +158,7 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
       <section className="site-wrap py-12 md:py-16" aria-labelledby={`${bandId}-reels`}>
         <LineReveal as="h2" id={`${bandId}-reels`} text={bandId === "navratri" ? "See a Navratri night" : `See ${band.name}`} className="font-display text-4xl leading-none" pace={pace} wordStagger={wordStagger} />
         <div className="mt-6">
-          <ReelStrip urls={reels} toneClassName={`${tone.bg} ${tone.text}`} />
+          <ReelStrip urls={reels} toneClassName={visual.tone === "bandhani" ? "bg-sindoor text-cream" : `${tone.bg} ${tone.text}`} />
         </div>
       </section>
 

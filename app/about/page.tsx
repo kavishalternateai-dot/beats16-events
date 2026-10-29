@@ -49,7 +49,7 @@ export default function AboutPage() {
         <div className="min-w-0 max-w-full">
           <p className="eyebrow text-mor">{aboutHero.eyebrow}</p>
           <GoldThread />
-          <LineReveal as="h1" text={aboutHero.h1} lineWords={[3, 2, 2, 3]} className="about-display mt-4" delay={0.05} />
+          <LineReveal as="h1" text={aboutHero.h1} lineWords={[2, 3, 2, 3]} className="display-title about-display mt-4" delay={0.05} />
           {aboutHero.paragraphs.map((paragraph) => (
             <p key={paragraph} className="mt-4 max-w-xl text-lg leading-relaxed">
               {paragraph}

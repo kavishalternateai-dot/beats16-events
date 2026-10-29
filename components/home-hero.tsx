@@ -97,10 +97,10 @@ export function HomeHero({
           <BandhaniPattern className="text-cream" />
         </div>
       )}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-kajal via-kajal/80 to-transparent" />
+      <div className="hero-text-scrim pointer-events-none absolute inset-x-0 bottom-0" />
       <div className="site-wrap relative flex min-h-[88svh] min-w-0 flex-col justify-end pb-24 pt-28 md:min-h-[100svh] md:pb-16">
-        <Equaliser className="mb-4" />
-        <p className="eyebrow max-w-full text-cream/90">{eyebrow}</p>
+        <Equaliser className="relative z-[1] mb-4" />
+        <p className="eyebrow relative z-[1] max-w-full text-cream">{eyebrow}</p>
         <GoldThread className="mt-3" delay={0.15} />
         <LineReveal
           as="h1"
