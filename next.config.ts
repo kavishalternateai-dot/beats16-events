@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   // The dev server is reached as 127.0.0.1 while it listens on all interfaces.
   allowedDevOrigins: ["127.0.0.1", "localhost"],
   images: {
-    qualities: [75, 82],
+    qualities: [60, 75, 82],
   },
   async redirects() {
     return [

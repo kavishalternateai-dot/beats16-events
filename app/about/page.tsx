@@ -44,7 +44,7 @@ export default function AboutPage() {
 
       <section className="site-wrap grid items-start gap-8 pt-28 pb-8 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] md:items-center md:pt-32 md:pb-12">
         <div className="min-w-0 w-full max-w-full">
-          <FounderPortrait item={founder} priority sizes="(max-width: 767px) 92vw, 22rem" />
+          <FounderPortrait item={founder} priority sizes="(max-width: 767px) min(92vw, 44vh), 22rem" />
         </div>
         <div className="min-w-0 max-w-full">
           <p className="eyebrow text-mor">{aboutHero.eyebrow}</p>

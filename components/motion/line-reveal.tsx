@@ -69,10 +69,13 @@ export function LineReveal({
 }) {
   const desktop = lineWords?.length ? linesFromCounts(text, lineWords) : splitLines(text);
   const words = text.split(/\s+/).filter(Boolean);
+  const glueTail = Tag === "h1" && words.length >= 2;
   const mobileTokens: { label: string; index: number }[] = [];
   for (let index = 0; index < words.length; index += 1) {
     const next = words[index + 1];
-    if (words[index] === "40" && next?.toLowerCase() === "years") {
+    const glueForty = words[index] === "40" && next?.toLowerCase() === "years";
+    const gluePair = glueTail && index === words.length - 2;
+    if (next && (glueForty || gluePair)) {
       mobileTokens.push({ label: `${words[index]}\u00a0${next}`, index });
       index += 1;
     } else {
@@ -94,12 +97,20 @@ export function LineReveal({
           </span>
         ))}
       </span>
-      <span aria-hidden="true" className="block md:hidden">
+      <span aria-hidden="true" className="mobile-lines block md:hidden">
         {mobileTokens.map((token, position) => {
           const animIndex = Math.min(token.index, 7);
+          const pair = token.label.includes("\u00a0");
+          const fit = pair && token.label.length > 14;
           return (
             <span key={`${token.label}-${token.index}`} className="line-mask inline-block max-w-full align-bottom">
-              <span className="line-inner inline-block" style={lineStyle(delay + animIndex * mobileStep, duration)}>
+              <span
+                className={cn("line-inner inline-block", pair && "whitespace-nowrap [overflow-wrap:normal]", fit && "h1-pair")}
+                style={{
+                  ...lineStyle(delay + animIndex * mobileStep, duration),
+                  ...(fit ? ({ "--pair": String(token.label.length) } as CSSProperties) : null),
+                }}
+              >
                 {token.label}
                 {position < mobileTokens.length - 1 ? "\u00a0" : ""}
               </span>

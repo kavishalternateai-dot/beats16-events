@@ -115,7 +115,7 @@ export default function HomePage() {
       <section className="bg-chandan py-14 md:py-20" aria-labelledby="founder-heading">
         <div className="site-wrap grid items-center gap-10 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
           <div className="min-w-0 max-w-full">
-            <FounderPortrait item={founder} sizes="(min-width: 768px) 22rem, 90vw" />
+            <FounderPortrait item={founder} sizes="(max-width: 767px) min(92vw, 44vh), 22rem" />
           </div>
           <div>
             <GoldThread />

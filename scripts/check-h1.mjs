@@ -1,6 +1,6 @@
 /**
- * Every H1 must compute to at least 36px, and a desktop H1 must not
- * leave a single word on its last line.
+ * Every H1 must compute to at least 36px, and must not leave a single
+ * word on its last line at 360, 390, 1280 or 1440.
  * Usage: BASE_URL=http://127.0.0.1:3000 node scripts/check-h1.mjs
  */
 import puppeteer from "puppeteer-core";
@@ -22,7 +22,7 @@ for (const width of widths) {
   for (const path of paths) {
     await page.goto(base + path, { waitUntil: "domcontentloaded", timeout: 60000 });
     await page.evaluate(() => document.fonts.ready);
-    const result = await page.evaluate((desktop) => {
+    const result = await page.evaluate(() => {
       const h1 = document.querySelector("h1");
       if (!h1) return { missing: true };
       const size = parseFloat(getComputedStyle(h1).fontSize);
@@ -64,10 +64,10 @@ for (const width of widths) {
         lastWords: words.length,
         scroll: document.documentElement.scrollWidth <= window.innerWidth + 1,
       };
-    }, width >= 1280);
+    });
     if (result.missing) failures.push(`${width} ${path}: no h1`);
     else if (result.size < 36) failures.push(`${width} ${path}: h1 is ${result.size}px (${result.family})`);
-    else if (width >= 1280 && result.lastWords < 2) {
+    else if (result.lastWords < 2) {
       failures.push(`${width} ${path}: last line "${result.lines.at(-1)}" (${result.lastWords} words) from [${result.lines.join(" | ")}]`);
     }
     if (result.scroll === false) failures.push(`${width} ${path}: horizontal overflow`);

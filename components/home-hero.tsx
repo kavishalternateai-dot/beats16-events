@@ -100,7 +100,7 @@ export function HomeHero({
       <div className="hero-text-scrim pointer-events-none absolute inset-x-0 bottom-0" />
       <div className="site-wrap relative flex min-h-[88svh] min-w-0 flex-col justify-end pb-24 pt-28 md:min-h-[100svh] md:pb-16">
         <Equaliser className="relative z-[1] mb-4" />
-        <p className="eyebrow relative z-[1] max-w-full text-cream">{eyebrow}</p>
+        <p className="hero-eyebrow eyebrow relative z-[1] max-w-full text-cream">{eyebrow}</p>
         <GoldThread className="mt-3" delay={0.15} />
         <LineReveal
           as="h1"
