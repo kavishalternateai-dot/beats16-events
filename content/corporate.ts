@@ -62,7 +62,7 @@ export const corporateFaqs: FaqItem[] = [
 export const corporateStory: PageStory = {
   hero: {
     eyebrow: "Corporate & Cultural Events · Beats16",
-    h1: "For festivals, communities and corporate celebrations, live music",
+    h1: "Live music for festivals, communities and corporate celebrations",
     subhead:
       "From religious celebrations and community gatherings to cultural programmes and company festivals. Beats16 brings live music to traditional celebrations.",
     cta: "Send an event inquiry",

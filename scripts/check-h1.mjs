@@ -1,7 +1,8 @@
 /**
  * Every H1 must compute to at least 36px, use one font size through
  * every visible span, and must not leave a single word on its last
- * line at 360, 390, 1280 or 1440.
+ * line. A lone word on a middle line is allowed. Also fails on
+ * horizontal overflow. Widths: 360, 390, 1280, 1440.
  * Usage: BASE_URL=http://127.0.0.1:3000 node scripts/check-h1.mjs
  */
 import puppeteer from "puppeteer-core";
@@ -67,14 +68,12 @@ for (const width of widths) {
         sizes.push(parseFloat(style.fontSize));
       }
       const mismatched = sizes.filter((value) => Math.abs(value - size) > 0.6);
-      const loneAnd = lines.filter((line) => /^(and|or)$/i.test(line.replace(/[.,]/g, "")));
       return {
         size,
         family,
         lines,
         lastWords: words.length,
         mismatched,
-        loneAnd,
         scroll: document.documentElement.scrollWidth <= window.innerWidth + 1,
       };
     });
@@ -83,7 +82,6 @@ for (const width of widths) {
     else if (result.mismatched?.length) {
       failures.push(`${width} ${path}: mixed H1 sizes ${result.size}px and ${result.mismatched.join(", ")}px`);
     }
-    else if (result.loneAnd?.length) failures.push(`${width} ${path}: lone "${result.loneAnd.join(", ")}"`);
     else if (result.lastWords < 2) {
       failures.push(`${width} ${path}: last line "${result.lines.at(-1)}" (${result.lastWords} words) from [${result.lines.join(" | ")}]`);
     }

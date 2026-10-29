@@ -14,7 +14,7 @@ export const contactSeo = {
 
 export const contactHero = {
   eyebrow: `Contact Beats16 · ${site.city}`,
-  h1: "About your celebration, tell us",
+  h1: "Tell us about your celebration",
   subhead:
     "Share your date, city and the functions you're planning, and Tushar Sonigra, our founder, will get back to you personally. Every conversation starts with what your celebration needs.",
 } as const;

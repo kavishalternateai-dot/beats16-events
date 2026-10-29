@@ -175,6 +175,22 @@ h1 {
   text-wrap: balance;
 }
 
+@media (max-width: 767px) {
+  h1.h1-fit {
+    --pair-em: 8.45;
+    container-type: inline-size;
+    font-size: max(2rem, min(2.6rem, calc(100cqi / var(--pair-em))));
+  }
+
+  h1.h1-fit-wide {
+    --pair-em: 10.3;
+    letter-spacing: -0.05em;
+    margin-inline: -1.25rem;
+    padding-inline: 0.45rem;
+    max-width: none;
+  }
+}
+
 h1,
 h2,
 .eyebrow,
