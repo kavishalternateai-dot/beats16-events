@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   bandInterests,
@@ -14,13 +14,14 @@ import {
 } from "@/content/forms";
 import { contactFormCopy } from "@/content/contact";
 import { site } from "@/content/site";
-import { EmailLink } from "@/components/contact-links";
+import { EmailLink, PhoneLink } from "@/components/contact-links";
 import { ErrorSummary, Field, describedBy } from "@/components/field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { trackEvent } from "@/lib/analytics";
+import { inquiryClientErrors } from "@/lib/validate";
 
 type Errors = Record<string, string>;
 
@@ -71,6 +72,22 @@ function composeDate(day: string, month: string, year: string) {
   return "";
 }
 
+function InquiryFallback({ mailto }: { mailto: string }) {
+  return (
+    <p className="text-sm leading-relaxed">
+      If the form keeps failing, email{" "}
+      <EmailLink href={mailto} location="inquiry_fallback" className="underline underline-offset-2">
+        {site.email}
+      </EmailLink>{" "}
+      (opens your mail app with these details filled in) or call{" "}
+      <PhoneLink location="inquiry_fallback" className="underline underline-offset-2">
+        {site.phoneDisplay}
+      </PhoneLink>
+      .
+    </p>
+  );
+}
+
 function clip(value: string | null, max = 160) {
   return (value ?? "").replace(/[\u0000-\u001f]+/g, " ").trim().slice(0, max);
 }
@@ -102,6 +119,22 @@ export function InquiryForm({
   const [errors, setErrors] = useState<Errors>({});
   const [pending, setPending] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [reduce, setReduce] = useState(false);
+  const summaryRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReduce(query.matches);
+    apply();
+    query.addEventListener("change", apply);
+    return () => query.removeEventListener("change", apply);
+  }, []);
+
+  useEffect(() => {
+    if (!Object.values(errors).some(Boolean)) return;
+    summaryRef.current?.focus();
+    summaryRef.current?.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
+  }, [errors, reduce]);
 
   function set<K extends keyof typeof blank>(key: K, value: (typeof blank)[K]) {
     setValues((current) => ({ ...current, [key]: value }));
@@ -123,12 +156,17 @@ export function InquiryForm({
     setErrors({});
 
     const eventDate = composeDate(values.eventDay, values.eventMonth, values.eventYear);
+    const local = inquiryClientErrors(values);
     if ((values.eventDay || values.eventMonth || values.eventYear) && !eventDate) {
-      setErrors({ eventDate: "Enter the date as dd/mm/yyyy, or choose a month and year. Or leave it blank." });
+      local.eventDate = "Enter the date as dd/mm/yyyy, or choose a month and year. Or leave it blank.";
+    }
+    if (Object.keys(local).length > 0) {
+      setErrors(local);
       setPending(false);
       return;
     }
 
+    const offline = `The form did not send. Please try again, or email ${site.email} or call ${site.phoneDisplay}.`;
     try {
       const response = await fetch("/api/inquiry", {
         method: "POST",
@@ -137,15 +175,16 @@ export function InquiryForm({
       });
       const data = (await response.json()) as { ok?: boolean; errors?: Errors };
       if (!response.ok || !data.ok) {
-        setErrors(data.errors ?? { form: "The form did not send. Please try again, or email us." });
-        setFailed(response.status >= 500);
+        const next = data.errors ?? { form: offline };
+        setErrors(next);
+        setFailed(Boolean(next.form) || response.status !== 400);
         return;
       }
       trackEvent("form_submit", { form: "inquiry" });
       router.push("/thank-you");
     } catch {
       setFailed(true);
-      setErrors({ form: "The form did not send. Please try again, or email us." });
+      setErrors({ form: offline });
     } finally {
       setPending(false);
     }
@@ -175,6 +214,7 @@ export function InquiryForm({
       onSubmit={onSubmit}
       noValidate
       aria-labelledby="inquiry-heading"
+      aria-busy={pending}
       className="grid scroll-mt-28 gap-5"
     >
       <div>
@@ -184,7 +224,9 @@ export function InquiryForm({
         <p className="mt-3 max-w-2xl leading-relaxed">{contactFormCopy.intro}</p>
       </div>
 
-      <ErrorSummary errors={errors} />
+      <ErrorSummary ref={summaryRef} errors={errors}>
+        {failed ? <InquiryFallback mailto={mailto} /> : null}
+      </ErrorSummary>
 
       <Field id="name" label="Your name *" error={errors.name}>
         <Input
@@ -439,15 +481,7 @@ export function InquiryForm({
         <p className="text-sm text-muted-foreground">{contactFormCopy.privacy}</p>
       </div>
 
-      {failed ? (
-        <p className="text-sm leading-relaxed">
-          If the form keeps failing, email{" "}
-          <EmailLink href={mailto} location="inquiry_fallback" className="underline underline-offset-2">
-            {site.email}
-          </EmailLink>{" "}
-          and the note above will be waiting in your mail app. You can also call {site.phoneDisplay}.
-        </p>
-      ) : null}
+      {failed ? <InquiryFallback mailto={mailto} /> : null}
     </form>
   );
 }

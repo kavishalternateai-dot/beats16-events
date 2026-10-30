@@ -5,21 +5,24 @@ import { cn } from "@/lib/utils";
 
 export function PlanActions({
   source,
+  band,
   primary = "Plan your music",
   onDark = false,
   onSindoor = false,
   className,
 }: {
   source: string;
+  band?: string;
   primary?: string;
   onDark?: boolean;
   onSindoor?: boolean;
   className?: string;
 }) {
+  const href = `/contact?${new URLSearchParams({ source, ...(band ? { band } : {}) }).toString()}#inquiry-form`;
   return (
     <div className={cn("flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap", className)}>
       <Link
-        href={`/contact?source=${source}#inquiry-form`}
+        href={href}
         className={cn(
           buttonVariants({ size: "cta" }),
           "enquiry-cta h-auto min-h-11 max-w-full rounded-full px-7 py-2 text-center tracking-wide whitespace-normal",

@@ -10,12 +10,6 @@ export const proofLines = [
   { value: "Mumbai", detail: "home base, in India and abroad" },
 ] as const;
 
-/**
- * Confirmed WhatsApp number, digits with country code. Null hides the button.
- * Leave null until a number is confirmed.
- */
-export const WHATSAPP_NUMBER: string | null = null;
-
 const FALLBACK_SITE_URL = "https://beats16-events.vercel.app";
 
 function stripTrailingSlash(url: string) {

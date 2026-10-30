@@ -54,8 +54,26 @@ export const hearAboutOptions = [
   "Instagram",
   "Friend or family",
   "Wedding planner / venue",
+  "Directory listing",
   "Other",
 ] as const;
+
+export const inquiryMessages = {
+  nameShort: "Please enter your name.",
+  nameLong: "Name must be 80 characters or fewer.",
+  phone: "Please enter a phone number we can call.",
+  emailMissing: "Please enter your email address.",
+  emailInvalid: "Please check your email address. It should look like name@gmail.com.",
+  eventType: "Choose an event type.",
+  city: "Tell us the city or venue.",
+} as const;
+
+export const bandInterestLabel = {
+  gauri: "Gauri",
+  rdx: "RDX",
+  "daastan-e-ghazal": "Daastan-e-Ghazal",
+  navratri: "Navratri band by Beats16",
+} as const satisfies Record<string, (typeof bandInterests)[number]>;
 
 export const legacyHearAbout: Record<string, (typeof hearAboutOptions)[number]> = {
   "Family or friend": "Friend or family",

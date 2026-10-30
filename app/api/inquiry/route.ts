@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { site } from "@/content/site";
 import { jsonError, readJson, sameOrigin } from "@/lib/api";
 import { inquiryLead, recordLead } from "@/lib/leads";
 import { allowRequest, clientKey } from "@/lib/rate-limit";
@@ -28,7 +29,10 @@ export async function POST(request: Request) {
   try {
     await recordLead(inquiryLead(result.data));
   } catch {
-    return jsonError({ form: "We could not send this just now. Please email or call." }, 502);
+    return jsonError(
+      { form: `We couldn't send this online. Please email ${site.email} or call ${site.phoneDisplay}. Your details are still in the form.` },
+      503,
+    );
   }
 
   return NextResponse.json({ ok: true });

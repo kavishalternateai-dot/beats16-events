@@ -2,9 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { PhoneLink } from "@/components/contact-links";
 
+const HIDDEN_ON = ["/contact", "/thank-you", "/gauri", "/rdx", "/daastan-e-ghazal", "/navratri"];
+
 export function MobileCtaBar() {
+  const path = usePathname();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -13,7 +17,9 @@ export function MobileCtaBar() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = window.setTimeout(() => node.classList.add("is-in"), 1500);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [path]);
+
+  if (HIDDEN_ON.includes(path)) return null;
 
   return (
     <div

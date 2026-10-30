@@ -89,7 +89,7 @@
   --accent-foreground: var(--kajal);
   --destructive: #9f1239;
   --border: color-mix(in srgb, var(--sona) 45%, var(--chandan));
-  --input: color-mix(in srgb, var(--kajal) 22%, var(--chandan));
+  --input: color-mix(in srgb, var(--kajal) 55%, var(--chandan));
   --ring: var(--mor);
   --chart-1: var(--sindoor);
   --chart-2: var(--haldi);

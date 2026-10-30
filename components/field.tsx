@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Label } from "@/components/ui/label";
 
 export function Field({
@@ -35,25 +36,30 @@ export function describedBy(id: string, hint: boolean, error?: string) {
   return [hint ? `${id}-hint` : "", error ? `${id}-error` : ""].filter(Boolean).join(" ") || undefined;
 }
 
-export function ErrorSummary({ errors }: { errors: Record<string, string> }) {
-  const entries = Object.entries(errors).filter(([, message]) => message);
-  if (entries.length === 0) return null;
-  return (
-    <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/5 px-4 py-3">
-      <p className="font-medium">Please check the form.</p>
-      <ul className="mt-2 list-disc pl-5 text-sm">
-        {entries.map(([field, message]) => (
-          <li key={field}>
-            {field === "form" ? (
-              message
-            ) : (
-              <a href={`#${field}`} className="underline underline-offset-2">
-                {message}
-              </a>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+export const ErrorSummary = forwardRef<HTMLDivElement, { errors: Record<string, string>; children?: React.ReactNode }>(
+  function ErrorSummary({ errors, children }, ref) {
+    const entries = Object.entries(errors).filter(([, message]) => message);
+    if (entries.length === 0 && !children) return null;
+    return (
+      <div ref={ref} tabIndex={-1} role="alert" className="scroll-mt-28 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-3 outline-none">
+        <p className="font-medium">Please check the form.</p>
+        {entries.length ? (
+          <ul className="mt-2 list-disc pl-5 text-sm">
+            {entries.map(([field, message]) => (
+              <li key={field}>
+                {field === "form" ? (
+                  message
+                ) : (
+                  <a href={`#${field}`} className="underline underline-offset-2">
+                    {message}
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {children ? <div className="mt-3">{children}</div> : null}
+      </div>
+    );
+  },
+);

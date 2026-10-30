@@ -29,6 +29,12 @@ export type LeadRecord =
       phone: string;
       email: string;
       band: string;
+      eventDate: string;
+      source: string;
+      page: string;
+      utmSource: string;
+      utmMedium: string;
+      utmCampaign: string;
     };
 
 function singleLine(value: string): string {
@@ -66,6 +72,12 @@ export function showreelLead(input: ShowreelInput): LeadRecord {
     phone: input.phone,
     email: input.email,
     band: input.band,
+    eventDate: input.eventDate,
+    source: input.source || "showreel",
+    page: input.page,
+    utmSource: input.utmSource,
+    utmMedium: input.utmMedium,
+    utmCampaign: input.utmCampaign,
   };
 }
 
@@ -80,7 +92,7 @@ const WEBHOOK_TIMEOUT_MS = 8000;
  * Logs every lead. Two optional sinks run independently:
  * Resend (unchanged) when its three variables are set, and
  * LEADS_WEBHOOK_URL when that is set.
- * The request fails only when a configured sink fails and none succeeded.
+ * The request fails when neither sink delivered the lead.
  */
 export async function recordLead(lead: LeadRecord): Promise<{ emailed: boolean; webhooked: boolean }> {
   console.info(`[beats16 lead] ${JSON.stringify(lead)}`);
@@ -106,8 +118,8 @@ export async function recordLead(lead: LeadRecord): Promise<{ emailed: boolean; 
   }
 
   const configured = Boolean(webhookUrl || resendReady);
-  if (configured && !webhooked && !emailed) {
-    throw new Error("Lead delivery failed");
+  if (!webhooked && !emailed) {
+    throw new Error(configured ? "Lead delivery failed" : "Lead delivery not configured");
   }
 
   return { emailed, webhooked };
@@ -177,7 +189,7 @@ async function deliverResend(lead: LeadRecord, apiKey: string, from: string, to:
     body: JSON.stringify({
       from,
       to: [to],
-      reply_to: lead.email,
+      reply_to: lead.email.trim() || site.email,
       subject: subject.slice(0, 180),
       text: `${leadText(lead)}\n\nSent from ${site.url}`,
     }),

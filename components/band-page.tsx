@@ -6,10 +6,12 @@ import { FaqList } from "@/components/faq-list";
 import { MediaFrame } from "@/components/media-frame";
 import { JsonLd } from "@/components/json-ld";
 import { Mosaic } from "@/components/mosaic";
+import { BandEnquireBar } from "@/components/band-enquire-bar";
 import { PlanActions } from "@/components/plan-actions";
 import { PosterTile } from "@/components/poster-tile";
 import { ReelStrip } from "@/components/reel-strip";
-import { ShowreelForm } from "@/components/showreel-form";
+import { ShowreelCard, ShowreelHeroButton, ShowreelProvider } from "@/components/showreel-gate";
+import { bandInterestLabel } from "@/content/forms";
 import { Steps } from "@/components/steps";
 import { toneClass } from "@/components/tones";
 import { BandhaniPattern } from "@/components/ornament/bandhani";
@@ -100,14 +102,14 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
   ];
   const group = performingGroup(bandId);
 
-  return (
+  const page = (
     <>
       <JsonLd data={organizationJsonLd()} />
       <JsonLd data={serviceJsonLd({ name: band.name, description: band.metaDescription, path: band.href })} />
       {group ? <JsonLd data={{ "@context": "https://schema.org", ...group }} /> : null}
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
       <JsonLd data={faqJsonLd(band.story.faqs)} />
-      <section className={`relative overflow-hidden ${visual.tone === "bandhani" ? "bg-sindoor text-cream" : `${tone.bg} ${tone.text}`}`}>
+      <section data-band-hero className={`relative overflow-hidden ${visual.tone === "bandhani" ? "bg-sindoor text-cream" : `${tone.bg} ${tone.text}`}`}>
         {visual.tone === "bandhani" ? null : <BandhaniPattern />}
         {visual.tone !== "haldi" && visual.tone !== "bandhani" ? (
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-kajal/75 to-transparent" />
@@ -137,7 +139,8 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
               ))}
             </ul>
             <FadeUp hero delay={0.55} pace={pace} className="mt-8">
-              <PlanActions source={`${bandId}-page`} primary={band.story.hero.cta} onDark={visual.tone !== "haldi"} onSindoor={visual.tone === "sindoor" || visual.tone === "bandhani"} />
+              <PlanActions source={`${bandId}-cta`} band={bandInterestLabel[bandId]} primary={band.story.hero.cta} onDark={visual.tone !== "haldi"} onSindoor={visual.tone === "sindoor" || visual.tone === "bandhani"} />
+              {showreel ? <ShowreelHeroButton /> : null}
             </FadeUp>
           </div>
           <div className={cn("relative min-w-0 max-w-full", visual.tone === "haldi" && "rounded-[2rem] bg-chandan p-3 md:p-5")}>
@@ -205,6 +208,8 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
         <Mosaic items={photos} label={`${band.name} photographs`} />
       </section>
 
+      {showreel ? <ShowreelCard /> : null}
+
       <section className="site-wrap py-8" aria-labelledby={`${bandId}-pairs`}>
         <h2 id={`${bandId}-pairs`} className="font-display text-4xl leading-none">
           {bandId === "navratri" ? "More from Beats16" : "Pairs well with"}
@@ -240,11 +245,22 @@ export function BandScreen({ bandId }: { bandId: BandPage["id"] }) {
         <FaqList items={band.story.faqs} heading={band.story.faqHeading} headingId={`${bandId}-faq`} ruleClassName={visual.rule} />
       </div>
 
-      {showreel && showreelCopy ? (
-        <div className="site-wrap max-w-xl py-8">
-          <ShowreelForm defaultBand={bandId} heading={showreelCopy.heading} intro={showreelCopy.body} note={showreelCopy.note} />
-        </div>
-      ) : null}
+      <BandEnquireBar bandId={bandId} />
     </>
+  );
+
+  if (!showreel) return page;
+
+  return (
+    <ShowreelProvider
+      bandId={bandId}
+      body={showreelCopy?.body ?? ""}
+      poster={heroMedia}
+      url={showreel.url}
+      external={showreel.external}
+      filename={showreel.filename}
+    >
+      {page}
+    </ShowreelProvider>
   );
 }

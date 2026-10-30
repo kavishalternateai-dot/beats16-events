@@ -1,13 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { footerFocus, footerNav, site, WHATSAPP_NUMBER } from "@/content/site";
+import { footerFocus, footerNav, site } from "@/content/site";
 import { EmailLink, PhoneLink } from "@/components/contact-links";
 import { InstagramProfile } from "@/components/instagram-profile";
 import { Toran } from "@/components/ornament/toran";
 
 export function SiteFooter() {
-  const whatsapp = WHATSAPP_NUMBER?.replace(/[^\d]/g, "") ?? "";
-
   return (
     <footer className="bg-neel text-cream" style={{ viewTransitionName: "site-footer" }}>
       <div className="h-px bg-sona" />
@@ -35,19 +33,6 @@ export function SiteFooter() {
               <li>
                 <InstagramProfile tone="dark" />
               </li>
-              {whatsapp ? (
-                <li>
-                  <a
-                    href={`https://wa.me/${whatsapp}`}
-                    className="underline decoration-sona/70 underline-offset-4"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    WhatsApp
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>
-                </li>
-              ) : null}
             </ul>
           </div>
           <div>

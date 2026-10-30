@@ -15,14 +15,14 @@ const showreelNote = "We'll only use your email to send the showreel and reply t
 const gauriInquiry = inquiryHref({
   event: "Wedding",
   band: "Gauri",
-  source: "gauri-page",
+  source: "gauri-cta",
 });
-const rdxInquiry = inquiryHref({ band: "RDX", source: "rdx-page" });
-const ghazalInquiry = inquiryHref({ band: "Daastan-e-Ghazal", source: "daastan-page" });
+const rdxInquiry = inquiryHref({ band: "RDX", source: "rdx-cta" });
+const ghazalInquiry = inquiryHref({ band: "Daastan-e-Ghazal", source: "daastan-e-ghazal-cta" });
 const navratriInquiry = inquiryHref({
   event: "Navratri",
   band: "Navratri band by Beats16",
-  source: "navratri-page",
+  source: "navratri-cta",
 });
 
 export const gauriFaqs: FaqItem[] = [
@@ -257,7 +257,7 @@ export const bandPages: BandPage[] = [
         {
           kind: "showreel",
           heading: "Download the Gauri showreel",
-          body: "Want to share Gauri with your family before you decide? Leave your name and email and we'll send you the showreel.",
+          body: "Want to share Gauri with your family before you decide? Leave your name and phone and the showreel opens right away.",
           note: showreelNote,
         },
         { kind: "pricing", heading: "About pricing" },
@@ -334,7 +334,7 @@ export const bandPages: BandPage[] = [
         {
           kind: "showreel",
           heading: "Download the RDX showreel",
-          body: "Want to show RDX to your family or planner first? Leave your name and email and we'll send you the showreel.",
+          body: "Want to show RDX to your family or planner first? Leave your name and phone and the showreel opens right away.",
           note: showreelNote,
         },
         { kind: "pricing", heading: "About pricing" },
@@ -412,7 +412,7 @@ export const bandPages: BandPage[] = [
         {
           kind: "showreel",
           heading: "Download the Daastan-e-Ghazal showreel",
-          body: "Want to share the music with your committee or family first? Leave your name and email and we'll send you the showreel.",
+          body: "Want to share the music with your committee or family first? Leave your name and phone and the showreel opens right away.",
           note: showreelNote,
         },
         { kind: "pricing", heading: "About pricing" },
@@ -498,7 +498,7 @@ export const bandPages: BandPage[] = [
         {
           kind: "showreel",
           heading: "Download the Navratri showreel",
-          body: "Need to show your committee what a Beats16 Navratri looks like? Leave your name and email and we'll send you the showreel.",
+          body: "Need to show your committee what a Beats16 Navratri looks like? Leave your name and phone and the showreel opens right away.",
           note: showreelNote,
         },
         { kind: "pricing", heading: "About pricing" },

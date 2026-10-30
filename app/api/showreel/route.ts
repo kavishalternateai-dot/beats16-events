@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { site } from "@/content/site";
 import { jsonError, readJson, sameOrigin } from "@/lib/api";
 import { recordLead, showreelLead } from "@/lib/leads";
 import { resolveShowreel } from "@/lib/resolve-media";
@@ -19,23 +20,20 @@ export async function POST(request: Request) {
 
   const showreel = resolveShowreel(result.data.band);
   if (!showreel) {
-    return jsonError({ form: "That showreel is not ready yet. Please call or email us." }, 404);
+    return jsonError({ form: "That showreel is not ready yet." }, 404);
   }
 
   if (result.data.companyWebsite) {
-    return NextResponse.json({
-      ok: true,
-      downloadUrl: showreel.url,
-      placeholder: false,
-      external: showreel.external,
-      filename: showreel.filename,
-    });
+    return NextResponse.json({ ok: true });
   }
 
   try {
     await recordLead(showreelLead(result.data));
   } catch {
-    return jsonError({ form: "We could not start the download just now. Please email or call." }, 502);
+    return jsonError(
+      { form: `We couldn't send this online. Please email ${site.email} or call ${site.phoneDisplay}. Your details are still in the form.` },
+      503,
+    );
   }
 
   return NextResponse.json({

@@ -161,13 +161,7 @@ The header and the call / inquire bars do not link to Facebook, LinkedIn, or Wha
 
 ### Showreels
 
-Each of those same places has a **Download showreel** form: name, email, phone, and which band. On success the file downloads and the page confirms the next step (call, email, or the inquiry form). The event `showreel_download` fires once per successful submit.
-
-Until a real URL is set, the download is a placeholder PDF in `public/showreels/`. Those files are also directly reachable; they are stand-ins, not private films. Point `SHOWREEL_*_URL` at an `https` file (Drive or similar) when the real showreel exists. That URL is returned only after the form is sent. Regenerate the PDFs with:
-
-```bash
-node scripts/write-placeholder-showreels.mjs
-```
+Each band page can offer a showreel after a name and phone are delivered through the same lead pipeline as the inquiry form. The gate stays hidden until `SHOWREEL_*_URL` is an `https` file. The file is returned only after that lead is delivered. There is no placeholder download.
 
 ## Analytics
 

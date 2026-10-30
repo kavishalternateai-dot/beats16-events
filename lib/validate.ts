@@ -3,6 +3,7 @@ import {
   eventTypes,
   functionOptions,
   hearAboutOptions,
+  inquiryMessages,
   showreelBands,
   type ShowreelBandId,
 } from "@/content/forms";
@@ -40,6 +41,12 @@ export type ShowreelInput = {
   phone: string;
   email: string;
   band: ShowreelBandId;
+  eventDate: string;
+  source: string;
+  page: string;
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
   companyWebsite: string;
 };
 
@@ -60,21 +67,37 @@ function hidden(value: unknown, max = 160): string {
 }
 
 function checkName(value: string, errors: FieldErrors) {
-  if (value.length < 2) errors.name = "Please enter your name.";
-  else if (value.length > 80) errors.name = "Name must be 80 characters or fewer.";
+  if (value.length < 2) errors.name = inquiryMessages.nameShort;
+  else if (value.length > 80) errors.name = inquiryMessages.nameLong;
 }
 
 function checkPhone(value: string, errors: FieldErrors) {
   const digits = value.replace(/\D/g, "");
   if (digits.length < 8 || digits.length > 15 || value.length > 24) {
-    errors.phone = "Please enter a phone number we can call.";
+    errors.phone = inquiryMessages.phone;
   }
 }
 
 function checkEmail(value: string, errors: FieldErrors) {
-  if (value.length > 120 || !EMAIL_PATTERN.test(value)) {
-    errors.email = "Please enter an email address.";
-  }
+  if (!value) errors.email = inquiryMessages.emailMissing;
+  else if (value.length > 120 || !EMAIL_PATTERN.test(value)) errors.email = inquiryMessages.emailInvalid;
+}
+
+/** Checks that run in the browser before a request is sent. */
+export function inquiryClientErrors(input: {
+  name: string;
+  phone: string;
+  email: string;
+  eventType: string;
+  city: string;
+}): FieldErrors {
+  const errors: FieldErrors = {};
+  checkName(input.name, errors);
+  checkPhone(input.phone, errors);
+  checkEmail(input.email, errors);
+  if (!input.eventType) errors.eventType = inquiryMessages.eventType;
+  if (input.city.trim().length < 2) errors.city = inquiryMessages.city;
+  return errors;
 }
 
 function realDay(year: number, month: number, day: number) {
@@ -146,7 +169,7 @@ export function validateInquiry(
   checkName(data.name, errors);
   checkPhone(data.phone, errors);
   checkEmail(data.email, errors);
-  oneOf(data.eventType, eventTypes, "eventType", errors, "Choose an event type.");
+  oneOf(data.eventType, eventTypes, "eventType", errors, inquiryMessages.eventType);
   const eventDate = normaliseEventDate(data.eventDate);
   if (eventDate == null) {
     errors.eventDate = "Enter a date as dd/mm/yyyy, or leave this blank.";
@@ -154,7 +177,7 @@ export function validateInquiry(
     data.eventDate = eventDate;
   }
   if (data.city.length < 2 || data.city.length > 160) {
-    errors.city = "Tell us the city or venue.";
+    errors.city = inquiryMessages.city;
   }
   if (data.functions.some((item) => !functionOptions.includes(item as (typeof functionOptions)[number]))) {
     errors.functions = "Choose functions from the list, or leave them blank.";
@@ -187,16 +210,24 @@ export function validateShowreel(
   const data = {
     name: text(body.name),
     phone: text(body.phone),
-    email: text(body.email),
+    email: "",
     band,
+    eventDate: text(body.eventDate),
+    source: hidden(body.source) || "showreel",
+    page: hidden(body.page),
+    utmSource: hidden(body.utmSource),
+    utmMedium: hidden(body.utmMedium),
+    utmCampaign: hidden(body.utmCampaign),
     companyWebsite: text(body.companyWebsite),
   };
 
   const errors: FieldErrors = {};
   checkName(data.name, errors);
   checkPhone(data.phone, errors);
-  checkEmail(data.email, errors);
   if (!SHOWREEL_IDS.has(band)) errors.band = "Choose a band.";
+  const eventDate = normaliseEventDate(data.eventDate);
+  if (eventDate == null) errors.eventDate = "Choose a month and year, or leave this blank.";
+  else data.eventDate = eventDate;
 
   if (Object.keys(errors).length > 0) return { ok: false, errors };
   return { ok: true, data: { ...data, band: band as ShowreelBandId } };
