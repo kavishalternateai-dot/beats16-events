@@ -1,15 +1,15 @@
 # Beats16 Events & Entertainment
 
-Beats16 is a live music company in Mumbai, started by Tushar Sonigra. It plays Indian weddings and traditional festivals, in India and abroad.
+> Beats16 is a live music company in Mumbai, started by Tushar Sonigra. It plays Indian weddings and traditional festivals across India and abroad, with 5,000+ events and 80+ Navratris organised. Its bands: Gauri for wedding rituals and pheras, RDX (a wireless band) for sangeet nights and private events, Daastan-e-Ghazal for ghazal evenings, and the Navratri band by Beats16 for garba and dandiya.
 
 Site: https://beats16-events.vercel.app
 
 ## Bands
 
-- Gauri: wedding rituals and traditional ceremonies, including the pheras. https://beats16-events.vercel.app/gauri
-- RDX: wireless band for sangeet nights and private events. https://beats16-events.vercel.app/rdx
-- Daastan-e-Ghazal: ghazal evenings for cultural programmes, community gatherings and private events. https://beats16-events.vercel.app/daastan-e-ghazal
-- Navratri band by Beats16: live garba and dandiya. Beats16 has organised 80+ Navratris. https://beats16-events.vercel.app/navratri
+- [Gauri](https://beats16-events.vercel.app/gauri): Wedding rituals and traditional ceremonies, including the pheras.
+- [RDX](https://beats16-events.vercel.app/rdx): Wireless band for sangeet nights and private events.
+- [Daastan-e-Ghazal](https://beats16-events.vercel.app/daastan-e-ghazal): Ghazal evenings for cultural programmes, community gatherings and private events.
+- [Navratri band by Beats16](https://beats16-events.vercel.app/navratri): Live garba and dandiya. Beats16 has organised 80+ Navratris.
 - Independent bands: put together for private shows that are not one of the four bands above.
 
 ## Record
@@ -23,9 +23,11 @@ Site: https://beats16-events.vercel.app
 
 Indian weddings, including mehendi, sangeet, pheras and reception. Traditional festivals such as Navratri. Also cultural programmes, religious celebrations, community gatherings and corporate events.
 
-Beats16 specialises in Indian weddings and traditional festivals. For a different kind of ceremony, they say so plainly and kindly.
+Each wedding function gets its own musical plan.
 
-Pricing is discussed personally once they know the date, city and functions. Dates are confirmed only after a conversation with Tushar Sonigra.
+Beats16 specialises in Indian weddings and traditional festivals. For a different kind of ceremony, Beats16 says so plainly and kindly.
+
+Pricing is discussed personally once Beats16 knows the date, city and functions. Dates are confirmed only after a conversation with Tushar Sonigra.
 
 ## Contact
 
@@ -35,13 +37,13 @@ Pricing is discussed personally once they know the date, city and functions. Dat
 
 ## Pages
 
-- Home: https://beats16-events.vercel.app/
-- Weddings: https://beats16-events.vercel.app/weddings
-- Gauri: https://beats16-events.vercel.app/gauri
-- RDX: https://beats16-events.vercel.app/rdx
-- Daastan-e-Ghazal: https://beats16-events.vercel.app/daastan-e-ghazal
-- Navratri: https://beats16-events.vercel.app/navratri
-- Corporate and cultural: https://beats16-events.vercel.app/corporate-cultural
-- About: https://beats16-events.vercel.app/about
-- FAQ: https://beats16-events.vercel.app/faq
-- Contact: https://beats16-events.vercel.app/contact
+- [Home](https://beats16-events.vercel.app/): Live music for Indian weddings and traditional festivals.
+- [Weddings](https://beats16-events.vercel.app/weddings): Music planned for each function (mehendi, sangeet, pheras, reception), including destination weddings. Planners and venues welcome.
+- [Gauri](https://beats16-events.vercel.app/gauri): Wedding rituals and traditional ceremonies, including the pheras.
+- [RDX](https://beats16-events.vercel.app/rdx): Wireless band for sangeet nights and private events.
+- [Daastan-e-Ghazal](https://beats16-events.vercel.app/daastan-e-ghazal): Ghazal evenings for cultural programmes, community gatherings and private events.
+- [Navratri](https://beats16-events.vercel.app/navratri): Live garba and dandiya. Beats16 has organised 80+ Navratris.
+- [Corporate and cultural](https://beats16-events.vercel.app/corporate-cultural): Religious celebrations, community gatherings, cultural programmes and company festival events.
+- [About](https://beats16-events.vercel.app/about): The story of Beats16 and founder Tushar Sonigra.
+- [FAQ](https://beats16-events.vercel.app/faq): Bands, events, travel, pricing and how to check a date.
+- [Contact](https://beats16-events.vercel.app/contact): Inquiry form. Share your date, city and functions, and Tushar Sonigra replies personally.
