@@ -80,7 +80,7 @@ function InquiryFallback({ mailto }: { mailto: string }) {
         {site.email}
       </EmailLink>{" "}
       (opens your mail app with these details filled in) or call{" "}
-      <PhoneLink location="inquiry_fallback" className="underline underline-offset-2">
+      <PhoneLink location="inquiry_fallback" className="underline underline-offset-2 whitespace-nowrap">
         {site.phoneDisplay}
       </PhoneLink>
       .

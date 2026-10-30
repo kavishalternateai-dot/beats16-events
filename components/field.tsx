@@ -40,9 +40,10 @@ export const ErrorSummary = forwardRef<HTMLDivElement, { errors: Record<string, 
   function ErrorSummary({ errors, children }, ref) {
     const entries = Object.entries(errors).filter(([, message]) => message);
     if (entries.length === 0 && !children) return null;
+    const onlyDelivery = entries.length > 0 && entries.every(([field]) => field === "form");
     return (
       <div ref={ref} tabIndex={-1} role="alert" className="scroll-mt-28 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-3 outline-none">
-        <p className="font-medium">Please check the form.</p>
+        <p className="font-medium">{onlyDelivery ? "This didn't send." : "Please check the form."}</p>
         {entries.length ? (
           <ul className="mt-2 list-disc pl-5 text-sm">
             {entries.map(([field, message]) => (

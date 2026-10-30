@@ -12,7 +12,7 @@ type BandId = (typeof BANDS)[number];
 const enquireCopy: Record<BandId, string> = {
   gauri: "Enquire for Gauri",
   rdx: "Enquire for RDX",
-  "daastan-e-ghazal": "Enquire for Daastan-e-Ghazal",
+  "daastan-e-ghazal": "Enquire for Daastan\u2011e\u2011Ghazal",
   navratri: "Enquire for Navratri",
 };
 
@@ -43,15 +43,16 @@ export function BandEnquireBar({ bandId }: { bandId: BandId }) {
       [
         document.querySelector("[data-band-hero]"),
         document.querySelector("footer"),
+        ...document.querySelectorAll("[data-sticky-hide]"),
         ...document.querySelectorAll("#inquiry-form, #showreel"),
       ].filter((node): node is Element => Boolean(node));
 
     const update = () => {
       const hero = document.querySelector("[data-band-hero]");
-      const footer = document.querySelector("footer");
+      const covered = [...document.querySelectorAll("footer, [data-sticky-hide]")];
       const gates = [...document.querySelectorAll("#inquiry-form, #showreel")];
       const heroGone = hero ? visible.get(hero) === false : false;
-      const footerIn = footer ? visible.get(footer) === true : false;
+      const footerIn = covered.some((node) => visible.get(node) === true);
       const gateIn = gates.some((gate) => visible.get(gate) === true);
       setShow(heroGone && !footerIn && !gateIn);
     };
@@ -99,17 +100,17 @@ export function BandEnquireBar({ bandId }: { bandId: BandId }) {
       aria-label={`Enquire about ${enquireCopy[bandId].replace("Enquire for ", "")}`}
       aria-hidden={hidden}
       inert={hidden}
-      className={`fixed inset-x-0 bottom-0 z-40 bg-kajal pb-[env(safe-area-inset-bottom)] md:hidden ${reduce ? "" : "transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"} ${motion}`}
+      className={`fixed inset-x-0 bottom-0 z-40 md:hidden ${reduce ? "" : "transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"} ${motion}`}
     >
-      <div className="grid h-14 grid-cols-[1fr_30%]">
+      <div className="grid grid-cols-[1fr_30%]">
         <Link
           href={href}
           onClick={() => trackEvent("sticky_enquire_click", { band: bandId })}
-          className={`inline-flex h-14 items-center justify-center px-3 text-center text-base leading-tight font-medium focus-visible:ring-3 focus-visible:outline-none ${bandCell[bandId]}`}
+          className={`inline-flex min-h-14 items-center justify-center px-3 pb-[env(safe-area-inset-bottom)] text-center text-base leading-tight font-medium whitespace-nowrap focus-visible:ring-3 focus-visible:outline-none ${bandCell[bandId]}`}
         >
           {enquireCopy[bandId]}
         </Link>
-        <PhoneLink location={`${bandId}-sticky`} className="inline-flex h-14 items-center justify-center bg-kajal text-base font-medium text-cream focus-visible:ring-3 focus-visible:ring-cream focus-visible:outline-none">
+        <PhoneLink location={`${bandId}-sticky`} className="inline-flex min-h-14 items-center justify-center bg-kajal pb-[env(safe-area-inset-bottom)] text-base font-medium text-cream focus-visible:ring-3 focus-visible:ring-cream focus-visible:outline-none">
           Call
         </PhoneLink>
       </div>

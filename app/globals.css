@@ -176,7 +176,8 @@ h1 {
 }
 
 @media (max-width: 767px) {
-  h1.h1-fit {
+  h1.h1-fit,
+  h2.h1-fit {
     font-size: max(2rem, min(2.6rem, calc((100vw - 2.5rem) / 7.9)));
   }
 

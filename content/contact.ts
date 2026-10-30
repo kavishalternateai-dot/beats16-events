@@ -23,7 +23,7 @@ export const contactFormCopy = {
   heading: "Send your inquiry",
   intro: "The more you can tell us, the faster we can help. Fields marked * are required.",
   phoneHint: "Tushar ji will call you on this number.",
-  dateHint: "dd/mm/yyyy. Not fixed yet? Leave blank, or choose the month and year.",
+  dateHint: "Not fixed yet? Leave blank, or choose the month and year.",
   cityPlaceholder: "Mumbai, venue to be decided",
   submit: "Send my inquiry",
   privacy: "We'll only use your details to reply to your inquiry.",
